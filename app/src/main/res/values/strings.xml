@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">photobook</string>
     <string name="add_post_description">Click on this button to add a new post or login if you\'re not</string>
+    <string name="retryImageDescription">Click here to reload data from server</string>
 </resources>
