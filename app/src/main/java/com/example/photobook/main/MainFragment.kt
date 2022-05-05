@@ -1,10 +1,11 @@
-package com.example.photobook
+package com.example.photobook.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.photobook.R
 
 /**
  * MainFragment - The fragment that contains list of posts
