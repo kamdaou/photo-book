@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">photobook</string>
+    <string name="add_post_description">Click on this button to add a new post or login if you\'re not</string>
 </resources>
