@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "427659981180",
+    "project_id": "photobook-4f4fd",
+    "storage_bucket": "photobook-4f4fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427659981180:android:78a124030b9e4cd2ce34f9",
+        "android_client_info": {
+          "package_name": "com.example.photobook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427659981180-jite7kdskurbenbhldd04flbvh6b8pr3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_rWlV69-pIfv4WsqVn2KkoG-PkAMdZdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427659981180-jite7kdskurbenbhldd04flbvh6b8pr3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
