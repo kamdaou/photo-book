@@ -23,7 +23,7 @@ data class Comment(
 
     var user_id: String="",
 
-    val inserted_at: Timestamp = Timestamp.now(),
+    var inserted_at: Timestamp = Timestamp.now(),
 
     var parent_comment: String="",
 
