@@ -66,5 +66,11 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
     // LiveData
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
+    ext.livedata_version="2.4.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
+
+    // Mockito
+    ext.mockito_version="2.19.0"
+    testImplementation ("org.mockito:mockito-core:$mockito_version")
+    androidTestImplementation"org.mockito:mockito-android:$mockito_version"
 }
