@@ -1,6 +1,7 @@
 package com.example.photobook
 
 import androidx.annotation.VisibleForTesting
+import com.example.photobook.network.IRemoteRepository
 import com.example.photobook.network.RemoteRepository
 import kotlinx.coroutines.runBlocking
 
@@ -12,7 +13,7 @@ object ServiceLocator
     private val lock = Any()
 
     @Volatile
-    var remoteRepository: RemoteRepository? = null
+    var remoteRepository: IRemoteRepository? = null
         @VisibleForTesting set
 
     /**
@@ -21,7 +22,7 @@ object ServiceLocator
      * Return: a fresh create photoBook Service
      *
      */
-    fun provideRemoteRepository(): RemoteRepository
+    fun provideRemoteRepository(): IRemoteRepository
     {
         synchronized(this){
             return remoteRepository?: RemoteRepository()

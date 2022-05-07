@@ -4,4 +4,8 @@
     <string name="retryImageDescription">Click here to reload data from server</string>
     <string name="post_not_found_message">An exception occurred, the post has not been found. Please try again later</string>
     <string name="up_vote_not_saved_message">An exception occurred while upvoting, please check your internet connexion and try again</string>
+    <string name="posted_image_description">Posted image, please click on it to see in a wide screen</string>
+    <string name="number_of_comments">Number of comments</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
