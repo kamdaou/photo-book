@@ -17,7 +17,7 @@ import kotlinx.coroutines.tasks.await
 class RemoteRepository
     : IRemoteRepository
 {
-    override val db = FirebaseFirestore.getInstance()
+    val db = FirebaseFirestore.getInstance()
 
     init
     {
@@ -46,7 +46,7 @@ class RemoteRepository
      * Return: The result of the operation, id of the
      * saved data and the task.
      */
-    override fun saveMedia(media: Media): Result
+    override suspend fun saveMedia(media: Media): Result
     {
         // Getting media from Firestore
         val medias = db.collection("media").document()
