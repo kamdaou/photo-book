@@ -2,4 +2,6 @@
     <string name="app_name">photobook</string>
     <string name="add_post_description">Click on this button to add a new post or login if you\'re not</string>
     <string name="retryImageDescription">Click here to reload data from server</string>
+    <string name="post_not_found_message">An exception occurred, the post has not been found. Please try again later</string>
+    <string name="up_vote_not_saved_message">An exception occurred while upvoting, please check your internet connexion and try again</string>
 </resources>

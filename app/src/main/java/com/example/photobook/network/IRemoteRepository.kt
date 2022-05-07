@@ -8,7 +8,6 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.auth.User
 
 interface IRemoteRepository {
-    val db: FirebaseFirestore
 
     /**
      * saveMedia - Saves a media in firestore database
@@ -18,7 +17,7 @@ interface IRemoteRepository {
      * Return: The result of the operation, id of the
      * saved data and the task.
      */
-    fun saveMedia(media: Media): Result
+    suspend fun saveMedia(media: Media): Result
 
     /**
      * getMedia - Gets media from firestore datasource.
@@ -58,7 +57,7 @@ interface IRemoteRepository {
      *
      * Return: a PostResponse
      */
-    suspend fun getPosts(limit: Long): PostResponse
+    suspend fun getPosts(limit: Long = 20L): PostResponse
 
     /**
      * updatePost - update value of a post.
