@@ -298,5 +298,4 @@ class FakeRemoteRepository: IRemoteRepository
     override suspend fun getCommentSnap(id: String): Task<QuerySnapshot> {
         TODO("Not yet implemented")
     }
-
 }

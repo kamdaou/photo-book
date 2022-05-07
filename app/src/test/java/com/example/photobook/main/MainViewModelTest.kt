@@ -33,6 +33,9 @@ class MainViewModelTest
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
+    /**
+     * init - Gets viewModel ready and creates a post for test
+     */
     @Before
     fun init()
     {
@@ -43,36 +46,48 @@ class MainViewModelTest
         postFirestore = PostFirestore("title", "body", id = "id1")
     }
 
+    /**
+     * onPostSelected_navigateToDetailFragmentContainPostId - Checks
+     * if navigateToPostDetail contains the good value
+     */
     @Test
     fun onPostSelected_navigateToDetailFragmentContainPostId()
     {
-        // GIVEN - A view model with a list of posts
+        /* GIVEN - A view model with a list of posts */
         val postResponse =
             PostResponse(listOf(PostFirestore(title = "title", body = "body", id = "id1")))
 
         mainViewModel.posts = MutableLiveData(postResponse)
 
-        // WHEN - on post selected
+        /* WHEN - on post selected */
         mainViewModel.onPostSelected("id1")
 
-        // THEN - navigateToDetail fragment value is post id
+        /* THEN - navigateToDetail fragment value is post id */
         MatcherAssert.assertThat(
             mainViewModel.navigateToPostDetail.getOrAwaitValue()?.id,
             Is.`is`("id1")
         )
     }
 
+    /**
+     * loadPost_listenEvents - Checks if events are well handled
+     * by viewModel when loadPosts fun is called.
+     */
     @Test
     fun loadPost_listenEvents()
     {
+        /* GIVEN - A viewModel with a list of posts */
         mainCoroutineRule.pauseDispatcher()
+
+        /* WHEN - loadPosts is called */
         mainViewModel.loadPosts()
 
         val status = mainViewModel.loadingStatus.getOrAwaitValue()
 
         mainCoroutineRule.resumeDispatcher()
-        MatcherAssert.assertThat(status, `is`(Constants.Status.LOADING))
 
+        /* THEN - status is loading and at the end, value of posts contains the right value */
+        MatcherAssert.assertThat(status, `is`(Constants.Status.LOADING))
         MatcherAssert.assertThat(
             mainViewModel.posts?.getOrAwaitValue(),
             `is`(PostResponse(post = listOf(postFirestore)))
@@ -80,44 +95,23 @@ class MainViewModelTest
 
     }
 
-
-    @Test
-    fun saveUpVote_eventsListener()
-    {
-        mainCoroutineRule.pauseDispatcher()
-        mainViewModel.saveUpVote(PostFirestore("title", "body", id = "id1"), "userId")
-
-        val status = mainViewModel.upVoteSaved.getOrAwaitValue()
-
-        mainCoroutineRule.resumeDispatcher()
-
-        MatcherAssert.assertThat(status, Is.`is`(false))
-        MatcherAssert.assertThat(mainViewModel.upVoteSaved.getOrAwaitValue(), Is.`is`(true))
-    }
-
-    @Test
-    fun saveDownVote_eventListener()
-    {
-        mainCoroutineRule.pauseDispatcher()
-        mainViewModel.saveDownVote(postFirestore)
-
-        val status = mainViewModel.downVoteSaved.getOrAwaitValue()
-
-        mainCoroutineRule.resumeDispatcher()
-
-        MatcherAssert.assertThat(status, Is.`is`(false))
-        MatcherAssert.assertThat(mainViewModel.downVoteSaved.getOrAwaitValue(), Is.`is`(true))
-    }
-
+    /**
+     * onPostSelected_navigateToDetailFragment_isTrue - Checks
+     * if when onPostSelected is called, value of
+     * navigateToDetailFragment is true
+     */
     @Test
     fun onPostSelected_navigateToDetailFragment_isTrue()
     {
+        /* GIVEN - A viewModel with a list of posts */
         mainViewModel.loadPosts()
 
         val posts = mainViewModel.posts?.getOrAwaitValue()
 
+        /* WHEN - OnPostSelected called */
         mainViewModel.onPostSelected("id1")
 
+        /* THEN - navigateToPostDetail contains the right value */
         MatcherAssert.assertThat(posts, `is`(PostResponse(post = listOf(postFirestore))))
         MatcherAssert.assertThat(
             mainViewModel.navigateToPostDetail.getOrAwaitValue(),

@@ -103,64 +103,6 @@ class MainViewModel(
     }
 
     /**
-     * SaveUpVote - Saves upvote in firestore database
-     *
-     * @item: post that should be up voted
-     */
-    fun saveUpVote(item: PostFirestore, userId: String)
-    {
-        _upVoteSaved.value = false
-        viewModelScope.launch {
-            val post = remoteRepository.getPost(item.id)
-
-            if (post != null)
-            {
-                remoteRepository.saveVote(item, VoteType.UP)?.task?.addOnFailureListener {
-                    _snackBarContain.value = R.string.up_vote_not_saved_message
-                    _upVoteSaved.value = false
-                }?.addOnSuccessListener {
-                    _upVoteSaved.value = true
-                }
-                return@launch
-            }
-            else
-            {
-                _snackBarContain.value = R.string.post_not_found_message
-            }
-        }
-    }
-
-    /**
-     * saveDownVote - Saves down vote in firestore database
-     *
-     * @item: The post that should be downVoted
-     *
-     * Return: Nothing
-     */
-    fun saveDownVote(item: PostFirestore)
-    {
-        _downVoteSaved.value = false
-        viewModelScope.launch {
-            val post = remoteRepository.getPost(item.id)
-
-            if (post != null)
-            {
-                remoteRepository.saveVote(post, VoteType.UP)?.task?.addOnFailureListener {
-                    _snackBarContain.value = R.string.up_vote_not_saved_message
-                    _downVoteSaved.value = false
-                }?.addOnSuccessListener {
-                    _downVoteSaved.value = true
-                }
-                return@launch
-            }
-            else
-            {
-                _snackBarContain.value = R.string.post_not_found_message
-            }
-        }
-    }
-
-    /**
      * navigateToLoginFragment - Sets value of
      * _navigateToLoginFragment to true
      */
