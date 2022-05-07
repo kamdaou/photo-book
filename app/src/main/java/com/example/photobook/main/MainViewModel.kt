@@ -118,4 +118,11 @@ class MainViewModel(
     {
         _navigateToLoginFragment.value = false
     }
+
+    /**
+     * onSnackBarShowed - Sets value of snackbarContains to null
+     */
+    fun onSnackBarShowed() {
+        _snackBarContain.value = null
+    }
 }
