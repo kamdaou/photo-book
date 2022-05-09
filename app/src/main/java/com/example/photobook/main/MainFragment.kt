@@ -3,14 +3,13 @@ package com.example.photobook.main
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.photobook.R
 import com.example.photobook.adapters.PostListener
 import com.example.photobook.adapters.PostRecyclerViewAdapter
 import com.example.photobook.databinding.FragmentMainBinding
@@ -51,9 +50,10 @@ class MainFragment : Fragment()
         val application = this.requireActivity().application
         val viewModelProvider = MainViewModelFactory(application)
 
+
         _viewModel = ViewModelProvider(this, viewModelProvider)[MainViewModel::class.java]
         recyclerViewAdapter = PostRecyclerViewAdapter(PostListener { id ->
-            _viewModel.onPostSelected(id)
+        _viewModel.onPostSelected(id)
         })
         binding.postList.adapter = recyclerViewAdapter
 
@@ -78,7 +78,8 @@ class MainFragment : Fragment()
      *
      * @context: context of the application
      */
-    override fun onAttach(context: Context) {
+    override fun onAttach(context: Context)
+    {
         super.onAttach(context)
         contxt = context
     }
@@ -87,7 +88,8 @@ class MainFragment : Fragment()
      * navigateToDetailFragment - Navigates to DetailFragment,
      * when value of navigateToDetailFragment in viewModel changes
      */
-    private fun navigateToDetailFragment() {
+    private fun navigateToDetailFragment()
+    {
         _viewModel.navigateToPostDetail.observe(viewLifecycleOwner) { post ->
             if (post != null) {
                 findNavController().navigate(
@@ -104,7 +106,8 @@ class MainFragment : Fragment()
     /**
      * loadPosts - Submits value of postLists to the recyclerView
      */
-    private fun loadPosts() {
+    private fun loadPosts()
+    {
         _viewModel.posts?.observe(viewLifecycleOwner) { postList ->
             Log.i(TAG, "post list: $postList")
             postList?.apply {
@@ -117,7 +120,8 @@ class MainFragment : Fragment()
      * showSnackBar - Shows the snackBar, if the value
      * of snackBarContain in viewModel is not null
      */
-    private fun showSnackBar() {
+    private fun showSnackBar()
+    {
         _viewModel.snackBarContain.observe(viewLifecycleOwner) { contain ->
             if (contain != null) {
                 Snackbar.make(requireView(), contxt.getString(contain), Snackbar.LENGTH_SHORT).show()
@@ -153,4 +157,4 @@ class MainFragment : Fragment()
         }
     }
 }
-private val TAG = "MainFragment"
+private const val TAG = "MainFragment"
