@@ -12,5 +12,4 @@ class MainViewModelFactory(private val application: Application): ViewModelProvi
             return MainViewModel( application, RemoteRepository()) as T
         throw IllegalArgumentException("unknown view model class")
     }
-
 }
