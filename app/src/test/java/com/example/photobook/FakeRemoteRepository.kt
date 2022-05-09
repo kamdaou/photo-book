@@ -3,13 +3,12 @@ package com.example.photobook
 import android.app.Activity
 import com.example.photobook.data.*
 import com.example.photobook.network.IRemoteRepository
-import com.example.photobook.utils.VoteType
+import com.example.photobook.utils.Constants
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import org.mockito.Mock
 import java.util.concurrent.Executor
@@ -254,7 +253,7 @@ class FakeRemoteRepository: IRemoteRepository
 
     override suspend fun saveVote(
         frameworkData: PostFirestore,
-        voteType: VoteType
+        voteType: Constants.VoteType
     ): Result {
         @Suppress("UNCHECKED_CAST")
         val result = successTask

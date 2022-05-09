@@ -4,7 +4,7 @@ import android.util.Log
 import com.example.photobook.data.*
 import com.example.photobook.network.IRemoteRepository
 import com.example.photobook.utils.Login
-import com.example.photobook.utils.VoteType
+import com.example.photobook.utils.Constants.VoteType
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -97,7 +97,7 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      *
      * Return: The result of the operation
      */
-    override suspend fun savePostMedia(post: Post, media: Media, user: com.example.photobook.data.User): Result
+    override suspend fun savePostMedia(post: Post, media: Media, user: User): Result
     {
         val postsMedia = db.collection("post").document()
         val mediaMap = hashMapOf(
@@ -134,7 +134,7 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      *
      * Return: Result of the operation
      */
-    override suspend fun savePost(post: Post, user: com.example.photobook.data.User): Result
+    override suspend fun savePost(post: Post, user: User): Result
     {
         val postDoc = db.collection("post").document()
         val postMap = hashMapOf(
