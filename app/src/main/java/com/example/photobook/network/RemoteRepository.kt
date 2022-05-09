@@ -2,14 +2,16 @@ package com.example.photobook.network
 
 import android.util.Log
 import com.example.photobook.data.*
+import com.example.photobook.utils.Constants.VoteType
 import com.example.photobook.utils.Login.currentUser
-import com.example.photobook.utils.VoteType
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 
+private const val TAG = "RemoteRepository"
 /**
  * RemoteRepository - Allows interactions between users
  * by sending data to firebase database
@@ -18,6 +20,7 @@ class RemoteRepository
     : IRemoteRepository
 {
     val db = FirebaseFirestore.getInstance()
+    val storage = FirebaseStorage.getInstance()
 
     init
     {
@@ -31,10 +34,25 @@ class RemoteRepository
      */
     private fun useEmulator()
     {
-        if (!usingEmulator)
+        if (!firestoreUsingEmulator)
         {
-            db.useEmulator("10.0.2.2", 8080)
-            usingEmulator = true
+            try {
+                db.useEmulator("10.0.2.2", 8080)
+                firestoreUsingEmulator = true
+            }
+            catch (e: Exception) {
+                Log.e(TAG, "unable to use emulator for firestore: ${e.message}")
+            }
+        }
+        if (!storageUsingEmulator)
+        {
+            try {
+                storage.useEmulator("10.0.2.2", 8080)
+                storageUsingEmulator = true
+            }
+            catch (e: Exception) {
+                Log.e(TAG, "unable to use emulator for storage: ${e.message}")
+            }
         }
     }
 
@@ -101,7 +119,7 @@ class RemoteRepository
      *
      * Return: The result of the operation
      */
-    override suspend fun savePostMedia(post: Post, media: Media, user: com.example.photobook.data.User): Result
+    override suspend fun savePostMedia(post: Post, media: Media, user: User): Result
     {
         val postsMedia = db.collection("post").document()
         val mediaMap = hashMapOf(
@@ -138,7 +156,7 @@ class RemoteRepository
      *
      * Return: Result of the operation
      */
-    override suspend fun savePost(post: Post, user: com.example.photobook.data.User): Result
+    override suspend fun savePost(post: Post, user: User): Result
     {
         val postDoc = db.collection("post").document()
         val postMap = hashMapOf(
@@ -552,6 +570,7 @@ class RemoteRepository
 
     companion object
     {
-        private var usingEmulator = false
+        private var firestoreUsingEmulator = false
+        private var storageUsingEmulator = false
     }
 }

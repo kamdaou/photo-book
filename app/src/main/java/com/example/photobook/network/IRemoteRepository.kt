@@ -1,11 +1,9 @@
 package com.example.photobook.network
 
 import com.example.photobook.data.*
-import com.example.photobook.utils.VoteType
+import com.example.photobook.utils.Constants.VoteType
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.auth.User
 
 interface IRemoteRepository {
 
@@ -38,7 +36,7 @@ interface IRemoteRepository {
      *
      * Return: The result of the operation
      */
-    suspend fun savePostMedia(post: Post, media: Media, user: com.example.photobook.data.User): Result
+    suspend fun savePostMedia(post: Post, media: Media, user: User): Result
 
     /**
      * savePost - Saves a post, without any media.
@@ -48,7 +46,7 @@ interface IRemoteRepository {
      *
      * Return: Result of the operation
      */
-    suspend fun savePost(post: Post, user: com.example.photobook.data.User): Result
+    suspend fun savePost(post: Post, user: User): Result
 
     /**
      * getPosts - Reads posts from remote data source
