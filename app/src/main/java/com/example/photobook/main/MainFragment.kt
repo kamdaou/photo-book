@@ -10,6 +10,7 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.photobook.R
 import com.example.photobook.adapters.PostListener
 import com.example.photobook.adapters.PostRecyclerViewAdapter
 import com.example.photobook.databinding.FragmentMainBinding
@@ -59,6 +60,10 @@ class MainFragment : Fragment()
 
         binding.retryImage.setOnClickListener {
             _viewModel.loadPosts()
+        }
+
+        binding.addPostButton.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_addPostFragment)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){

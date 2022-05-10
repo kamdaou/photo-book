@@ -28,7 +28,8 @@ import org.mockito.Mockito
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @MediumTest
-class DetailFragmentTest {
+class DetailFragmentTest
+{
 
     private lateinit var photoBookService: FakeAndroidTestRemoteRepository
     private lateinit var mainViewModel: MainViewModel
@@ -37,19 +38,25 @@ class DetailFragmentTest {
     @get:Rule
     val mainCoroutineRule = AndroidMainCoroutineRule()
 
+    /**
+     * init - Initializes repository and viewModel before stating tests
+     */
     @Before
-    fun init() {
+    fun init()
+    {
         val application = ApplicationProvider.getApplicationContext<Application>()
 
         photoBookService = FakeAndroidTestRemoteRepository()
         mainViewModel = MainViewModel(application, photoBookService)
         detailViewModel = DetailViewModel(application, photoBookService)
-
     }
 
-
+    /**
+     * postDetails_displayInUI - Checks if the selected post is displayed in the ui
+     */
     @Test
-    fun postDetails_displayInUI() {
+    fun postDetails_displayInUI()
+    {
 
         // GIVEN - A post saved in database
         val post = Post("postId", "userId", Timestamp(10, 20), "post title", "post body")
@@ -62,6 +69,7 @@ class DetailFragmentTest {
             body = "post body",
             user = user
         )
+
         mainViewModel.posts = liveData {
             PostResponse(listOf(postFirestore))
         }
@@ -72,9 +80,9 @@ class DetailFragmentTest {
         }
         val navController = Mockito.mock(NavController::class.java)
 
-
         // WHEN - Detail fragment launched
         val bundle = DetailFragmentArgs(postFirestore).toBundle()
+
         launchFragmentInContainer(bundle, R.style.Theme_Photobook) {
             DetailFragment().also { detailFragment ->
                 detailFragment.viewLifecycleOwnerLiveData.observeForever { lifeCycleOwner ->
@@ -84,7 +92,6 @@ class DetailFragmentTest {
                 }
             }
         }
-
 
         // THEN - The post is displayed
         Espresso.onView(withId(R.id.title))
@@ -99,9 +106,6 @@ class DetailFragmentTest {
         Espresso.onView(withId(R.id.username))
             .check(ViewAssertions.matches(ViewMatchers.withText("username")))
 
-        //
-        //onView(withId(R.id.comments)).perform(RecyclerViewActions.scrollTo<CommentRecyclerViewAdapter.ViewHolder>(withText("this is the first comment")))
+        /* onView(withId(R.id.comments)).perform(RecyclerViewActions.scrollTo<CommentRecyclerViewAdapter.ViewHolder>(withText("this is the first comment"))) */
     }
-
-
 }

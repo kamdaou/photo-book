@@ -29,4 +29,6 @@
     <string name="save_post">Save post</string>
     <string name="post_saving_success">Your post has been uploaded successfully</string>
     <string name="post_saving_error">An exception occurred while saving your post, check your internet connexion and try again</string>
+    <string name="successfully_saved_image_message">photo saved on cloud but you can keep taking other</string>
+    <string name="unsuccessfully_saved_image_message">Your latest taken image has not been successfully saved, please you may consider taking it again</string>
 </resources>

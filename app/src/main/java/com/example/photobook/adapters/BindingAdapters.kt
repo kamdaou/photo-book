@@ -16,14 +16,27 @@ import com.google.firebase.storage.StorageReference
 
 val firebaseStorage = RemoteRepository().storage
 
+/**
+ * postToSubmitter - Takes a post and change
+ * it in the name of the submitter
+ */
 @BindingAdapter("submitter")
-fun postToSubmitter(textView: TextView, postFirestore: PostFirestore)
+fun postToSubmitter(
+    textView: TextView,
+    postFirestore: PostFirestore
+)
 {
     textView.text = postFirestore.user?.username
 }
 
+/**
+ * postToTitle - Takes a post and change it to title
+ */
 @BindingAdapter("postTitle")
-fun postToTitle(textView: TextView, postFirestore: PostFirestore)
+fun postToTitle(
+    textView: TextView,
+    postFirestore: PostFirestore
+)
 {
     if (postFirestore.title.length <= 40)
         textView.text = postFirestore.title
@@ -31,8 +44,14 @@ fun postToTitle(textView: TextView, postFirestore: PostFirestore)
         textView.text = postFirestore.title.substring(0, 40).plus("...")
 }
 
+/**
+ * postToBody - takes a post and changed it to body
+ */
 @BindingAdapter("postBody")
-fun postToBody(textView: TextView, postFirestore: PostFirestore)
+fun postToBody(
+    textView: TextView,
+    postFirestore: PostFirestore
+)
 {
     if (postFirestore.body.length <= 200)
         textView.text = postFirestore.body
@@ -40,33 +59,60 @@ fun postToBody(textView: TextView, postFirestore: PostFirestore)
         textView.text = postFirestore.body.substring(0, 200).plus("...")
 }
 
+/**
+ * postToLocation - takes a post and changed it into location
+ */
 @BindingAdapter("postLocation")
 fun postToLocation(textView: TextView, postFirestore: PostFirestore)
 {
     textView.text = postFirestore.city
 }
 
+/**
+ * postToDate - takes a post and transform
+ * it into the date when it has been posted
+ */
 @BindingAdapter("postedAt")
-fun postToDate(textView: TextView, postFirestore: PostFirestore)
+fun postToDate(
+    textView: TextView,
+    postFirestore: PostFirestore
+)
 {
     textView.text = postFirestore.inserted_at?.toDate().toString()
 }
 
+/**
+ * postToCommentNumber - takes a post and transform it into commentNumber
+ */
 @BindingAdapter("commentNumber")
-fun postToCommentNumber(textView: TextView, postFirestore: PostFirestore)
+fun postToCommentNumber(
+    textView: TextView,
+    postFirestore: PostFirestore
+)
 {
     textView.text = postFirestore.comment_firestore.size.toString()
 }
 
+/**
+ * displayImage0 - takes a post and transform it into
+ */
 @BindingAdapter("postToImage0")
-fun displayImage0(view: ImageView, frameworkData: PostFirestore){
-    if(frameworkData.media != null && frameworkData.media!!.url.isNotEmpty()){
+fun displayImage0(
+    view: ImageView,
+    frameworkData: PostFirestore
+)
+{
+    if(frameworkData.media != null && frameworkData.media!!.url.isNotEmpty())
+    {
         var mediaReference: StorageReference? = null
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
+        if (frameworkData.media!!.media_type == IMAGE_NAME)
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/images/${frameworkData.media!!.url.get(0)}")
-        }else if (frameworkData.media!!.media_type == VIDEO_NAME){
+        }
+        else if (frameworkData.media!!.media_type == VIDEO_NAME)
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/videos/${frameworkData.media!!.url.get(0)}")
         }
         GlideApp
@@ -79,14 +125,22 @@ fun displayImage0(view: ImageView, frameworkData: PostFirestore){
 }
 
 @BindingAdapter("postToImage1")
-fun displayImage1(view: ImageView, frameworkData: PostFirestore){
-    if(frameworkData.media != null && frameworkData.media!!.url.size >= 2){
+fun displayImage1(
+    view: ImageView,
+    frameworkData: PostFirestore
+)
+{
+    if(frameworkData.media != null && frameworkData.media!!.url.size >= 2)
+    {
         var mediaReference: StorageReference? = null
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
+        if (frameworkData.media!!.media_type == IMAGE_NAME)
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/images/${frameworkData.media!!.url.get(1)}")
-        }else if (frameworkData.media!!.media_type == VIDEO_NAME){
+        }
+        else if (frameworkData.media!!.media_type == VIDEO_NAME)
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/videos/${frameworkData.media!!.url.get(1)}")
         }
         GlideApp
@@ -99,14 +153,22 @@ fun displayImage1(view: ImageView, frameworkData: PostFirestore){
 }
 
 @BindingAdapter("postToImage2")
-fun displayImage2(view: ImageView, frameworkData: PostFirestore){
-    if(frameworkData.media != null && frameworkData.media!!.url.size >= 3){
+fun displayImage2(
+    view: ImageView,
+    frameworkData: PostFirestore
+)
+{
+    if(frameworkData.media != null && frameworkData.media!!.url.size >= 3)
+    {
         var mediaReference: StorageReference? = null
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
+        if (frameworkData.media!!.media_type == IMAGE_NAME)
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/images/${frameworkData.media!!.url.get(2)}")
-        }else if (frameworkData.media!!.media_type == VIDEO_NAME){
+        }
+        else if (frameworkData.media!!.media_type == VIDEO_NAME)
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/videos/${frameworkData.media!!.url.get(2)}")
         }
         GlideApp
@@ -119,14 +181,24 @@ fun displayImage2(view: ImageView, frameworkData: PostFirestore){
 }
 
 @BindingAdapter("postToImage3")
-fun displayImage3(view: ImageView, frameworkData: PostFirestore){
-    if(frameworkData.media != null && frameworkData.media!!.url.size >=4){
+fun displayImage3(
+    view: ImageView,
+    frameworkData: PostFirestore
+)
+{
+    if(frameworkData.media != null && frameworkData.media!!.url.size >=4)
+    {
         var mediaReference: StorageReference? = null
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
+        if (frameworkData.media!!.media_type == IMAGE_NAME)
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/images/${frameworkData.media!!.url.get(3)}")
-        }else if (frameworkData.media!!.media_type == VIDEO_NAME){
+        }
+        else if (
+            frameworkData.media!!.media_type == VIDEO_NAME
+        )
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/videos/${frameworkData.media!!.url.get(3)}")
         }
         GlideApp
@@ -139,14 +211,22 @@ fun displayImage3(view: ImageView, frameworkData: PostFirestore){
 }
 
 @BindingAdapter("postToImage4")
-fun displayImage4(view: ImageView, frameworkData: PostFirestore){
-    if(frameworkData.media != null && frameworkData.media!!.url.size >= 5){
+fun displayImage4(
+    view: ImageView,
+    frameworkData: PostFirestore
+)
+{
+    if(frameworkData.media != null && frameworkData.media!!.url.size >= 5)
+    {
         var mediaReference: StorageReference? = null
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
+        if (frameworkData.media!!.media_type == IMAGE_NAME)
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/images/${frameworkData.media!!.url.get(4)}")
-        }else if (frameworkData.media!!.media_type == VIDEO_NAME){
+        }
+        else if (frameworkData.media!!.media_type == VIDEO_NAME)
+        {
             mediaReference = firebaseStorage.getReferenceFromUrl("gs://photobook-4f4fd.appspot.com/videos/${frameworkData.media!!.url.get(4)}")
         }
         GlideApp
@@ -159,8 +239,16 @@ fun displayImage4(view: ImageView, frameworkData: PostFirestore){
 }
 
 @BindingAdapter("postRemainingMedia")
-fun remainMediaNumber(view: TextView, postFirestore: PostFirestore){
-    if(postFirestore.media != null && postFirestore.media!!.url.size >= 6) {
+fun remainMediaNumber(
+    view: TextView,
+    postFirestore: PostFirestore
+)
+{
+    if(
+        postFirestore.media != null &&
+        postFirestore.media!!.url.size >= 6
+    )
+    {
         view.visibility = View.VISIBLE
         view.text = (postFirestore.media!!.url.size - 5).toString()
     }
@@ -168,11 +256,19 @@ fun remainMediaNumber(view: TextView, postFirestore: PostFirestore){
 }
 
 @BindingAdapter("commentBody")
-fun commentToBody(view: TextView, comment: Comment){
+fun commentToBody(
+    view: TextView,
+    comment: Comment
+)
+{
     view.text = comment.body
 }
 
 @BindingAdapter("commentToParentComment")
-fun commentToParentComment(view: EditText, comment: Comment){
+fun commentToParentComment(
+    view: EditText,
+    comment: Comment
+)
+{
     view.setText(comment.id)
 }
