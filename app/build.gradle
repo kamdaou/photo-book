@@ -126,5 +126,10 @@ dependencies {
 
     /* DataBinding */
     kapt 'com.android.databinding:compiler:3.5.1'
+
+    /* Exo player dependencies */
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.17.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.17.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.17.1'
 }
 apply plugin: 'com.google.gms.google-services'
