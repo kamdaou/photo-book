@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="comment"
+            type="com.example.photobook.data.Comment" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_margin="@dimen/small_dimension"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="lorem ipsum ..."
+            android:id="@+id/comment_body"
+            app:commentBody="@{comment}"
+            android:layout_margin="@dimen/small_dimension"
+            android:layout_marginStart="@dimen/small_dimension"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/answer_button"
+            android:text="@string/answer"
+            android:layout_marginTop="@dimen/small_dimension"
+            android:textColor="@color/primaryLightColor"
+            app:layout_constraintTop_toBottomOf="@id/comment_body"
+            app:layout_constraintStart_toStartOf="@id/comment_body"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/comment_edit_text"
+            android:layout_margin="@dimen/small_dimension"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:hint="@string/comment_hint"
+            android:visibility="gone"
+            android:inputType="text"
+            android:text="@={comment.body}"
+            android:autofillHints="add your comment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/comment_body"
+            app:layout_constraintTop_toBottomOf="@id/answer_button"
+            tools:height="50dp" />
+        <TextView
+            android:id="@+id/post_the_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/comment_edit_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/primaryColor"
+            android:layout_margin="@dimen/small_dimension"
+            android:text="@string/post_comment" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
