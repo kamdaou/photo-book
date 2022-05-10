@@ -251,8 +251,6 @@ class RemoteRepository
                     "id" to element.comment.id,
                     "body" to element.comment.body,
                     "post_id" to element.comment.post_id,
-                    "level" to element.comment.level,
-                    "parent_comment" to element.comment.parent_comment,
                     "user_id" to element.comment.user_id,
                     "insert_at" to element.comment.inserted_at,
                 )
@@ -469,10 +467,8 @@ class RemoteRepository
                         "id" to element.comment.id,
                         "user_id" to element.comment.user_id,
                         "insert_at" to element.comment.inserted_at,
-                        "parent_comment" to element.comment.parent_comment,
                         "body" to element.comment.body,
-                        "post_id" to element.comment.post_id,
-                        "level" to element.comment.level
+                        "post_id" to element.comment.post_id
                     )
 
                     val commentFirestoreMap = mapOf(
@@ -485,10 +481,8 @@ class RemoteRepository
                     "id" to doc.id,
                     "user_id" to comment.user_id,
                     "insert_at" to comment.inserted_at,
-                    "parent_comment" to comment.parent_comment,
                     "body" to comment.body,
-                    "post_id" to comment.post_id,
-                    "level" to comment.level
+                    "post_id" to comment.post_id
                 )
                 val commentFirestoreMap = mapOf(
                     "comment" to commentMap,
