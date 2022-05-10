@@ -70,6 +70,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:20.1.2'
     implementation ("androidx.test.espresso:espresso-contrib:$espresso_version"){
         exclude module: "protobuf-lite"
+        exclude group: 'org.checkerframework', module: 'checker'
     }
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -128,8 +129,9 @@ dependencies {
     kapt 'com.android.databinding:compiler:3.5.1'
 
     /* Exo player dependencies */
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.17.1'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.17.1'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.17.1'
+    ext.exoplayer_version="2.17.1"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 }
 apply plugin: 'com.google.gms.google-services'
