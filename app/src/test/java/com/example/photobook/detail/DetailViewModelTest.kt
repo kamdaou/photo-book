@@ -5,12 +5,11 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.photobook.FakeRemoteRepository
 import com.example.photobook.MainCoroutineRule
-import com.example.photobook.data.Comment
 import com.example.photobook.R
+import com.example.photobook.data.Comment
 import com.example.photobook.data.CommentResponse
 import com.example.photobook.getOrAwaitValue
 import com.example.photobook.utils.Constants.Status
-import com.google.firebase.FirebaseApp
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.MatcherAssert
@@ -35,7 +34,6 @@ class DetailViewModelTest
     fun init()
     {
         val application = ApplicationProvider.getApplicationContext<Application>()
-        FirebaseApp.initializeApp(application.applicationContext)
         justBookService = FakeRemoteRepository()
         detailViewModel = DetailViewModel(application, justBookService)
         comment = Comment(
@@ -48,7 +46,8 @@ class DetailViewModelTest
     }
 
     @Test
-    fun loadComments_eventsListener() {
+    fun loadComments_eventsListener()
+    {
         mainCoroutineRule.pauseDispatcher()
         detailViewModel.loadComments("id1")
         val status = detailViewModel.loadingCommentStatus.getOrAwaitValue()
@@ -66,7 +65,8 @@ class DetailViewModelTest
     }
 
     @Test
-    fun saveComment_eventsListener() {
+    fun saveComment_eventsListener()
+    {
         mainCoroutineRule.pauseDispatcher()
         detailViewModel.saveComment(comment)
         val status = detailViewModel.saveComment.getOrAwaitValue()
