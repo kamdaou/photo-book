@@ -3,8 +3,8 @@ package com.example.photobook
 import android.util.Log
 import com.example.photobook.data.*
 import com.example.photobook.network.IRemoteRepository
-import com.example.photobook.utils.Login
 import com.example.photobook.utils.Constants.VoteType
+import com.example.photobook.utils.Login
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -229,8 +229,6 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
                     "id" to element.comment.id,
                     "body" to element.comment.body,
                     "post_id" to element.comment.post_id,
-                    "level" to element.comment.level,
-                    "parent_comment" to element.comment.parent_comment,
                     "user_id" to element.comment.user_id,
                     "insert_at" to element.comment.inserted_at,
                 )
@@ -447,10 +445,8 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
                         "id" to element.comment.id,
                         "user_id" to element.comment.user_id,
                         "insert_at" to element.comment.inserted_at,
-                        "parent_comment" to element.comment.parent_comment,
                         "body" to element.comment.body,
-                        "post_id" to element.comment.post_id,
-                        "level" to element.comment.level
+                        "post_id" to element.comment.post_id
                     )
 
                     val commentFirestoreMap = mapOf(
@@ -463,10 +459,8 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
                     "id" to doc.id,
                     "user_id" to comment.user_id,
                     "insert_at" to comment.inserted_at,
-                    "parent_comment" to comment.parent_comment,
                     "body" to comment.body,
                     "post_id" to comment.post_id,
-                    "level" to comment.level
                 )
                 val commentFirestoreMap = mapOf(
                     "comment" to commentMap,

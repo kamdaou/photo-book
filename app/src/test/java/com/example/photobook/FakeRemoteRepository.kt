@@ -19,7 +19,7 @@ import java.util.concurrent.Executor
  */
 class FakeRemoteRepository: IRemoteRepository
 {
-    private val comment = Comment("idComment", "userId", Timestamp(35, 45), post_id = "id1", body = "body", level = 2)
+    private val comment = Comment("idComment", "userId", Timestamp(35, 45), body = "body")
     @Mock
     private lateinit var successTask: Task<Void>
     @Mock

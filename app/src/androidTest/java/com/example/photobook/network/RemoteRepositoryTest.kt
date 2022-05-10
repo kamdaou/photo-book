@@ -30,7 +30,7 @@ class RemoteRepositoryTest
         post = Post("id", "userId", title = "title", body = "body", inserted_at = Timestamp.now())
         postFirestore = PostFirestore(id = "id", submitter_id = "userId", title = "title", body = "body", inserted_at = post.inserted_at)
         user = User("username", "userId")
-        comment = Comment("commentId", "userId", Timestamp(1578762627, 828000000), "parentComment", "body", "postId", 0)
+        comment = Comment("commentId", "userId", Timestamp(1578762627, 828000000), "body")
     }
 
     @After
