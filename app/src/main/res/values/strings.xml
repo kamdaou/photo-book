@@ -17,4 +17,16 @@
     <string name="user_not_logged_in_description">You are not logged in, please login first</string>
     <string name="answer">Answer</string>
     <string name="comment_hint">What do you want to say ?</string>
+    <string name="delete_image_button_description">click here to delete this picture</string>
+    <string name="title">Title</string>
+    <string name="take_a_picture_description">Click here if you want to take a real time picture for your post</string>
+    <string name="body_description">What do you want to talk about ?</string>
+    <string name="take_a_picture">Take a picture</string>
+    <string name="take_a_video">Record a video</string>
+    <string name="take_a_video_description">Click here if you want to record a video for your post</string>
+    <string name="newly_added_image_description">Newly added image. Click on the cross to delete it if you want</string>
+    <string name="save_post_button_description">Click here to save your post.</string>
+    <string name="save_post">Save post</string>
+    <string name="post_saving_success">Your post has been uploaded successfully</string>
+    <string name="post_saving_error">An exception occurred while saving your post, check your internet connexion and try again</string>
 </resources>
