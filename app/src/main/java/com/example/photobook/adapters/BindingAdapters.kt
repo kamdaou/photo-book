@@ -2,9 +2,11 @@ package com.example.photobook.adapters
 
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.example.photobook.data.Comment
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.network.RemoteRepository
 import com.example.photobook.utils.Constants.IMAGE_NAME
@@ -76,8 +78,6 @@ fun displayImage0(view: ImageView, frameworkData: PostFirestore){
 
 }
 
-
-
 @BindingAdapter("postToImage1")
 fun displayImage1(view: ImageView, frameworkData: PostFirestore){
     if(frameworkData.media != null && frameworkData.media!!.url.size >= 2){
@@ -97,8 +97,6 @@ fun displayImage1(view: ImageView, frameworkData: PostFirestore){
     }
 
 }
-
-
 
 @BindingAdapter("postToImage2")
 fun displayImage2(view: ImageView, frameworkData: PostFirestore){
@@ -120,7 +118,6 @@ fun displayImage2(view: ImageView, frameworkData: PostFirestore){
 
 }
 
-
 @BindingAdapter("postToImage3")
 fun displayImage3(view: ImageView, frameworkData: PostFirestore){
     if(frameworkData.media != null && frameworkData.media!!.url.size >=4){
@@ -140,7 +137,6 @@ fun displayImage3(view: ImageView, frameworkData: PostFirestore){
     }
 
 }
-
 
 @BindingAdapter("postToImage4")
 fun displayImage4(view: ImageView, frameworkData: PostFirestore){
@@ -162,7 +158,6 @@ fun displayImage4(view: ImageView, frameworkData: PostFirestore){
 
 }
 
-
 @BindingAdapter("postRemainingMedia")
 fun remainMediaNumber(view: TextView, postFirestore: PostFirestore){
     if(postFirestore.media != null && postFirestore.media!!.url.size >= 6) {
@@ -170,4 +165,14 @@ fun remainMediaNumber(view: TextView, postFirestore: PostFirestore){
         view.text = (postFirestore.media!!.url.size - 5).toString()
     }
 
+}
+
+@BindingAdapter("commentBody")
+fun commentToBody(view: TextView, comment: Comment){
+    view.text = comment.body
+}
+
+@BindingAdapter("commentToParentComment")
+fun commentToParentComment(view: EditText, comment: Comment){
+    view.setText(comment.id)
 }
