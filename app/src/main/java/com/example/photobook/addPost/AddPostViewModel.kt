@@ -3,7 +3,6 @@ package com.example.photobook.addPost
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,8 +16,15 @@ import com.example.photobook.network.RemoteRepository
 import com.example.photobook.utils.Constants
 import kotlinx.coroutines.launch
 
+/**
+ * AddPostViewModel - ViewModel for AddPostFragment
+ * that allows basic operation between AddPostFragment and
+ * remoteRepository
+ *
+ * @remoteRepository - the remoteRepository
+ */
 class AddPostViewModel(
-    private val justBookService : IRemoteRepository = RemoteRepository()
+    private val remoteRepository : IRemoteRepository = RemoteRepository()
 ): ViewModel()
 {
     private val _savingStatus = MutableLiveData<Constants.Status?>()
@@ -28,22 +34,25 @@ class AddPostViewModel(
     private val _snackBarContain = MutableLiveData<Int?>()
     val snackBarContain: MutableLiveData<Int?>
         get() = _snackBarContain
-    private val _navigateToLoginFragment = MutableLiveData<Boolean>()
-    val naviageToLoginFragment: LiveData<Boolean>
-        get() = _navigateToLoginFragment
 
-
+    /**
+     * savePost - Saves a post
+     *
+     * @post: The post that should be saved
+     * @user: user that is saving the post
+     * @media: the media that should be saved with the post, if any
+     */
     fun savePost(post: Post, user: User, media: Media?)
     {
         _savingStatus.value = Constants.Status.LOADING
         viewModelScope.launch {
             val loaded: Result = if (media != null)
             {
-                justBookService.savePostMedia(post, media, user)
+                remoteRepository.savePostMedia(post, media, user)
             }
             else
             {
-                justBookService.savePost(post = post, user = user)
+                remoteRepository.savePost(post = post, user = user)
             }
             loaded.task
                 .addOnSuccessListener {
@@ -58,11 +67,16 @@ class AddPostViewModel(
         }
     }
 
+    /**
+     * saveMedia - Saves a media
+     *
+     * @media: The media that should be saved
+     */
     fun saveMedia(media: Media)
     {
         _savingStatus.value = Constants.Status.LOADING
         viewModelScope.launch {
-            val result = justBookService.saveMedia(media)
+            val result = remoteRepository.saveMedia(media)
             if (result.task.isSuccessful)
             {
                 _savingStatus.value = Constants.Status.DONE
@@ -74,32 +88,34 @@ class AddPostViewModel(
         }
     }
 
+    /**
+     * onSnackBarShowed - puts value of _snackBarContain to null
+     */
     fun onSnackBarShowed()
     {
         _snackBarContain.value = null
     }
 
-    fun navigateToLoginFragment()
-    {
-        _navigateToLoginFragment.value = true
-    }
-
-    fun onLoginFragmentNavigated()
-    {
-        _navigateToLoginFragment.value = false
-    }
-
     val observable = Observer()
 
+    /**
+     * Observer - Observable class for some data binding
+     */
     class Observer: BaseObservable(){
         var post = Post(submitter_id = "", title = "", body = "", city = "")
 
+        /**
+         * getTitle - gets the title of the post
+         */
         @Bindable
         fun getTitle(): String
         {
             return post.title
         }
 
+        /**
+         * setTitle - sets title of the post
+         */
         fun setTitle(title: String)
         {
             if (post.title != title)
@@ -109,12 +125,18 @@ class AddPostViewModel(
             }
         }
 
+        /**
+         * getBody - gets the body of the post
+         */
         @Bindable
         fun getBody(): String
         {
             return post.body
         }
 
+        /**
+         * setBody - sets Body of the post
+         */
         fun setBody(body: String)
         {
             if (post.body != body)

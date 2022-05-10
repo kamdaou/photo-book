@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addPostFragment"
+            app:destination="@id/addPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -38,4 +41,8 @@
             android:name="selectedMediaNumber"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/addPostFragment"
+        android:name="com.example.photobook.addPost.AddPostFragment"
+        android:label="AddPostFragment" />
 </navigation>

@@ -126,4 +126,16 @@ class MainFragmentTest {
         }
         return (navController)
     }
+
+    /**
+     * clickOnAddPostButton_navigateToAddPostFragment - Checks if clicking on button
+     * to add post causes a navigation to addPostFragment
+     */
+    @Test
+    fun clickOnAddPostButton_navigateToAddPostFragment(){
+        val navController = launchFragment()
+
+        Espresso.onView(withId(R.id.add_post_button)).perform(ViewActions.click())
+        Mockito.verify(navController).navigate(R.id.action_mainFragment_to_addPostFragment)
+    }
 }
