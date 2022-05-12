@@ -1,9 +1,12 @@
 package com.example.photobook.network
 
+import android.graphics.Bitmap
+import android.net.Uri
 import com.example.photobook.data.*
 import com.example.photobook.utils.Constants.VoteType
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.UploadTask
 
 interface IRemoteRepository {
 
@@ -69,17 +72,6 @@ interface IRemoteRepository {
     suspend fun updatePost(post: PostFirestore, field: String, value: Any): Task<Void>
 
     /**
-     * updateComment - updates value of comment.
-     *
-     * @comment: comment that might be updated
-     * @field: field to update
-     * @value: New value of the field
-     *
-     * Return: Google task.
-     */
-    suspend fun updateComment(comment: Comment, field: String, value: Any): Task<Void>?
-
-    /**
      * getPostSnap: Returns a querySnapshot of post
      * from remote data source
      *
@@ -137,42 +129,10 @@ interface IRemoteRepository {
     suspend fun getPostVote(userId: String, id: String): PostVote?
 
     /**
-     * saveComment - Saves a comment
-     *
-     * @comment - Comment to save
-     *
-     * Return: Result of the operation if the comment refers to a post or null
-     */
-    suspend fun saveComment(comment: Comment): Result?
-
-    /**
-     * getComments - Retrieves comments from remote data source
-     *
-     * @postId: Id of the post to which comments belong
-     *
-     * Return: CommentResponse element
-     */
-    suspend fun getComments(postId: String): CommentResponse
-
-    /**
-     * getCommentSnap - Retreives a comment from firestore
-     * @id: id of the comment to retrieve
-     *
-     * Return: Google task
-     */
-    suspend fun getCommentSnap(id: String): Task<QuerySnapshot>
-
-    /**
-     * getComment - Gets comment from firestore
-     *
-     * @comment: Comment to get, only the id will be used
-     *
-     * Return: The comment or null
-     */
-    suspend fun getComment(comment: Comment): Comment?
-
-    /**
      * deleteAllPosts - Deletes 1000000 from data source
      */
     suspend fun deleteAllPosts()
+
+    suspend fun saveImage(imageBitmap: Bitmap, imageName: String, data: ByteArray): UploadTask
+    suspend fun saveVideo(videoUri: Uri, videoName: String): UploadTask
 }

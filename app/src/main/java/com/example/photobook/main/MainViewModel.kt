@@ -1,14 +1,15 @@
 package com.example.photobook.main
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.example.photobook.R
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.PostResponse
 import com.example.photobook.network.IRemoteRepository
 import com.example.photobook.utils.Constants
-import com.example.photobook.utils.VoteType
-import kotlinx.coroutines.launch
 
 /**
  * MainViewModel - ViewModel for interaction between UI
@@ -99,6 +100,16 @@ class MainViewModel(
                 _loadingStatus.postValue(Constants.Status.DONE)
             if (posts?.value?.exception != null)
                 _loadingStatus.postValue(Constants.Status.ERROR)
+        }
+    }
+
+    /**
+     * refreshPosts - load list of post without showing it to the user
+     */
+    fun refreshPosts()
+    {
+        posts = liveData {
+            emit(remoteRepository.getPosts())
         }
     }
 

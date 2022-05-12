@@ -1,5 +1,7 @@
 package com.example.photobook.network
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import com.example.photobook.data.*
 import com.example.photobook.utils.Constants.VoteType
@@ -9,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.tasks.await
 
 private const val TAG = "RemoteRepository"
@@ -138,8 +141,7 @@ class RemoteRepository
             "city" to post.city,
             "id" to postsMedia.id,
             "user" to user,
-            "post_vote" to listOf<PostVote>(),
-            "comment_firestore" to listOf<CommentFirestore>()
+            "post_vote" to listOf<PostVote>()
         )
 
         // Saving a post with media
@@ -167,8 +169,7 @@ class RemoteRepository
             "city" to post.city,
             "id" to postDoc.id,
             "user" to user,
-            "post_vote" to listOf<PostVote>(),
-            "comment_firestore" to listOf<CommentFirestore>(),
+            "post_vote" to listOf<PostVote>()
         )
         return Result(postDoc.id, postDoc.set(postMap))
     }
@@ -223,53 +224,9 @@ class RemoteRepository
             "id" to postDoc.id,
             "user" to post.user,
             "post_vote" to post.post_vote,
-            "comment_firestore" to post.comment_firestore,
             field to value
         )
         return postDoc.set(postMap)
-    }
-
-    /**
-     * updateComment - updates value of comment.
-     *
-     * @comment: comment that might be updated
-     * @field: field to update
-     * @value: New value of the field
-     *
-     * Return: Google task.
-     */
-    override suspend fun updateComment(comment: Comment, field: String, value: Any): Task<Void>? {
-        val post = getPost(comment.post_id)
-        val commentList = post?.comment_firestore
-        val commentFirestoreList = mutableListOf<Map<String, Any>>()
-        if (commentList != null)
-        {
-            val commentFirestoreMap = hashMapOf<String, Any>()
-            for (element in commentList)
-            {
-                val commentMap = hashMapOf<String, Any>(
-                    "id" to element.comment.id,
-                    "body" to element.comment.body,
-                    "post_id" to element.comment.post_id,
-                    "user_id" to element.comment.user_id,
-                    "insert_at" to element.comment.inserted_at,
-                )
-                if (element.comment.id == comment.id)
-                {
-                    commentMap[field] = value
-                    commentFirestoreMap["comment"] = commentMap
-                    commentFirestoreMap["comment_vote"] = element.comment_vote
-                    commentFirestoreList.add(commentFirestoreMap)
-                    break
-                }
-
-                commentFirestoreMap["comment"] = commentMap
-                commentFirestoreMap["comment_vote"] = element.comment_vote
-                commentFirestoreList.add(commentFirestoreMap)
-            }
-            return updatePost(post, "comment_firestore", commentFirestoreList)
-        }
-        return null
     }
 
     /**
@@ -444,115 +401,6 @@ class RemoteRepository
     }
 
     /**
-     * saveComment - Saves a comment
-     *
-     * @comment - Comment to save
-     *
-     * Return: Result of the operation if the comment refers to a post or null
-     */
-    override suspend fun saveComment(comment: Comment): Result? {
-
-        val postSnapshot = getPostSnap(comment.post_id)
-        var loaded: PostFirestore?
-        if (postSnapshot.isEmpty)
-            return null
-        postSnapshot.documents.mapNotNull { documentSnapshot ->
-            loaded = documentSnapshot.toObject(PostFirestore::class.java)
-            val doc = db.collection("comment").document()
-            if (loaded != null)
-            {
-                val commentList: MutableList<Map<String, Any>> = mutableListOf()
-                for (element in loaded!!.comment_firestore) {
-                    val commentMap = mapOf(
-                        "id" to element.comment.id,
-                        "user_id" to element.comment.user_id,
-                        "insert_at" to element.comment.inserted_at,
-                        "body" to element.comment.body,
-                        "post_id" to element.comment.post_id
-                    )
-
-                    val commentFirestoreMap = mapOf(
-                        "comment" to commentMap,
-                        "comment_vote" to element.comment_vote
-                    )
-                    commentList.add(commentFirestoreMap)
-                }
-                val commentMap = mapOf(
-                    "id" to doc.id,
-                    "user_id" to comment.user_id,
-                    "insert_at" to comment.inserted_at,
-                    "body" to comment.body,
-                    "post_id" to comment.post_id
-                )
-                val commentFirestoreMap = mapOf(
-                    "comment" to commentMap,
-                    "comment_vote" to mutableListOf<CommentVote>()
-                )
-                commentList.add(
-                    commentFirestoreMap
-                )
-                val task = updatePost(loaded!!, "comment_firestore", commentList)
-                return Result(doc.id, task)
-            }
-        }
-        return null
-    }
-
-    /**
-     * getComments - Retrieves comments from remote data source
-     *
-     * @postId: Id of the post to which comments belong
-     *
-     * Return: CommentResponse element
-     */
-    override suspend fun getComments(postId: String): CommentResponse {
-        val post = getPost(postId)
-            ?: return CommentResponse(null, java.lang.Exception("no post with the given id"))
-        val commentFirestoreList = post.comment_firestore
-        Log.d("JustBookService", "loaded post: $post")
-        val comments = mutableListOf<Comment>()
-        for (element in commentFirestoreList)
-        {
-            Log.d("JustBookService","loaded post element: $element")
-            comments.add(element.comment)
-        }
-        return CommentResponse(comments, null)
-    }
-
-    /**
-     * getCommentSnap - Retreives a comment from firestore
-     * @id: id of the comment to retrieve
-     *
-     * Return: Google task
-     */
-    override suspend fun getCommentSnap(id: String): Task<QuerySnapshot> {
-        return db.collection("comment")
-            .whereEqualTo("id", id)
-            .get()
-    }
-
-    /**
-     * getComment - Gets comment from firestore
-     *
-     * @comment: Comment to get, only the id will be used
-     *
-     * Return: The comment or null
-     */
-    override suspend fun getComment(comment: Comment): Comment? {
-        val post = getPost(comment.post_id)
-        var wantedComment: Comment? = null
-        val commentList = post?.comment_firestore
-        if (commentList != null) {
-            for (element in commentList){
-                if (element.comment.id == comment.id){
-                    wantedComment = element.comment
-                }
-            }
-        }
-        return wantedComment
-    }
-
-    /**
      * deleteAllPosts - Deletes 1000000 from data source
      */
     override suspend fun deleteAllPosts(){
@@ -560,6 +408,17 @@ class RemoteRepository
         for (element in post.post!!) {
             db.collection("post").document(element.id).delete()
         }
+    }
+
+    override suspend fun saveImage(imageBitmap: Bitmap, imageName: String, data: ByteArray): UploadTask {
+        val imageRef = storage.getReference("images/").child(imageName)
+        return imageRef.putBytes(data)
+    }
+
+    override suspend fun saveVideo(videoUri: Uri, videoName: String): UploadTask
+    {
+        val videoReference = storage.getReference("videos/").child(videoName)
+        return videoReference.putFile(videoUri)
     }
 
     companion object

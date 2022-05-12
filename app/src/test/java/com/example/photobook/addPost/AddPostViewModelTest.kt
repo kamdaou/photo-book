@@ -60,7 +60,7 @@ class AddPostViewModelTest
 
         /* WHEN - Saving a post */
         mainCoroutineRule.pauseDispatcher()
-        viewModel.savePost(post, user, null)
+        viewModel.savePost(post, user)
         val status = viewModel.savingStatus.getOrAwaitValue()
 
         mainCoroutineRule.resumeDispatcher()
@@ -88,7 +88,7 @@ class AddPostViewModelTest
 
         /* WHEN - Saving a post with a media */
         mainCoroutineRule.pauseDispatcher()
-        viewModel.savePost(post, user, media)
+        viewModel.savePost(post, user)
         val status = viewModel.savingStatus.getOrAwaitValue()
 
         mainCoroutineRule.resumeDispatcher()

@@ -2,7 +2,6 @@ package com.example.photobook.data
 
 import android.os.Parcelable
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -24,8 +23,6 @@ data class PostFirestore(
 
     var media:Media?=null,
 
-    val post_vote: MutableList<PostVote> = mutableListOf(),
-
-    val comment_firestore: MutableList<CommentFirestore> = mutableListOf()
+    val post_vote: MutableList<PostVote> = mutableListOf()
 
 ): Parcelable

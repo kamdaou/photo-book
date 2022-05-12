@@ -10,7 +10,6 @@ import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.PostResponse
 import com.example.photobook.getOrAwaitValue
 import com.example.photobook.utils.Constants
-import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.MatcherAssert
 import org.hamcrest.core.Is
