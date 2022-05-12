@@ -31,4 +31,9 @@
     <string name="post_saving_error">An exception occurred while saving your post, check your internet connexion and try again</string>
     <string name="successfully_saved_image_message">photo saved on cloud but you can keep taking other</string>
     <string name="unsuccessfully_saved_image_message">Your latest taken image has not been successfully saved, please you may consider taking it again</string>
+    <string name="unsuccessfully_saved_video_message">Your latest recorded video has not been successfully saved, please you may consider recording it again</string>
+    <string name="take_image_and_video_explanation">If you want to share a video, please delete previously taken images</string>
+    <string name="take_video_and_image_explanation">If you want to share a video, please delete previously taken images</string>
+    <string name="successfully_saved_video_message">video saved on cloud but you can keep taking other</string>
+    <string name="save_post_error_message">Please add a media or at least write a something to be able to post</string>
 </resources>

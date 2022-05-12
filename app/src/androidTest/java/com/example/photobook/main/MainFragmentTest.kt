@@ -79,8 +79,8 @@ class MainFragmentTest {
     fun postDisplayedInUI()
     {
         runBlockingTest {
-            savePost(user)
             val navController = launchFragment()
+            savePost(user)
 
             Espresso.onView(withId(R.id.post_list))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

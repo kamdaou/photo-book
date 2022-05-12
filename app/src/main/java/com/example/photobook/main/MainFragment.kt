@@ -9,7 +9,8 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.photobook.R
 import com.example.photobook.adapters.PostListener
 import com.example.photobook.adapters.PostRecyclerViewAdapter
@@ -31,6 +32,7 @@ class MainFragment : Fragment()
     private lateinit var _viewModel: MainViewModel
     private lateinit var recyclerViewAdapter: PostRecyclerViewAdapter
     private lateinit var contxt: Context
+    private lateinit var navController: NavController
 
     /**
      * onCreateView - Inflates mainFragment
@@ -63,7 +65,7 @@ class MainFragment : Fragment()
         }
 
         binding.addPostButton.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_addPostFragment)
+            navController.navigate(R.id.action_mainFragment_to_addPostFragment)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
@@ -75,6 +77,11 @@ class MainFragment : Fragment()
         handleLoadingStatus()
 
         return (binding.root)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = view.findNavController()
     }
 
     /**
@@ -89,6 +96,11 @@ class MainFragment : Fragment()
         contxt = context
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadPosts()
+    }
+
     /**
      * navigateToDetailFragment - Navigates to DetailFragment,
      * when value of navigateToDetailFragment in viewModel changes
@@ -97,7 +109,7 @@ class MainFragment : Fragment()
     {
         _viewModel.navigateToPostDetail.observe(viewLifecycleOwner) { post ->
             if (post != null) {
-                findNavController().navigate(
+                navController.navigate(
                     MainFragmentDirections.actionMainFragmentToDetailFragment(
                         post
                     )

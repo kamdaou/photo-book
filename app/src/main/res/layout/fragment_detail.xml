@@ -9,9 +9,6 @@
         <variable
             name="post"
             type="com.example.photobook.data.PostFirestore" />
-        <variable
-            name="comment"
-            type="com.example.photobook.data.Comment" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -78,7 +75,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/duration"
-                    app:postTitle="@{post}"
+                    app:postTitleDetail="@{post}"
                     tools:text="title" />
 
                 <TextView
@@ -89,200 +86,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title"
-                    app:postBody="@{post}"
+                    app:postBodyDetail="@{post}"
                     tools:text="body" />
-
-                <ImageView
-                    android:id="@+id/image_1"
-                    android:layout_width="0dp"
-                    android:minWidth="150dp"
-                    tools:layout_width="150dp"
-                    app:postToImage0="@{post}"
-                    android:layout_height="wrap_content"
-                    tools:visibility="visible"
-                    tools:src="@drawable/common_google_signin_btn_icon_light"
-                    android:hardwareAccelerated="false"
-                    android:largeHeap="true"
-                    android:layout_marginTop="@dimen/small_dimension"
-                    android:layout_marginBottom="@dimen/small_dimension"
-                    android:layout_marginEnd="@dimen/small_dimension"
-                    android:visibility="gone"
-                    android:contentDescription="@string/posted_image_description"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/image_2"
-                    app:layout_constraintTop_toBottomOf="@id/body" />
-
-                <ImageView
-                    android:id="@+id/image_2"
-                    android:minWidth="150dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:postToImage1="@{post}"
-                    android:visibility="gone"
-                    android:layout_marginStart="@dimen/small_dimension"
-                    tools:visibility="visible"
-                    tools:src="@drawable/common_google_signin_btn_icon_light"
-                    android:hardwareAccelerated="false"
-                    android:largeHeap="true"
-                    android:layout_marginEnd="@dimen/small_dimension"
-                    android:contentDescription="@string/posted_image_description"
-                    app:layout_constraintStart_toEndOf="@id/image_1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/image_1" />
-
-                <ImageView
-                    android:id="@+id/image_3"
-                    android:minWidth="100dp"
-                    android:layout_width="0dp"
-                    app:postToImage2="@{post}"
-                    tools:visibility="visible"
-                    tools:src="@drawable/common_google_signin_btn_icon_light"
-                    android:hardwareAccelerated="false"
-                    android:largeHeap="true"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/posted_image_description"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/image_4"
-                    app:layout_constraintTop_toBottomOf="@id/image_1" />
-
-                <ImageView
-                    android:id="@+id/image_4"
-                    android:minWidth="100dp"
-                    android:layout_width="0dp"
-                    app:postToImage3="@{post}"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content"
-                    tools:visibility="visible"
-                    tools:src="@drawable/common_google_signin_btn_icon_light"
-                    android:hardwareAccelerated="false"
-                    android:largeHeap="true"
-                    android:contentDescription="@string/posted_image_description"
-                    app:layout_constraintStart_toEndOf="@id/image_3"
-                    app:layout_constraintEnd_toStartOf="@id/image_5"
-                    app:layout_constraintTop_toTopOf="@id/image_3" />
-
-                <ImageView
-                    android:id="@+id/image_5"
-                    android:minWidth="100dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:postToImage4="@{post}"
-                    tools:visibility="visible"
-                    tools:src="@drawable/common_google_signin_btn_icon_light"
-                    android:hardwareAccelerated="false"
-                    android:largeHeap="true"
-                    android:visibility="gone"
-                    android:contentDescription="@string/posted_image_description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/image_4"
-                    app:layout_constraintTop_toTopOf="@id/image_4" />
-                <!-- Showing number of remaining image just in case -->
-                <TextView
-                    android:id="@+id/image_5_text"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="@color/primaryTransparent"
-                    android:gravity="center"
-                    android:textColor="@color/primaryTextColor"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    tools:text="Il reste 3 image"
-                    app:postRemainingMedia="@{post}"
-                    app:layout_constraintBottom_toBottomOf="@id/image_5"
-                    app:layout_constraintEnd_toEndOf="@id/image_5"
-                    app:layout_constraintStart_toStartOf="@id/image_5"
-                    app:layout_constraintTop_toTopOf="@id/image_5" />
-
-                <TextView
-                    android:id="@+id/comments_number_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/number_of_comments"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/comment_number"
-                    android:visibility="visible"
-                    android:layout_marginTop="@dimen/small_dimension"
-                    android:contentDescription="@string/number_of_comments"
-                    app:layout_constraintTop_toBottomOf="@id/image_3"/>
-
-                <TextView
-                    android:id="@+id/comment_number"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/comments_number_text"
-                    app:layout_constraintTop_toTopOf="@id/comments_number_text"
-                    tools:text="43"
-                    app:commentNumber="@{post}"
-                    app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/vote_layout"
-                android:layout_width="match_parent"
-                android:layout_margin="@dimen/small_dimension"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/constraintLayout"
-                tools:layout_editor_absoluteY="17dp">
-                <TextView
-                    android:id="@+id/reply_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_dimension"
-                    android:layout_marginTop="@dimen/small_dimension"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="@string/add_a_comment" />
-
-                <ImageView
-                    android:id="@+id/comment_the_post"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/small_dimension"
-                    android:visibility="visible"
-                    android:contentDescription="@string/comment_the_post_button_description"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/reply_text_view"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@android:drawable/stat_notify_chat"
-                    android:src="@android:drawable/stat_notify_chat"
-                    app:tint="@color/primaryColor" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:text="@={comment.body}"
-                android:id="@+id/comment_edit_text"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                style="@style/Widget.AppCompat.EditText"
-                app:layout_constraintTop_toBottomOf="@id/vote_layout" />
-
-            <Button
-                android:id="@+id/post_the_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/comment_edit_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="@dimen/small_dimension"
-                android:text="@string/post_comment" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_dimension"
-                android:id="@+id/comments"
-                app:layout_constraintTop_toBottomOf="@id/post_the_comment"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-            </androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

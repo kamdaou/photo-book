@@ -25,21 +25,6 @@
         <argument
             android:name="post"
             app:argType="com.example.photobook.data.PostFirestore" />
-        <action
-            android:id="@+id/action_detailFragment_to_mediaFragment"
-            app:destination="@id/mediaFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/mediaFragment"
-        android:name="com.example.photobook.detail.media.MediaFragment"
-        android:label="fragment_media"
-        tools:layout="@layout/fragment_media" >
-        <argument
-            android:name="selectedPost"
-            app:argType="com.example.photobook.data.PostFirestore" />
-        <argument
-            android:name="selectedMediaNumber"
-            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"

@@ -135,8 +135,19 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 
     /* Koin */
-    implementation "org.koin:koin-android:2.0.1"
-    implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
-    implementation 'org.koin:koin-androidx-scope:2.0.1'
+    ext.koin_version="3.2.0"
+    implementation "io.insert-koin:koin-core:$koin_version"
+    testImplementation "io.insert-koin:koin-test:$koin_version"
+    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
+    testImplementation "io.insert-koin:koin-test-junit5:$koin_version"
+    /* Koin main features for Android */
+    implementation "io.insert-koin:koin-android:$koin_version"
+
+    /* Java Compatibility */
+    implementation "io.insert-koin:koin-android-compat:$koin_version"
+    /* Jetpack WorkManager */
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    /* Navigation Graph */
+    implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
 }
 apply plugin: 'com.google.gms.google-services'

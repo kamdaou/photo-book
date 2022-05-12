@@ -15,7 +15,10 @@ import androidx.test.filters.MediumTest
 import com.example.photobook.AndroidMainCoroutineRule
 import com.example.photobook.FakeAndroidTestRemoteRepository
 import com.example.photobook.R
-import com.example.photobook.data.*
+import com.example.photobook.data.Post
+import com.example.photobook.data.PostFirestore
+import com.example.photobook.data.PostResponse
+import com.example.photobook.data.User
 import com.example.photobook.main.MainViewModel
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -48,7 +51,7 @@ class DetailFragmentTest
 
         photoBookService = FakeAndroidTestRemoteRepository()
         mainViewModel = MainViewModel(application, photoBookService)
-        detailViewModel = DetailViewModel(application, photoBookService)
+        detailViewModel = DetailViewModel(application)
     }
 
     /**
@@ -73,11 +76,7 @@ class DetailFragmentTest
         mainViewModel.posts = liveData {
             PostResponse(listOf(postFirestore))
         }
-        val comments = listOf(Comment("commentId1", "userId1", Timestamp(10, 19), "this is the first comment"),
-            Comment("commentId2", "userId2", Timestamp(10, 30), "this is the second comment"), )
-        detailViewModel.comments = liveData {
-            CommentResponse(comments)
-        }
+
         val navController = Mockito.mock(NavController::class.java)
 
         // WHEN - Detail fragment launched
@@ -105,7 +104,5 @@ class DetailFragmentTest
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(withId(R.id.username))
             .check(ViewAssertions.matches(ViewMatchers.withText("username")))
-
-        /* onView(withId(R.id.comments)).perform(RecyclerViewActions.scrollTo<CommentRecyclerViewAdapter.ViewHolder>(withText("this is the first comment"))) */
     }
 }

@@ -1,5 +1,8 @@
 package com.example.photobook.addPost
 
+import android.graphics.Bitmap
+import android.net.Uri
+import android.util.Log
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
@@ -14,7 +17,9 @@ import com.example.photobook.data.User
 import com.example.photobook.network.IRemoteRepository
 import com.example.photobook.network.RemoteRepository
 import com.example.photobook.utils.Constants
+import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 /**
  * AddPostViewModel - ViewModel for AddPostFragment
@@ -40,30 +45,25 @@ class AddPostViewModel(
      *
      * @post: The post that should be saved
      * @user: user that is saving the post
-     * @media: the media that should be saved with the post, if any
      */
-    fun savePost(post: Post, user: User, media: Media?)
+    fun savePost(post: Post, user: User)
     {
-        _savingStatus.value = Constants.Status.LOADING
-        viewModelScope.launch {
-            val loaded: Result = if (media != null)
-            {
-                remoteRepository.savePostMedia(post, media, user)
+        if (post.body == "" || post.title == "")
+        {
+            _snackBarContain.value = R.string.save_post_error_message
+        }
+        else
+        {
+            _savingStatus.value = Constants.Status.LOADING
+            viewModelScope.launch {
+                val loaded: Result = remoteRepository.savePost(post = post, user = user)
+
+                post.id = loaded.id
+                _savingStatus.postValue(Constants.Status.DONE)
+                _snackBarContain.postValue(R.string.post_saving_success)
+                Log.d(TAG, "post saved successfully")
+
             }
-            else
-            {
-                remoteRepository.savePost(post = post, user = user)
-            }
-            loaded.task
-                .addOnSuccessListener {
-                    post.id = loaded.id
-                    _savingStatus.value = Constants.Status.DONE
-                    _snackBarContain.value = R.string.post_saving_success
-                }
-                .addOnFailureListener {
-                    _savingStatus.value = Constants.Status.ERROR
-                    _snackBarContain.value = R.string.post_saving_error
-                }
         }
     }
 
@@ -94,6 +94,55 @@ class AddPostViewModel(
     fun onSnackBarShowed()
     {
         _snackBarContain.value = null
+    }
+
+    /**
+     * saveImage - Saves image in firebase storage
+     *
+     * @imageBitmap: The bitmap of the image
+     * @imageName: Name of the image
+     */
+    fun saveImage(imageBitmap: Bitmap, imageName: String) {
+        val baos = ByteArrayOutputStream()
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        viewModelScope.launch {
+            val uploadTask = remoteRepository.saveImage(imageBitmap, imageName, data)
+            uploadTask
+                .addOnSuccessListener {
+                    _snackBarContain.value = R.string.successfully_saved_image_message
+                }
+                .addOnCanceledListener {
+                    _snackBarContain.value = R.string.unsuccessfully_saved_image_message
+                }
+                .addOnFailureListener {
+                    saveImage(imageBitmap, imageName)
+                }
+        }
+    }
+
+    /**
+     * saveVideo - Saves video in firebase storage
+     *
+     * @videoUri: The uri of the video
+     * @videoName: Name of the video
+     */
+    fun saveVideo(videoUri: Uri, videoName: String)
+    {
+        viewModelScope.launch {
+            val uploadTask: UploadTask = remoteRepository.saveVideo(videoUri, videoName)
+
+            uploadTask
+                .addOnSuccessListener {
+                    _snackBarContain.value = R.string.successfully_saved_video_message
+                }
+                .addOnFailureListener {
+                    saveVideo(videoUri, videoName)
+                }
+                .addOnCanceledListener {
+                    _snackBarContain.value = R.string.unsuccessfully_saved_video_message
+                }
+        }
     }
 
     val observable = Observer()

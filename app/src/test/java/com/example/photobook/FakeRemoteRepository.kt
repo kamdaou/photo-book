@@ -1,6 +1,8 @@
 package com.example.photobook
 
 import android.app.Activity
+import android.graphics.Bitmap
+import android.net.Uri
 import com.example.photobook.data.*
 import com.example.photobook.network.IRemoteRepository
 import com.example.photobook.utils.Constants
@@ -8,8 +10,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.UploadTask
 import org.mockito.Mock
 import java.util.concurrent.Executor
 
@@ -19,7 +21,6 @@ import java.util.concurrent.Executor
  */
 class FakeRemoteRepository: IRemoteRepository
 {
-    private val comment = Comment("idComment", "userId", Timestamp(35, 45), body = "body", post_id = "id1")
     @Mock
     private lateinit var successTask: Task<Void>
     @Mock
@@ -268,25 +269,7 @@ class FakeRemoteRepository: IRemoteRepository
         TODO("Not yet implemented")
     }
 
-
-    override suspend fun saveComment(comment: Comment): Result {
-        return Result(comment.id, successTask)
-    }
-
-
-    override suspend fun getComments(postId: String): CommentResponse {
-        return CommentResponse(listOf(comment))
-    }
-
-    override suspend fun getComment(comment: Comment): Comment {
-        return comment
-    }
-
     override suspend fun getMedia(id: String): Media? {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateComment(comment: Comment, field: String, value: Any): Task<Void> {
         TODO("Not yet implemented")
     }
 
@@ -294,7 +277,11 @@ class FakeRemoteRepository: IRemoteRepository
         TODO("Not yet implemented")
     }
 
-    override suspend fun getCommentSnap(id: String): Task<QuerySnapshot> {
+    override suspend fun saveImage(imageBitmap: Bitmap, imageName: String, data: ByteArray): UploadTask {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun saveVideo(videoUri: Uri, videoName: String): UploadTask {
         TODO("Not yet implemented")
     }
 }
