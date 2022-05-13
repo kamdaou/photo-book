@@ -15,7 +15,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.example.photobook.AndroidMainCoroutineRule
-import com.example.photobook.FakeAndroidTestRemoteRepository
 import com.example.photobook.R
 import com.example.photobook.ServiceLocator
 import com.example.photobook.adapters.PostRecyclerViewAdapter
@@ -23,6 +22,7 @@ import com.example.photobook.data.Post
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.User
 import com.example.photobook.network.IRemoteRepository
+import com.example.photobook.network.RemoteRepository
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -53,7 +53,7 @@ class MainFragmentTest {
     {
         application = ApplicationProvider.getApplicationContext()
 
-        remoteRepository = FakeAndroidTestRemoteRepository()
+        remoteRepository = RemoteRepository()
         ServiceLocator.remoteRepository = remoteRepository
         post = Post(
             id = "postId",

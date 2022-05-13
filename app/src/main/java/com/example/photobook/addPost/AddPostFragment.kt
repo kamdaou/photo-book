@@ -17,8 +17,6 @@ import com.example.photobook.R
 import com.example.photobook.data.Post
 import com.example.photobook.data.User
 import com.example.photobook.databinding.FragmentAddPostBinding
-import com.example.photobook.main.MainViewModel
-import com.example.photobook.main.MainViewModelFactory
 import com.example.photobook.utils.Constants
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -94,11 +92,6 @@ class AddPostFragment : Fragment()
                 binding.title.text.clear()
                 binding.body.text.clear()
 
-                val mainViewModelFactory = MainViewModelFactory(requireActivity().application)
-                val mainViewModel: MainViewModel =
-                    ViewModelProvider(this, mainViewModelFactory)[MainViewModel::class.java]
-
-                mainViewModel.refreshPosts()
                 navController.popBackStack()
             }
         }

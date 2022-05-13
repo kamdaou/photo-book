@@ -98,7 +98,7 @@ class MainFragment : Fragment()
 
     override fun onResume() {
         super.onResume()
-        loadPosts()
+        _viewModel.shouldRefresh.value = true
     }
 
     /**
