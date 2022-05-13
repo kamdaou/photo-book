@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.photobook.data.*
 import com.example.photobook.utils.Constants.VoteType
 import com.example.photobook.utils.Login.currentUser
+import com.example.photobook.utils.wrapEspressoIdlingResource
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -69,27 +70,26 @@ class RemoteRepository
      */
     override suspend fun saveMedia(media: Media): Result
     {
-        // Getting media from Firestore
-        val medias = db.collection("media").document()
+        wrapEspressoIdlingResource {
+            // Getting media from Firestore
+            val medias = db.collection("media").document()
 
-        // Creating a map of media to save
-        val mediaMap = hashMapOf(
-            "title" to media.title,
-            "url" to media.url,
-            "media_type" to media.media_type,
-            "valid" to media.valid
-        )
-        mediaMap["id"] = if (media.id == "")
-        {
-            medias.id
-        }
-        else
-        {
-            media.id
-        }
+            // Creating a map of media to save
+            val mediaMap = hashMapOf(
+                "title" to media.title,
+                "url" to media.url,
+                "media_type" to media.media_type,
+                "valid" to media.valid
+            )
+            mediaMap["id"] = if (media.id == "") {
+                medias.id
+            } else {
+                media.id
+            }
 
-        // Saving the new media
-        return Result(medias.id, medias.set(mediaMap))
+            // Saving the new media
+            return Result(medias.id, medias.set(mediaMap))
+        }
     }
 
     /**
@@ -101,15 +101,17 @@ class RemoteRepository
      */
     override suspend fun getMedia(id: String): Media?
     {
-        var media: Media? = null
-        db.collection("media")
-            .whereEqualTo("id", id)
-            .get()
-            .await()
-            .documents.mapNotNull { documentSnapshot ->
-                media = documentSnapshot.toObject(Media::class.java)
-            }
-        return media
+        wrapEspressoIdlingResource {
+            var media: Media? = null
+            db.collection("media")
+                .whereEqualTo("id", id)
+                .get()
+                .await()
+                .documents.mapNotNull { documentSnapshot ->
+                    media = documentSnapshot.toObject(Media::class.java)
+                }
+            return media
+        }
     }
 
     /**
@@ -124,30 +126,32 @@ class RemoteRepository
      */
     override suspend fun savePostMedia(post: Post, media: Media, user: User): Result
     {
-        val postsMedia = db.collection("post").document()
-        val mediaMap = hashMapOf(
-            "title" to media.title,
-            "url" to media.url,
-            "media_type" to media.media_type,
-            "id" to media.id,
-            "valid" to media.valid
-        )
-        // Creating a map of to save
-        val postMap = hashMapOf(
-            "title" to post.title,
-            "body" to post.body,
-            "submitter_id" to post.submitter_id,
-            "inserted_at" to post.inserted_at,
-            "city" to post.city,
-            "id" to postsMedia.id,
-            "user" to user,
-            "post_vote" to listOf<PostVote>()
-        )
+        wrapEspressoIdlingResource {
+            val postsMedia = db.collection("post").document()
+            val mediaMap = hashMapOf(
+                "title" to media.title,
+                "url" to media.url,
+                "media_type" to media.media_type,
+                "id" to media.id,
+                "valid" to media.valid
+            )
+            // Creating a map of to save
+            val postMap = hashMapOf(
+                "title" to post.title,
+                "body" to post.body,
+                "submitter_id" to post.submitter_id,
+                "inserted_at" to post.inserted_at,
+                "city" to post.city,
+                "id" to postsMedia.id,
+                "user" to user,
+                "post_vote" to listOf<PostVote>()
+            )
 
-        // Saving a post with media
+            // Saving a post with media
 
-        postMap["media"] = mediaMap
-        return Result(postsMedia.id, postsMedia.set(postMap))
+            postMap["media"] = mediaMap
+            return Result(postsMedia.id, postsMedia.set(postMap))
+        }
     }
 
     /**
@@ -160,18 +164,20 @@ class RemoteRepository
      */
     override suspend fun savePost(post: Post, user: User): Result
     {
-        val postDoc = db.collection("post").document()
-        val postMap = hashMapOf(
-            "title" to post.title,
-            "body" to post.body,
-            "submitter_id" to post.submitter_id,
-            "inserted_at" to post.inserted_at,
-            "city" to post.city,
-            "id" to postDoc.id,
-            "user" to user,
-            "post_vote" to listOf<PostVote>()
-        )
-        return Result(postDoc.id, postDoc.set(postMap))
+        wrapEspressoIdlingResource {
+            val postDoc = db.collection("post").document()
+            val postMap = hashMapOf(
+                "title" to post.title,
+                "body" to post.body,
+                "submitter_id" to post.submitter_id,
+                "inserted_at" to post.inserted_at,
+                "city" to post.city,
+                "id" to postDoc.id,
+                "user" to user,
+                "post_vote" to listOf<PostVote>()
+            )
+            return Result(postDoc.id, postDoc.set(postMap))
+        }
     }
 
     /**
@@ -183,24 +189,23 @@ class RemoteRepository
      */
     override suspend fun getPosts(limit: Long): PostResponse
     {
-        val postResponse = PostResponse()
-        val loaded = db.collection("post")
-            .orderBy("inserted_at", Query.Direction.ASCENDING)
-            .limit(limit)
-            //.whereNotEqualTo("user.id", FirebaseAuth.getInstance().currentUser.uid)
-            .get()
-        try
-        {
-            postResponse.post = loaded.await().documents.mapNotNull { snapshot ->
-                snapshot.toObject(PostFirestore::class.java)
-            }
+        wrapEspressoIdlingResource {
+            val postResponse = PostResponse()
+            val loaded = db.collection("post")
+                .orderBy("inserted_at", Query.Direction.ASCENDING)
+                .limit(limit)
+                //.whereNotEqualTo("user.id", FirebaseAuth.getInstance().currentUser.uid)
+                .get()
+            try {
+                postResponse.post = loaded.await().documents.mapNotNull { snapshot ->
+                    snapshot.toObject(PostFirestore::class.java)
+                }
 
+            } catch (e: Exception) {
+                postResponse.exception = e
+            }
+            return postResponse
         }
-        catch (e: Exception)
-        {
-            postResponse.exception = e
-        }
-        return postResponse
     }
 
     /**
@@ -214,19 +219,21 @@ class RemoteRepository
      */
     override suspend fun updatePost(post: PostFirestore, field: String, value: Any): Task<Void>
     {
-        val postDoc = db.collection("post").document(post.id)
-        val postMap = hashMapOf(
-            "title" to post.title,
-            "body" to post.body,
-            "submitter_id" to post.submitter_id,
-            "inserted_at" to post.inserted_at,
-            "city" to post.city,
-            "id" to postDoc.id,
-            "user" to post.user,
-            "post_vote" to post.post_vote,
-            field to value
-        )
-        return postDoc.set(postMap)
+        wrapEspressoIdlingResource {
+            val postDoc = db.collection("post").document(post.id)
+            val postMap = hashMapOf(
+                "title" to post.title,
+                "body" to post.body,
+                "submitter_id" to post.submitter_id,
+                "inserted_at" to post.inserted_at,
+                "city" to post.city,
+                "id" to postDoc.id,
+                "user" to post.user,
+                "post_vote" to post.post_vote,
+                field to value
+            )
+            return postDoc.set(postMap)
+        }
     }
 
     /**
@@ -241,10 +248,12 @@ class RemoteRepository
         id: String
     ): QuerySnapshot
     {
-        return db.collection("post")
-            .whereEqualTo("id", id)
-            .get()
-            .await()
+        wrapEspressoIdlingResource {
+            return db.collection("post")
+                .whereEqualTo("id", id)
+                .get()
+                .await()
+        }
     }
 
     /**
@@ -256,11 +265,13 @@ class RemoteRepository
      */
     override suspend fun getPost(id: String): PostFirestore?
     {
-        var post: PostFirestore? = PostFirestore()
-        getPostSnap(id).documents.mapNotNull { documentSnapshot ->
-            post = documentSnapshot.toObject(PostFirestore::class.java)
+        wrapEspressoIdlingResource {
+            var post: PostFirestore? = PostFirestore()
+            getPostSnap(id).documents.mapNotNull { documentSnapshot ->
+                post = documentSnapshot.toObject(PostFirestore::class.java)
+            }
+            return post
         }
-        return post
     }
 
     /**
@@ -276,93 +287,80 @@ class RemoteRepository
         voteType: VoteType
     ): Result?
     {
-        if (getPostSnap(frameworkData.id).isEmpty)
-            return null
-        for (element in frameworkData.post_vote)
-        {
-            if (element.post_id == frameworkData.id && currentUser?.uid == element.user_id)
-            {
-                val score = if (voteType == VoteType.DOWN)
-                {
-                    when (element.score)
-                    {
-                        1F -> 0F
-                        0F -> -1F
-                        -1F -> -1F
-                        else -> -1F
+        wrapEspressoIdlingResource {
+            if (getPostSnap(frameworkData.id).isEmpty)
+                return null
+            for (element in frameworkData.post_vote) {
+                if (element.post_id == frameworkData.id && currentUser?.uid == element.user_id) {
+                    val score = if (voteType == VoteType.DOWN) {
+                        when (element.score) {
+                            1F -> 0F
+                            0F -> -1F
+                            -1F -> -1F
+                            else -> -1F
+                        }
+                    } else {
+                        when (element.score) {
+                            1F -> 1F
+                            0F -> 1F
+                            -1F -> 0F
+                            else -> 1F
+                        }
                     }
-                }
-                else
-                {
-                    when (element.score)
-                    {
-                        1F -> 1F
-                        0F -> 1F
-                        -1F -> 0F
-                        else -> 1F
-                    }
-                }
-                val newPostVoteId = db.collection("postVote").document().id
-                val postVote = getPostVoteSnap(currentUser!!.uid, frameworkData.id)
-                if (postVote != null)
-                {
-                    if (postVote.isEmpty)
-                    {
-                        return Result(
-                            frameworkData.id,
-                            updatePost(
-                                frameworkData,
-                                "post_vote",
-                                listOf(
-                                    mapOf(
-                                        "id" to newPostVoteId,
-                                        "user_id" to currentUser!!.uid,
-                                        "post_id" to frameworkData.id,
-                                        "score" to score
+                    val newPostVoteId = db.collection("postVote").document().id
+                    val postVote = getPostVoteSnap(currentUser!!.uid, frameworkData.id)
+                    if (postVote != null) {
+                        if (postVote.isEmpty) {
+                            return Result(
+                                frameworkData.id,
+                                updatePost(
+                                    frameworkData,
+                                    "post_vote",
+                                    listOf(
+                                        mapOf(
+                                            "id" to newPostVoteId,
+                                            "user_id" to currentUser!!.uid,
+                                            "post_id" to frameworkData.id,
+                                            "score" to score
+                                        )
                                     )
                                 )
                             )
-                        )
-                    }
-                    else
-                    {
-                        val postVoteResponse: MutableList<Map<String, Any>> = mutableListOf()
-                        postVote.documents.mapNotNull { docSnapshot ->
-                            val doc = docSnapshot.toObject(PostVote::class.java)
-                            val postVoteMap: Map<String, Any>
-                            if (doc != null)
-                            {
-                                postVoteMap =
-                                    if (doc.user_id == currentUser!!.uid && doc.post_id == frameworkData.id)
-                                    {
-                                        mapOf(
-                                            "id" to doc.id,
-                                            "user_id" to doc.user_id,
-                                            "post_id" to doc.post_id,
-                                            "score" to score
-                                        )
-                                    }
-                                    else
-                                    {
-                                        mapOf(
-                                            "id" to doc.id,
-                                            "user_id" to doc.user_id,
-                                            "post_id" to doc.post_id,
-                                            "score" to doc.score
-                                        )
-                                    }
-                                postVoteResponse.add(postVoteMap)
+                        } else {
+                            val postVoteResponse: MutableList<Map<String, Any>> = mutableListOf()
+                            postVote.documents.mapNotNull { docSnapshot ->
+                                val doc = docSnapshot.toObject(PostVote::class.java)
+                                val postVoteMap: Map<String, Any>
+                                if (doc != null) {
+                                    postVoteMap =
+                                        if (doc.user_id == currentUser!!.uid && doc.post_id == frameworkData.id) {
+                                            mapOf(
+                                                "id" to doc.id,
+                                                "user_id" to doc.user_id,
+                                                "post_id" to doc.post_id,
+                                                "score" to score
+                                            )
+                                        } else {
+                                            mapOf(
+                                                "id" to doc.id,
+                                                "user_id" to doc.user_id,
+                                                "post_id" to doc.post_id,
+                                                "score" to doc.score
+                                            )
+                                        }
+                                    postVoteResponse.add(postVoteMap)
+                                }
                             }
+                            return Result(
+                                frameworkData.id,
+                                updatePost(frameworkData, "post_vote", postVoteResponse)
+                            )
                         }
-                        return Result(
-                            frameworkData.id,
-                            updatePost(frameworkData, "post_vote", postVoteResponse)
-                        )
                     }
                 }
             }
+            return null
         }
-        return null
     }
 
     /**
@@ -378,8 +376,10 @@ class RemoteRepository
         id: String
     ): QuerySnapshot?
     {
-        return db.collection("postVote").whereEqualTo("user_id", userId)
-            .whereEqualTo("post_id", id).get().await()
+        wrapEspressoIdlingResource {
+            return db.collection("postVote").whereEqualTo("user_id", userId)
+                .whereEqualTo("post_id", id).get().await()
+        }
     }
 
     /**
@@ -390,35 +390,44 @@ class RemoteRepository
      *
      * Return: PostVote element or null
      */
-    override suspend fun getPostVote(userId: String, id: String): PostVote? {
-
-        var postVote : PostVote? = null
-        db.collection("postVote").whereEqualTo("user_id", userId)
-            .whereEqualTo("post_id", id).get().await().documents.mapNotNull {
-                postVote = it.toObject(PostVote::class.java)
-            }
-        return postVote
+    override suspend fun getPostVote(userId: String, id: String): PostVote?
+    {
+        wrapEspressoIdlingResource {
+            var postVote: PostVote? = null
+            db.collection("postVote").whereEqualTo("user_id", userId)
+                .whereEqualTo("post_id", id).get().await().documents.mapNotNull {
+                    postVote = it.toObject(PostVote::class.java)
+                }
+            return postVote
+        }
     }
 
     /**
      * deleteAllPosts - Deletes 1000000 from data source
      */
-    override suspend fun deleteAllPosts(){
-        val post = getPosts(1000000)
-        for (element in post.post!!) {
-            db.collection("post").document(element.id).delete()
+    override suspend fun deleteAllPosts()
+    {
+        wrapEspressoIdlingResource {
+            val post = getPosts(1000000)
+            for (element in post.post!!) {
+                db.collection("post").document(element.id).delete()
+            }
         }
     }
 
     override suspend fun saveImage(imageBitmap: Bitmap, imageName: String, data: ByteArray): UploadTask {
-        val imageRef = storage.getReference("images/").child(imageName)
-        return imageRef.putBytes(data)
+        wrapEspressoIdlingResource {
+            val imageRef = storage.getReference("images/").child(imageName)
+            return imageRef.putBytes(data)
+        }
     }
 
     override suspend fun saveVideo(videoUri: Uri, videoName: String): UploadTask
     {
-        val videoReference = storage.getReference("videos/").child(videoName)
-        return videoReference.putFile(videoUri)
+        wrapEspressoIdlingResource {
+            val videoReference = storage.getReference("videos/").child(videoName)
+            return videoReference.putFile(videoUri)
+        }
     }
 
     companion object

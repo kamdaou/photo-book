@@ -1,6 +1,8 @@
 package com.example.photobook
 
 import android.app.Application
+import com.example.photobook.addPost.AddPostViewModel
+import com.example.photobook.detail.DetailViewModel
 import com.example.photobook.main.MainViewModel
 import com.example.photobook.network.IRemoteRepository
 import com.example.photobook.network.RemoteRepository
@@ -15,14 +17,19 @@ class MyApp: Application()
         super.onCreate()
         val module = module {
             viewModel {
-                MainViewModel(get(), get() as IRemoteRepository)
+                MainViewModel(
+                    get(),
+                    get() as IRemoteRepository
+                )
             }
-//            viewModel {
-//                AddPostViewModel(get() as IRemoteRepository)
-//            }
-//            viewModel {
-//                DetailViewModel(get(), get() as IRemoteRepository)
-//            }
+            single {
+                AddPostViewModel(
+                    get() as IRemoteRepository
+                )
+            }
+            single {
+                DetailViewModel(get())
+            }
             single {
                 RemoteRepository() as IRemoteRepository
             }

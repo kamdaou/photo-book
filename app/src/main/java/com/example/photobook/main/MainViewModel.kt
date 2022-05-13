@@ -1,16 +1,14 @@
 package com.example.photobook.main
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.example.photobook.R
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.PostResponse
 import com.example.photobook.network.IRemoteRepository
 import com.example.photobook.utils.Constants
 
+private const val TAG = "MainviewModel"
 /**
  * MainViewModel - ViewModel for interaction between UI
  * and remote data source.
@@ -23,7 +21,12 @@ class MainViewModel(
     val remoteRepository: IRemoteRepository
     ):AndroidViewModel(application)
 {
-    var posts: LiveData<PostResponse>? = null
+    var shouldRefresh = MutableLiveData(false)
+    var posts: LiveData<PostResponse>? = Transformations.switchMap(shouldRefresh) {
+        liveData {
+            emit(remoteRepository.getPosts())
+        }
+    }
 
     private val _loadingStatus = MutableLiveData<Constants.Status?>()
     val loadingStatus: MutableLiveData<Constants.Status?>
@@ -94,22 +97,25 @@ class MainViewModel(
     {
         _loadingStatus.postValue(Constants.Status.LOADING)
 
-        posts = liveData {
-            emit(remoteRepository.getPosts())
-            if (posts?.value?.post != null)
-                _loadingStatus.postValue(Constants.Status.DONE)
-            if (posts?.value?.exception != null)
-                _loadingStatus.postValue(Constants.Status.ERROR)
+        posts = Transformations.switchMap(shouldRefresh) {
+            liveData {
+                emit(remoteRepository.getPosts())
+                if (posts?.value?.post != null)
+                    _loadingStatus.postValue(Constants.Status.DONE)
+                if (posts?.value?.exception != null)
+                    _loadingStatus.postValue(Constants.Status.ERROR)
+            }
         }
     }
 
     /**
      * refreshPosts - load list of post without showing it to the user
      */
-    fun refreshPosts()
-    {
-        posts = liveData {
-            emit(remoteRepository.getPosts())
+    fun refreshPosts() {
+        posts = Transformations.switchMap(shouldRefresh) {
+            liveData {
+                emit(remoteRepository.getPosts())
+            }
         }
     }
 

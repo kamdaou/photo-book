@@ -2,6 +2,7 @@ package com.example.photobook
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import com.example.photobook.data.*
 import com.example.photobook.network.IRemoteRepository
 import com.example.photobook.utils.Constants.VoteType
@@ -13,14 +14,14 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.tasks.await
 
+const val TAG = "FakeAndroidTest"
 class FakeAndroidTestRemoteRepository: IRemoteRepository
 {
     val db = FirebaseFirestore.getInstance()
 
     init
     {
-        /* useEmulator is commented because even the app uses it */
-        /* useEmulator() */
+        useEmulator()
     }
 
     /**
@@ -32,8 +33,13 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
     {
         if (!usingEmulator)
         {
-            db.useEmulator("10.0.2.2", 8080)
-            usingEmulator = true
+            try {
+                db.useEmulator("10.0.2.2", 8080)
+                usingEmulator = true
+            }
+            catch(e:Exception){
+                Log.e(TAG, "Exception while attempting to use emulator: ${e.message}")
+            }
         }
     }
 
