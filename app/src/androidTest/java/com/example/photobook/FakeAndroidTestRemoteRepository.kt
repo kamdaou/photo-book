@@ -1,6 +1,5 @@
 package com.example.photobook
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import com.example.photobook.data.*
@@ -160,7 +159,7 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      *
      * Return: a PostResponse
      */
-    override suspend fun getPosts(limit: Long): PostResponse
+    override suspend fun getPosts(limit: Long, lastSeen: PostFirestore?): PostResponse
     {
         val postResponse = PostResponse()
         val loaded = db.collection("post")
@@ -383,16 +382,24 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      * deleteAllPosts - Deletes 1000000 from data source
      */
     override suspend fun deleteAllPosts(){
-        val post = getPosts(1000000)
+        val post = getPosts(1000000, null)
         for (element in post.post!!) {
             db.collection("post").document(element.id).delete()
         }
     }
 
-    override suspend fun saveImage(imageBitmap: Bitmap, imageName: String, data: ByteArray): UploadTask {
+    override suspend fun saveImage(imageName: String, data: ByteArray): UploadTask {
         TODO("Not yet implemented")
     }
 
+    /**
+     * saveVideo - Saves video in firebase database
+     *
+     * @videoName: The name of the video in firebase database
+     * @videoUri: An uri that represents the video
+     *
+     * Return: An uploadTask.
+     */
     override suspend fun saveVideo(videoUri: Uri, videoName: String): UploadTask {
         TODO("Not yet implemented")
     }

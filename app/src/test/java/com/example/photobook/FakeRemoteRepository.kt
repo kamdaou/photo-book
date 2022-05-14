@@ -1,7 +1,6 @@
 package com.example.photobook
 
 import android.app.Activity
-import android.graphics.Bitmap
 import android.net.Uri
 import com.example.photobook.data.*
 import com.example.photobook.network.IRemoteRepository
@@ -232,7 +231,7 @@ class FakeRemoteRepository: IRemoteRepository
     }
 
 
-    override suspend fun getPosts(limit:Long): PostResponse {
+    override suspend fun getPosts(limit: Long, lastSeen: PostFirestore?): PostResponse {
         return PostResponse(post = listOf(PostFirestore("title", "body", id = "id1")))
     }
 
@@ -277,7 +276,7 @@ class FakeRemoteRepository: IRemoteRepository
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveImage(imageBitmap: Bitmap, imageName: String, data: ByteArray): UploadTask {
+    override suspend fun saveImage(imageName: String, data: ByteArray): UploadTask {
         TODO("Not yet implemented")
     }
 

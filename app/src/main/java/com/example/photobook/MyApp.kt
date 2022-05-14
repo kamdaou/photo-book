@@ -13,9 +13,10 @@ import org.koin.dsl.module
 
 class MyApp: Application()
 {
-    override fun onCreate() {
+    override fun onCreate()
+    {
         super.onCreate()
-        val module = module {
+        val myModule = module {
             viewModel {
                 MainViewModel(
                     get(),
@@ -37,7 +38,7 @@ class MyApp: Application()
 
         startKoin {
             androidContext(this@MyApp)
-            modules(listOf(module))
+            modules(listOf(myModule))
         }
     }
 }

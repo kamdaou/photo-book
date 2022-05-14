@@ -107,7 +107,7 @@ class AddPostViewModel(
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
         viewModelScope.launch {
-            val uploadTask = remoteRepository.saveImage(imageBitmap, imageName, data)
+            val uploadTask = remoteRepository.saveImage(imageName, data)
             uploadTask
                 .addOnSuccessListener {
                     _snackBarContain.value = R.string.successfully_saved_image_message

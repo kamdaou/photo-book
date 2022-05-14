@@ -1,6 +1,5 @@
 package com.example.photobook.network
 
-import android.graphics.Bitmap
 import android.net.Uri
 import com.example.photobook.data.*
 import com.example.photobook.utils.Constants.VoteType
@@ -58,7 +57,7 @@ interface IRemoteRepository {
      *
      * Return: a PostResponse
      */
-    suspend fun getPosts(limit: Long = 20L): PostResponse
+    suspend fun getPosts(limit: Long = 20L, lastSeen: PostFirestore?): PostResponse
 
     /**
      * updatePost - update value of a post.
@@ -133,6 +132,23 @@ interface IRemoteRepository {
      */
     suspend fun deleteAllPosts()
 
-    suspend fun saveImage(imageBitmap: Bitmap, imageName: String, data: ByteArray): UploadTask
+    /**
+     * saveImage - Saves image in firebase database
+     *
+     * @imageName: The name of the image in firebase database
+     * @data: A bit array that represents the image
+     *
+     * Return: An uploadTask.
+     */
+    suspend fun saveImage(imageName: String, data: ByteArray): UploadTask
+
+    /**
+     * saveVideo - Saves video in firebase database
+     *
+     * @videoName: The name of the video in firebase database
+     * @videoUri: An uri that represents the video
+     *
+     * Return: An uploadTask.
+     */
     suspend fun saveVideo(videoUri: Uri, videoName: String): UploadTask
 }

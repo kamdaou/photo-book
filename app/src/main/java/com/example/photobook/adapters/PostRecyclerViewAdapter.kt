@@ -8,6 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.databinding.PostItemBinding
 
+/**
+ * PostRecyclerViewAdapter - The adapter for the recycler view that hold posts
+ *
+ * @clickListener - An element that listen to click on posts
+ */
 class PostRecyclerViewAdapter(
     private val clickListener: PostListener
 ): ListAdapter<
@@ -19,6 +24,9 @@ class PostRecyclerViewAdapter(
         private val binding: PostItemBinding
         ): RecyclerView.ViewHolder(binding.root)
     {
+        /**
+         * bind - Bind an item to the ui in recycler view
+         */
         fun bind(clickListener: PostListener, item: PostFirestore)
         {
             binding.post = item
