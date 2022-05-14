@@ -15,7 +15,6 @@ import com.example.photobook.data.Post
 import com.example.photobook.data.Result
 import com.example.photobook.data.User
 import com.example.photobook.network.IRemoteRepository
-import com.example.photobook.network.RemoteRepository
 import com.example.photobook.utils.Constants
 import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.launch
@@ -29,7 +28,7 @@ import java.io.ByteArrayOutputStream
  * @remoteRepository - the remoteRepository
  */
 class AddPostViewModel(
-    private val remoteRepository : IRemoteRepository = RemoteRepository()
+    private val remoteRepository : IRemoteRepository
 ): ViewModel()
 {
     private val _savingStatus = MutableLiveData<Constants.Status?>()
