@@ -1,6 +1,5 @@
 package com.example.photobook.network
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import com.example.photobook.data.*
@@ -187,12 +186,13 @@ class RemoteRepository
      *
      * Return: a PostResponse
      */
-    override suspend fun getPosts(limit: Long): PostResponse
+    override suspend fun getPosts(limit: Long, lastSeen: PostFirestore?): PostResponse
     {
         wrapEspressoIdlingResource {
             val postResponse = PostResponse()
             val loaded = db.collection("post")
                 .orderBy("inserted_at", Query.Direction.ASCENDING)
+                .startAfter(lastSeen)
                 .limit(limit)
                 //.whereNotEqualTo("user.id", FirebaseAuth.getInstance().currentUser.uid)
                 .get()
@@ -408,20 +408,36 @@ class RemoteRepository
     override suspend fun deleteAllPosts()
     {
         wrapEspressoIdlingResource {
-            val post = getPosts(1000000)
+            val post = getPosts(1000000, null)
             for (element in post.post!!) {
                 db.collection("post").document(element.id).delete()
             }
         }
     }
 
-    override suspend fun saveImage(imageBitmap: Bitmap, imageName: String, data: ByteArray): UploadTask {
+    /**
+     * saveImage - Saves image in firebase database
+     *
+     * @imageName: The name of the image in firebase database
+     * @data: A bit array that represents the image
+     *
+     * Return: An uploadTask.
+     */
+    override suspend fun saveImage(imageName: String, data: ByteArray): UploadTask {
         wrapEspressoIdlingResource {
             val imageRef = storage.getReference("images/").child(imageName)
             return imageRef.putBytes(data)
         }
     }
 
+    /**
+     * saveVideo - Saves video in firebase database
+     *
+     * @videoName: The name of the video in firebase database
+     * @videoUri: An uri that represents the video
+     *
+     * Return: An uploadTask.
+     */
     override suspend fun saveVideo(videoUri: Uri, videoName: String): UploadTask
     {
         wrapEspressoIdlingResource {

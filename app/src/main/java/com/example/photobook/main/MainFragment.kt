@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.photobook.R
@@ -17,6 +16,7 @@ import com.example.photobook.adapters.PostRecyclerViewAdapter
 import com.example.photobook.databinding.FragmentMainBinding
 import com.example.photobook.utils.Constants
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * MainFragment - The fragment that contains list of posts
@@ -29,7 +29,8 @@ class MainFragment : Fragment()
 {
     private lateinit var binding: FragmentMainBinding
 
-    private lateinit var _viewModel: MainViewModel
+    /* private lateinit var _viewModel: MainViewModel */
+    private val _viewModel: MainViewModel by viewModel()
     private lateinit var recyclerViewAdapter: PostRecyclerViewAdapter
     private lateinit var contxt: Context
     private lateinit var navController: NavController
@@ -50,11 +51,11 @@ class MainFragment : Fragment()
         binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
-        val application = this.requireActivity().application
-        val viewModelProvider = MainViewModelFactory(application)
+        /* val application = this.requireActivity().application */
+        /* val viewModelProvider = MainViewModelFactory(application) */
 
 
-        _viewModel = ViewModelProvider(this, viewModelProvider)[MainViewModel::class.java]
+        /* _viewModel = ViewModelProvider(this, viewModelProvider)[MainViewModel::class.java] */
         recyclerViewAdapter = PostRecyclerViewAdapter(PostListener { id ->
         _viewModel.onPostSelected(id)
         })
@@ -96,9 +97,14 @@ class MainFragment : Fragment()
         contxt = context
     }
 
+    /**
+     * onResume - Tells viewModel to refresh list of post
+     * so that we get brand new data
+     */
     override fun onResume() {
         super.onResume()
-        _viewModel.shouldRefresh.value = true
+        /* _viewModel.shouldRefresh.value = true */
+        _viewModel.refreshPosts()
     }
 
     /**
@@ -128,8 +134,9 @@ class MainFragment : Fragment()
         _viewModel.posts?.observe(viewLifecycleOwner) { postList ->
             Log.i(TAG, "post list: $postList")
             postList?.apply {
-                recyclerViewAdapter.submitList(postList.post)
+                recyclerViewAdapter.submitList(postList.post?.toMutableList()?.reversed())
             }
+            _viewModel.postRead(postList)
         }
     }
 

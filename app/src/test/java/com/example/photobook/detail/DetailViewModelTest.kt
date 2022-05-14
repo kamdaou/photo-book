@@ -9,11 +9,13 @@ import org.hamcrest.Matchers.nullValue
 import org.hamcrest.core.Is.`is`
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * DetailViewModelTest - Tests detailViewModel
  */
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [29])
 class DetailViewModelTest
 {
     /**

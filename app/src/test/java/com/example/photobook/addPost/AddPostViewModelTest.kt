@@ -16,12 +16,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * AddPostViewModelTest - Tests AddPostViewModel
  */
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [29])
 class AddPostViewModelTest
 {
     private lateinit var viewModel: AddPostViewModel

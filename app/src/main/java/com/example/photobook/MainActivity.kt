@@ -1,7 +1,7 @@
 package com.example.photobook
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 /**
  * MainActivity - Class that use our navigation
@@ -12,9 +12,6 @@ import android.os.Bundle
  */
 class MainActivity : AppCompatActivity()
 {
-    /**
-     * onCreate - inflates activity_main
-     */
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)

@@ -91,7 +91,6 @@ class AddPostFragment : Fragment()
             if (it == Constants.Status.DONE) {
                 binding.title.text.clear()
                 binding.body.text.clear()
-
                 navController.popBackStack()
             }
         }

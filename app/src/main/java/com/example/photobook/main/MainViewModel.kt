@@ -22,10 +22,10 @@ class MainViewModel(
     ):AndroidViewModel(application)
 {
     var shouldRefresh = MutableLiveData(false)
-    var posts: LiveData<PostResponse>? = Transformations.switchMap(shouldRefresh) {
-        liveData {
-            emit(remoteRepository.getPosts())
-        }
+    var posts: LiveData<PostResponse>? = null
+
+    companion object {
+        var lastSeen: PostFirestore? = null
     }
 
     private val _loadingStatus = MutableLiveData<Constants.Status?>()
@@ -97,24 +97,19 @@ class MainViewModel(
     {
         _loadingStatus.postValue(Constants.Status.LOADING)
 
-        posts = Transformations.switchMap(shouldRefresh) {
-            liveData {
-                emit(remoteRepository.getPosts())
-                if (posts?.value?.post != null)
-                    _loadingStatus.postValue(Constants.Status.DONE)
-                if (posts?.value?.exception != null)
-                    _loadingStatus.postValue(Constants.Status.ERROR)
-            }
+        posts = liveData {
+            emit(remoteRepository.getPosts(limit = 20, lastSeen))
         }
     }
 
     /**
      * refreshPosts - load list of post without showing it to the user
      */
-    fun refreshPosts() {
+    fun refreshPosts()
+    {
         posts = Transformations.switchMap(shouldRefresh) {
             liveData {
-                emit(remoteRepository.getPosts())
+                emit(remoteRepository.getPosts(lastSeen = null))
             }
         }
     }
@@ -139,7 +134,25 @@ class MainViewModel(
     /**
      * onSnackBarShowed - Sets value of snackbarContains to null
      */
-    fun onSnackBarShowed() {
+    fun onSnackBarShowed()
+    {
         _snackBarContain.value = null
+    }
+
+    /**
+     * postRead - Sets value of loading status to DONE
+     * or ERROR according to value of post read
+     *
+     * @response: Response gotten from firestore
+     */
+    fun postRead(response: PostResponse) {
+        if (response.post != null)
+        {
+            _loadingStatus.value = Constants.Status.DONE
+        }
+        if (response.exception != null)
+        {
+            _loadingStatus.value = Constants.Status.ERROR
+        }
     }
 }
