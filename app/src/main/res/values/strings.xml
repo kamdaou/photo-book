@@ -11,7 +11,7 @@
     <string name="add_a_comment">Add a comment</string>
     <string name="comment_the_post_button_description">click here to comment the post</string>
     <string name="post_comment">Post comment</string>
-    <string name="comment_saving_error">An exception occurred while saving your comment,         check your internet and try again</string>
+    <string name="comment_saving_error">An exception occurred while saving your comment, check your internet and try again</string>
     <string name="comment_saving_success">Comment saved successfully</string>
     <string name="comment_empty_message">Comment empty, please write something before posting</string>
     <string name="user_not_logged_in_description">You are not logged in, please login first</string>

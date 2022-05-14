@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.databinding.FragmentDetailBinding
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val TAG = "DetailFragment"
 /**
@@ -21,20 +21,20 @@ class DetailFragment : Fragment()
 
     private lateinit var binding: FragmentDetailBinding
     private lateinit var selectedPost: PostFirestore
-    private lateinit var _viewModel: DetailViewModel
+    private val _viewModel: DetailViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View
     {
-        val viewModelFactory = DetailViewModelFactory(requireActivity().application)
+        /* val viewModelFactory = DetailViewModelFactory(requireActivity().application) */
 
         binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
         selectedPost = DetailFragmentArgs.fromBundle(requireArguments()).post
         binding.post = selectedPost
-        _viewModel = ViewModelProvider(this, viewModelFactory)[DetailViewModel::class.java]
+        /* _viewModel = ViewModelProvider(this, viewModelFactory)[DetailViewModel::class.java] */
 
         _viewModel.snackBarContain.observe(viewLifecycleOwner){
             if (it != null) {

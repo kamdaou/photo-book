@@ -31,8 +31,8 @@ class MyApp: Application()
             single {
                 DetailViewModel(get())
             }
-            single {
-                RemoteRepository() as IRemoteRepository
+            single <IRemoteRepository> {
+                RemoteRepository()
             }
         }
 
