@@ -48,6 +48,10 @@ class MainViewModel(
     val navigateToLoginFragment: LiveData<Boolean>
         get() = _navigateToLoginFragment
 
+    private val _navigateToAddPostFragment = MutableLiveData<Boolean>()
+    val navigateToAddPostFragment: LiveData<Boolean>
+        get() = _navigateToAddPostFragment
+
     init {
         loadPosts()
     }
@@ -97,8 +101,10 @@ class MainViewModel(
     {
         _loadingStatus.postValue(Constants.Status.LOADING)
 
-        posts = liveData {
-            emit(remoteRepository.getPosts(limit = 20, lastSeen))
+        posts = Transformations.switchMap(shouldRefresh) {
+            liveData {
+                emit(remoteRepository.getPosts(limit = 20))
+            }
         }
     }
 
@@ -109,7 +115,7 @@ class MainViewModel(
     {
         posts = Transformations.switchMap(shouldRefresh) {
             liveData {
-                emit(remoteRepository.getPosts(lastSeen = null))
+                emit(remoteRepository.getPosts())
             }
         }
     }
@@ -154,5 +160,15 @@ class MainViewModel(
         {
             _loadingStatus.value = Constants.Status.ERROR
         }
+    }
+
+    fun navigateToAddPostFragment()
+    {
+        _navigateToAddPostFragment.value = true
+    }
+
+    fun onAddPostFragmentNavigated()
+    {
+        _navigateToAddPostFragment.value = false
     }
 }

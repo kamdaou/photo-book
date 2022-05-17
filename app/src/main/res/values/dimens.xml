@@ -2,4 +2,5 @@
 <resources>
     <dimen name="small_dimension">8dp</dimen>
     <dimen name="medium_dimension">16dp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
 </resources>

@@ -159,7 +159,7 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      *
      * Return: a PostResponse
      */
-    override suspend fun getPosts(limit: Long, lastSeen: PostFirestore?): PostResponse
+    override suspend fun getPosts(limit: Long): PostResponse
     {
         val postResponse = PostResponse()
         val loaded = db.collection("post")
@@ -382,7 +382,7 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      * deleteAllPosts - Deletes 1000000 from data source
      */
     override suspend fun deleteAllPosts(){
-        val post = getPosts(1000000, null)
+        val post = getPosts(1000000)
         for (element in post.post!!) {
             db.collection("post").document(element.id).delete()
         }

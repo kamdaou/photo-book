@@ -45,9 +45,9 @@ class AddPostViewModel(
      * @post: The post that should be saved
      * @user: user that is saving the post
      */
-    fun savePost(post: Post, user: User)
+    fun savePost(post: Post, user: User, media: Media? = null)
     {
-        if (post.body == "" || post.title == "")
+        if ((post.body == "" || post.title == "") && media == null)
         {
             _snackBarContain.value = R.string.save_post_error_message
         }
@@ -55,7 +55,10 @@ class AddPostViewModel(
         {
             _savingStatus.value = Constants.Status.LOADING
             viewModelScope.launch {
-                val loaded: Result = remoteRepository.savePost(post = post, user = user)
+                val loaded: Result = if (media == null )
+                    remoteRepository.savePost(post = post, user = user)
+                else
+                    remoteRepository.savePostMedia(post, media, user)
 
                 post.id = loaded.id
                 _savingStatus.postValue(Constants.Status.DONE)
@@ -109,13 +112,16 @@ class AddPostViewModel(
             val uploadTask = remoteRepository.saveImage(imageName, data)
             uploadTask
                 .addOnSuccessListener {
+                    Log.i(TAG, "successfully saved image")
                     _snackBarContain.value = R.string.successfully_saved_image_message
                 }
                 .addOnCanceledListener {
+                    Log.e(TAG, "saving image image process cancelled")
                     _snackBarContain.value = R.string.unsuccessfully_saved_image_message
                 }
                 .addOnFailureListener {
-                    saveImage(imageBitmap, imageName)
+                    Log.e(TAG, "error saving image: ${it.message}")
+                    _snackBarContain.value = R.string.unsuccessfully_saved_image_message
                 }
         }
     }
@@ -142,6 +148,11 @@ class AddPostViewModel(
                     _snackBarContain.value = R.string.unsuccessfully_saved_video_message
                 }
         }
+    }
+
+    fun onSaved()
+    {
+        _savingStatus.value = null
     }
 
     val observable = Observer()

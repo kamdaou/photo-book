@@ -50,7 +50,7 @@ class RemoteRepository
         if (!storageUsingEmulator)
         {
             try {
-                storage.useEmulator("10.0.2.2", 8080)
+                storage.useEmulator("10.0.2.2", 9199)
                 storageUsingEmulator = true
             }
             catch (e: Exception) {
@@ -186,13 +186,12 @@ class RemoteRepository
      *
      * Return: a PostResponse
      */
-    override suspend fun getPosts(limit: Long, lastSeen: PostFirestore?): PostResponse
+    override suspend fun getPosts(limit: Long): PostResponse
     {
         wrapEspressoIdlingResource {
             val postResponse = PostResponse()
             val loaded = db.collection("post")
                 .orderBy("inserted_at", Query.Direction.ASCENDING)
-                .startAfter(lastSeen)
                 .limit(limit)
                 //.whereNotEqualTo("user.id", FirebaseAuth.getInstance().currentUser.uid)
                 .get()
@@ -408,7 +407,7 @@ class RemoteRepository
     override suspend fun deleteAllPosts()
     {
         wrapEspressoIdlingResource {
-            val post = getPosts(1000000, null)
+            val post = getPosts(1000000)
             for (element in post.post!!) {
                 db.collection("post").document(element.id).delete()
             }
