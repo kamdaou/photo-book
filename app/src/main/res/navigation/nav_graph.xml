@@ -29,5 +29,12 @@
     <fragment
         android:id="@+id/addPostFragment"
         android:name="com.example.photobook.addPost.AddPostFragment"
-        android:label="AddPostFragment" />
+        android:label="AddPostFragment" >
+        <action
+            android:id="@+id/action_addPostFragment_to_mainFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

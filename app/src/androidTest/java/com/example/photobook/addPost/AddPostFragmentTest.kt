@@ -13,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 
+
 @RunWith(AndroidJUnit4::class)
 class AddPostFragmentTest
 {
@@ -25,6 +26,9 @@ class AddPostFragmentTest
         /* WHEN - Saves a post */
         onView(withId(R.id.title)).perform(replaceText("Test"))
         onView(withId(R.id.body)).perform(replaceText("Test"))
+
+
+
         onView(withId(R.id.save_post_button)).perform(click())
 
         /* THEN - snackBar is showed properly */

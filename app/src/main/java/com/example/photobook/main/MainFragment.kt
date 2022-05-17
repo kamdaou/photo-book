@@ -66,7 +66,15 @@ class MainFragment : Fragment()
         }
 
         binding.addPostButton.setOnClickListener {
-            navController.navigate(R.id.action_mainFragment_to_addPostFragment)
+            _viewModel.navigateToAddPostFragment()
+        }
+
+        _viewModel.navigateToAddPostFragment.observe(viewLifecycleOwner){
+            if (it)
+            {
+                navController.navigate(R.id.action_mainFragment_to_addPostFragment)
+                _viewModel.onAddPostFragmentNavigated()
+            }
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
@@ -103,8 +111,8 @@ class MainFragment : Fragment()
      */
     override fun onResume() {
         super.onResume()
-        /* _viewModel.shouldRefresh.value = true */
-        _viewModel.refreshPosts()
+        _viewModel.shouldRefresh.value = true
+        /* _viewModel.loadPosts() */
     }
 
     /**

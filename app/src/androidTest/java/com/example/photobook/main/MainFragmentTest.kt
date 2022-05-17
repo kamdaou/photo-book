@@ -9,27 +9,28 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.example.photobook.AndroidMainCoroutineRule
+import com.example.photobook.FakeAndroidTestRemoteRepository
 import com.example.photobook.R
-import com.example.photobook.ServiceLocator
-import com.example.photobook.adapters.PostRecyclerViewAdapter
 import com.example.photobook.data.Post
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.User
 import com.example.photobook.network.IRemoteRepository
-import com.example.photobook.network.RemoteRepository
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import org.mockito.Mockito
 
 @ExperimentalCoroutinesApi
@@ -53,8 +54,22 @@ class MainFragmentTest {
     {
         application = ApplicationProvider.getApplicationContext()
 
-        remoteRepository = RemoteRepository()
-        ServiceLocator.remoteRepository = remoteRepository
+        remoteRepository = FakeAndroidTestRemoteRepository()
+
+        val mainViewModel = MainViewModel(application, remoteRepository)
+        stopKoin()
+
+        val myModule = module {
+            single {
+                mainViewModel
+            }
+        }
+
+        startKoin {
+            modules(listOf(myModule))
+        }
+
+        /* ServiceLocator.remoteRepository = remoteRepository */
         post = Post(
             id = "postId",
             submitter_id = "userId",
@@ -78,20 +93,28 @@ class MainFragmentTest {
     @Test
     fun postDisplayedInUI()
     {
-        runBlockingTest {
-            val navController = launchFragment()
+        runBlocking {
             savePost(user)
+            val navController = launchFragment()
+            val posts = remoteRepository.getPosts(1)
 
             Espresso.onView(withId(R.id.post_list))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            Espresso.onView(withId(R.id.post_list))
+            for (post in posts.post!!)
+            {
+                Espresso.onView(withText(post.title))
+                    .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+                Espresso.onView(withText(post.body))
+                    .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            }
+            /* Espresso.onView(withId(R.id.post_list))
                 .perform(
                     RecyclerViewActions.actionOnItemAtPosition<PostRecyclerViewAdapter.ViewHolder>(
                         0,
                         ViewActions.click()
                     )
-                )
-            Mockito.verify(navController).navigate(MainFragmentDirections.actionMainFragmentToDetailFragment(postFirestore))
+                ) */
+            /* Mockito.verify(navController).navigate(MainFragmentDirections.actionMainFragmentToDetailFragment(postFirestore)) */
         }
     }
 

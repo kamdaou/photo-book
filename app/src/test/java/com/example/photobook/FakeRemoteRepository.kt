@@ -231,7 +231,7 @@ class FakeRemoteRepository: IRemoteRepository
     }
 
 
-    override suspend fun getPosts(limit: Long, lastSeen: PostFirestore?): PostResponse {
+    override suspend fun getPosts(limit: Long): PostResponse {
         return PostResponse(post = listOf(PostFirestore("title", "body", id = "id1")))
     }
 

@@ -34,7 +34,7 @@ import org.mockito.Mockito
 class DetailFragmentTest
 {
 
-    private lateinit var photoBookService: FakeAndroidTestRemoteRepository
+    private lateinit var remoteRepository: FakeAndroidTestRemoteRepository
     private lateinit var mainViewModel: MainViewModel
     private lateinit var detailViewModel: DetailViewModel
 
@@ -49,8 +49,8 @@ class DetailFragmentTest
     {
         val application = ApplicationProvider.getApplicationContext<Application>()
 
-        photoBookService = FakeAndroidTestRemoteRepository()
-        mainViewModel = MainViewModel(application, photoBookService)
+        remoteRepository = FakeAndroidTestRemoteRepository()
+        mainViewModel = MainViewModel(application, remoteRepository)
         detailViewModel = DetailViewModel(application)
     }
 
