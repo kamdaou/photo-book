@@ -1,4 +1,4 @@
-package com.example.photobook.network
+package com.example.photobook.repository.network
 
 import android.net.Uri
 import android.util.Log
@@ -186,21 +186,26 @@ class RemoteRepository
      *
      * Return: a PostResponse
      */
-    override suspend fun getPosts(limit: Long): PostResponse
+    override suspend fun getPosts(limit: Long, lastSeen: List<LastSeen>?): PostResponse
     {
         wrapEspressoIdlingResource {
             val postResponse = PostResponse()
-            val loaded = db.collection("post")
+            val doc = db.collection("post")
                 .orderBy("inserted_at", Query.Direction.ASCENDING)
                 .limit(limit)
-                //.whereNotEqualTo("user.id", FirebaseAuth.getInstance().currentUser.uid)
-                .get()
-            try {
+            if (lastSeen != null)
+                doc.startAfter(lastSeen.last().id)
+            val loaded = doc.get()
+
+            try
+            {
                 postResponse.post = loaded.await().documents.mapNotNull { snapshot ->
                     snapshot.toObject(PostFirestore::class.java)
                 }
 
-            } catch (e: Exception) {
+            }
+            catch (e: Exception)
+            {
                 postResponse.exception = e
             }
             return postResponse

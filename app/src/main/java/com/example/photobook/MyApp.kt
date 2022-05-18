@@ -4,8 +4,8 @@ import android.app.Application
 import com.example.photobook.addPost.AddPostViewModel
 import com.example.photobook.detail.DetailViewModel
 import com.example.photobook.main.MainViewModel
-import com.example.photobook.network.IRemoteRepository
-import com.example.photobook.network.RemoteRepository
+import com.example.photobook.repository.network.IRemoteRepository
+import com.example.photobook.repository.network.RemoteRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin

@@ -1,4 +1,4 @@
-package com.example.photobook.network
+package com.example.photobook.repository.network
 
 import com.example.photobook.ServiceLocator
 import com.example.photobook.data.Media
@@ -63,6 +63,7 @@ class RemoteRepositoryTest
 
         MatcherAssert.assertThat(postFirestoreSaved, `is`(postFirestore))
     }
+
     @Test
     fun savePosts_getPosts() = runBlocking {
         val media = Media("mediaId", "yes", "image", "media", listOf("url"))

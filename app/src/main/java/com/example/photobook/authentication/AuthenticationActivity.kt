@@ -1,14 +1,20 @@
 package com.example.photobook.authentication
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.photobook.MainActivity
 import com.example.photobook.R
 import com.example.photobook.databinding.ActivityAuthenticationBinding
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
+private const val TAG = "AuthenticationActivity"
 /**
  * This class should be the starting point of the app, It asks the users to sign in / register, and redirects the
  * signed in users to the RemindersActivity.
@@ -23,7 +29,7 @@ class AuthenticationActivity : AppCompatActivity() {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        // if (currentUser != null)
+        //if (currentUser != null)
         //{
             navigateToMainActivity()
         //}
@@ -31,14 +37,15 @@ class AuthenticationActivity : AppCompatActivity() {
             launchSignInFlow()
         }
 
-
-//          TODO: a bonus is to customize the sign in flow to look nice using :
-        //https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md#custom-layout
-
     }
 
-    private fun launchSignInFlow() {
-        /*val providers = arrayListOf(
+    /**
+     * launchSignInFlow - Launches sign in flow
+     * using firebase authentication
+     */
+    private fun launchSignInFlow()
+    {
+        val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build()
         )
@@ -47,39 +54,46 @@ class AuthenticationActivity : AppCompatActivity() {
             AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
                 providers
             ).build(), SIGN_IN_RESULT_CODE
-        )*/
+        )
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        /*if (requestCode == SIGN_IN_RESULT_CODE) {
+        if (requestCode == SIGN_IN_RESULT_CODE) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in user.
                 Log.i(
-                    ContentValues.TAG,
+                    TAG,
                     "Successfully signed in user " +
                             "${FirebaseAuth.getInstance().currentUser?.displayName}!"
                 )
-                navigateToReminderActivity()
+                navigateToMainActivity()
             } else {
                 // Sign in failed. If response is null the user canceled the sign-in flow using
                 // the back button. Otherwise check response.getError().getErrorCode() and handle
                 // the error.
-                Log.i(ContentValues.TAG, "Sign in unsuccessful ${response?.error?.message}")
+                Log.i(TAG, "Sign in unsuccessful ${response?.error?.message}")
 
                 Snackbar.make(findViewById(android.R.id.content), "Authentication failed: ${response?.error?.message}", Snackbar.LENGTH_LONG).show()
             }
-        }*/
+        }
     }
 
-    private fun navigateToMainActivity() {
+    /**
+     * navigateToMainActivity - Navigates to MainActivity and
+     * finishes the authentication activity
+     */
+    private fun navigateToMainActivity()
+    {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         this.finishAffinity()
     }
 
-    companion object{
+    companion object
+    {
         const val SIGN_IN_RESULT_CODE = 1001
     }
 }

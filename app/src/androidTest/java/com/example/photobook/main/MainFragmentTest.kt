@@ -20,7 +20,7 @@ import com.example.photobook.R
 import com.example.photobook.data.Post
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.User
-import com.example.photobook.network.IRemoteRepository
+import com.example.photobook.repository.network.IRemoteRepository
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

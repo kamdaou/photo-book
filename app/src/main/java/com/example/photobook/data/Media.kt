@@ -1,6 +1,8 @@
 package com.example.photobook.data
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -13,7 +15,9 @@ import kotlinx.parcelize.Parcelize
  * @url: Url list of medias
  */
 @Parcelize
+@Entity(tableName = "media")
 data class Media(
+    @PrimaryKey(autoGenerate = false)
     var id: String="",
 
     val valid: String = "",

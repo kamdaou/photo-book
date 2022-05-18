@@ -14,7 +14,7 @@ import com.example.photobook.data.Media
 import com.example.photobook.data.Post
 import com.example.photobook.data.Result
 import com.example.photobook.data.User
-import com.example.photobook.network.IRemoteRepository
+import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.utils.Constants
 import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.launch
