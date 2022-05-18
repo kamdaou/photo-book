@@ -3,7 +3,7 @@ package com.example.photobook
 import android.app.Activity
 import android.net.Uri
 import com.example.photobook.data.*
-import com.example.photobook.network.IRemoteRepository
+import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.utils.Constants
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
@@ -231,7 +231,7 @@ class FakeRemoteRepository: IRemoteRepository
     }
 
 
-    override suspend fun getPosts(limit: Long): PostResponse {
+    override suspend fun getPosts(limit: Long, lastSeen: List<LastSeen>?): PostResponse {
         return PostResponse(post = listOf(PostFirestore("title", "body", id = "id1")))
     }
 

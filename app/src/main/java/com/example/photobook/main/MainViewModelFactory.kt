@@ -3,7 +3,7 @@ package com.example.photobook.main
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.photobook.network.RemoteRepository
+import com.example.photobook.repository.network.RemoteRepository
 
 class MainViewModelFactory(
     private val application: Application

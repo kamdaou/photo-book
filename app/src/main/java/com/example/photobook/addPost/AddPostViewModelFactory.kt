@@ -2,7 +2,7 @@ package com.example.photobook.addPost
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.photobook.network.RemoteRepository
+import com.example.photobook.repository.network.RemoteRepository
 
 @Suppress("UNCHECKED_CAST")
 class AddPostViewModelFactory(): ViewModelProvider.Factory {

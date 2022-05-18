@@ -21,21 +21,21 @@ import kotlinx.parcelize.RawValue
  */
 @Parcelize
 data class PostFirestore(
-    val title: String="",
+    val title: String = "",
 
-    val body: String="",
+    val body: String = "",
 
-    val submitter_id: String="",
+    val submitter_id: String = "",
 
-    val inserted_at: Timestamp?=null,
+    val inserted_at: Timestamp? = null,
 
-    val city: String="",
+    val city: String = "",
 
-    var id: String="",
+    var id: String = "",
 
-    var user: @RawValue User?=null,
+    var user: @RawValue User? = null,
 
-    var media:Media?=null,
+    var media:Media? = null,
 
     val post_vote: MutableList<PostVote> = mutableListOf()
 

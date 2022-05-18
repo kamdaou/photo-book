@@ -3,7 +3,7 @@ package com.example.photobook
 import android.net.Uri
 import android.util.Log
 import com.example.photobook.data.*
-import com.example.photobook.network.IRemoteRepository
+import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.utils.Constants.VoteType
 import com.example.photobook.utils.Login
 import com.google.android.gms.tasks.Task
@@ -159,7 +159,7 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      *
      * Return: a PostResponse
      */
-    override suspend fun getPosts(limit: Long): PostResponse
+    override suspend fun getPosts(limit: Long, lastSeen: List<LastSeen>?): PostResponse
     {
         val postResponse = PostResponse()
         val loaded = db.collection("post")

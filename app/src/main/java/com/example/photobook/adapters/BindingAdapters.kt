@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.photobook.data.PostFirestore
-import com.example.photobook.network.RemoteRepository
+import com.example.photobook.repository.network.RemoteRepository
 import com.example.photobook.utils.Constants.IMAGE_NAME
 import com.example.photobook.utils.Constants.VIDEO_NAME
 import com.example.photobook.utils.GlideApp

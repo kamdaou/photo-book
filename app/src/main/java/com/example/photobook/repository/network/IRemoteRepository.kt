@@ -1,4 +1,4 @@
-package com.example.photobook.network
+package com.example.photobook.repository.network
 
 import android.net.Uri
 import com.example.photobook.data.*
@@ -57,7 +57,7 @@ interface IRemoteRepository {
      *
      * Return: a PostResponse
      */
-    suspend fun getPosts(limit: Long = 20L): PostResponse
+    suspend fun getPosts(limit: Long = 1000L, lastSeen: List<LastSeen>? = null): PostResponse
 
     /**
      * updatePost - update value of a post.

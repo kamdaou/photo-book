@@ -1,5 +1,6 @@
 package com.example.photobook
 
+import android.Manifest
 import android.app.Activity
 import android.app.Application
 import android.app.Instrumentation
@@ -17,13 +18,15 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.rule.GrantPermissionRule
 import com.example.photobook.addPost.AddPostViewModel
 import com.example.photobook.detail.DetailViewModel
 import com.example.photobook.main.MainViewModel
-import com.example.photobook.network.IRemoteRepository
-import com.example.photobook.network.RemoteRepository
+import com.example.photobook.repository.network.IRemoteRepository
+import com.example.photobook.repository.network.RemoteRepository
 import com.example.photobook.utils.EspressoIdlingResource
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -40,6 +43,10 @@ class MainActivityTest
 
     @get:Rule
     val intentsRules: IntentsTestRule<MainActivity> = IntentsTestRule(MainActivity::class.java)
+
+    @get:Rule
+    val grantPermissionResult: GrantPermissionRule =
+        GrantPermissionRule.grant(Manifest.permission.CAMERA)
 
     /**
      * init - initializes repository and *start koin*
@@ -112,6 +119,13 @@ class MainActivityTest
         onView(withId(R.id.take_picture)).perform(click())
 
         Intents.intended(IntentMatchers.toPackage("com.android.camera2"))
+
+        /* Deleting the picture in the ui */
+        onView(withId(R.id.delete_taken_image)).perform(click())
+        onView(withId(R.id.taken_image)).check(matches(not(isDisplayed())))
+        /* Taking the picture again */
+        onView(withId(R.id.take_picture)).perform(click())
+
         onView(withId(R.id.title)).perform(replaceText("Test title"))
         onView(withId(R.id.body)).perform(replaceText("Test body"))
         onView(withId(R.id.save_post_button)).perform(click())

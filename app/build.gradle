@@ -62,7 +62,6 @@ android {
 
 dependencies {
 
-    implementation 'androidx.room:room-common:2.4.2'
     ext.espresso_version="3.4.0"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -161,7 +160,24 @@ dependencies {
     /* Navigation Graph */
     implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
 
+    /* firebase database */
     implementation 'com.google.firebase:firebase-database'
 
+    /* firebase authentication */
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+
+    /* Room database */
+    ext.room_version="2.4.2"
+    implementation "androidx.room:room-common:$room_version"
+    implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt "androidx.room:room-compiler:$room_version"
+
+    /* To use Kotlin annotation processing tool (kapt) */
+    kapt "androidx.room:room-compiler:$room_version"
+
+    /* Gson */
+    implementation ("com.google.code.gson:gson:2.9.0")
 }
 apply plugin: 'com.google.gms.google-services'

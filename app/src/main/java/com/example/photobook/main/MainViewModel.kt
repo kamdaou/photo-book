@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import com.example.photobook.R
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.PostResponse
-import com.example.photobook.network.IRemoteRepository
+import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.utils.Constants
 
 private const val TAG = "MainviewModel"
@@ -24,7 +24,8 @@ class MainViewModel(
     var shouldRefresh = MutableLiveData(false)
     var posts: LiveData<PostResponse>? = null
 
-    companion object {
+    companion object
+    {
         var lastSeen: PostFirestore? = null
     }
 
@@ -44,15 +45,12 @@ class MainViewModel(
     val snackBarContain: MutableLiveData<Int?>
         get() = _snackBarContain
 
-    private val _navigateToLoginFragment = MutableLiveData<Boolean>()
-    val navigateToLoginFragment: LiveData<Boolean>
-        get() = _navigateToLoginFragment
-
     private val _navigateToAddPostFragment = MutableLiveData<Boolean>()
     val navigateToAddPostFragment: LiveData<Boolean>
         get() = _navigateToAddPostFragment
 
-    init {
+    init
+    {
         loadPosts()
     }
 
@@ -121,23 +119,6 @@ class MainViewModel(
     }
 
     /**
-     * navigateToLoginFragment - Sets value of
-     * _navigateToLoginFragment to true
-     */
-    fun navigateToLoginFragment()
-    {
-        _navigateToLoginFragment.value = true
-    }
-
-    /**
-     * onNavigateToLoginFragment - sets value of _navigateToLoginFragment to false
-     */
-    fun onNavigateToLoginFragment()
-    {
-        _navigateToLoginFragment.value = false
-    }
-
-    /**
      * onSnackBarShowed - Sets value of snackbarContains to null
      */
     fun onSnackBarShowed()
@@ -151,7 +132,8 @@ class MainViewModel(
      *
      * @response: Response gotten from firestore
      */
-    fun postRead(response: PostResponse) {
+    fun postRead(response: PostResponse)
+    {
         if (response.post != null)
         {
             _loadingStatus.value = Constants.Status.DONE

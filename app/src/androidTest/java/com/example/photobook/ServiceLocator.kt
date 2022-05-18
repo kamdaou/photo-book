@@ -1,8 +1,8 @@
 package com.example.photobook
 
 import androidx.annotation.VisibleForTesting
-import com.example.photobook.network.IRemoteRepository
-import com.example.photobook.network.RemoteRepository
+import com.example.photobook.repository.network.IRemoteRepository
+import com.example.photobook.repository.network.RemoteRepository
 import kotlinx.coroutines.runBlocking
 
 /**
