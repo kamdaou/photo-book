@@ -13,7 +13,7 @@ import java.io.File
 
 const val TAG = "Repository"
 class Repository(
-    private val database: PhotoBookDao,
+    val database: PhotoBookDao,
     private val remoteRepository: IRemoteRepository
     )
 {

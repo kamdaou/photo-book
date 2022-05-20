@@ -246,4 +246,21 @@ class RepositoryTest
         assertThat(allImages.contains(Image(imageName1, data1)), `is`(true))
         assertThat(allImages.contains(Image(imageName2, data2)), `is`(true))
     }
+
+    /**
+     * saveImage_imageGottenInDb - Tests if saved image are gotten
+     * in the local db
+     */
+    @Test
+    fun saveImage_imageGottenInDb() = runBlocking {
+        /* GIVEN - A fresh repos */
+        val image = Image("IMG123", ByteArray(10))
+
+        /* WHEN - Saves an image */
+        repository.database.saveImage(image)
+
+        /* THEN - Image gotten in db */
+        val loaded = repository.database.getImage("IMG123")
+        assertThat(loaded, `is`(image))
+    }
 }
