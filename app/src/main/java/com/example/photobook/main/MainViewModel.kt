@@ -158,11 +158,13 @@ class MainViewModel(
         _navigateToAddPostFragment.value = false
     }
 
-    fun getImage(imageName: String): Image? {
-        var image: Image? = null
+    val image = MutableLiveData<Image>()
+    private val _image: LiveData<Image>
+        get() = image
+
+    fun getImage(imageName: String) {
         viewModelScope.launch {
-            image = dao.getImage(imageName)
+            image.value = dao.getImage(imageName)
         }
-        return image
     }
 }

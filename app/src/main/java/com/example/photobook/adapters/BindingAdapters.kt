@@ -9,8 +9,6 @@ import com.bumptech.glide.Glide
 import com.example.photobook.R
 import com.example.photobook.data.Image
 import com.example.photobook.data.PostFirestore
-import com.example.photobook.main.MainViewModel
-import com.example.photobook.utils.Constants.IMAGE_NAME
 
 /**
  * postToSubmitter - Takes a post and change
@@ -101,15 +99,14 @@ fun postToDate(
     textView.text = postFirestore.inserted_at?.toDate().toString()
 }
 
-@BindingAdapter("postToImage0", "viewModel")
-fun displayImage0(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel){
+@BindingAdapter("postToImage0", "displayImage")
+fun displayImage0(
+    view: ImageView,
+    frameworkData: PostFirestore,
+    mediaReference: Image?
+){
     if(frameworkData.media != null && frameworkData.media!!.url.isNotEmpty()){
-        var mediaReference: Image? = null
-        Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
-            mediaReference = viewModel.getImage(imageName = frameworkData.media!!.url.get(0))
-        }
         mediaReference?.let {
             Glide
                 .with(view.context)
@@ -124,15 +121,11 @@ fun displayImage0(view: ImageView, frameworkData: PostFirestore, viewModel: Main
 
 
 
-@BindingAdapter("postToImage1", "viewModel")
-fun displayImage1(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel){
+@BindingAdapter("postToImage1", "displayImage")
+fun displayImage1(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
     if(frameworkData.media != null && frameworkData.media!!.url.size >= 2){
-        var mediaReference: Image? = null
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
-            mediaReference = viewModel.getImage(imageName = frameworkData.media!!.url.get(1))
-        }
         mediaReference?.let {
             Glide
                 .with(view.context)
@@ -147,15 +140,11 @@ fun displayImage1(view: ImageView, frameworkData: PostFirestore, viewModel: Main
 
 
 
-@BindingAdapter("postToImage2", "viewModel")
-fun displayImage2(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel){
+@BindingAdapter("postToImage2", "displayImage")
+fun displayImage2(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
     if(frameworkData.media != null && frameworkData.media!!.url.size >= 3){
-        var mediaReference: Image? = null
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
-            mediaReference = viewModel.getImage(imageName = frameworkData.media!!.url.get(2))
-        }
         mediaReference?.let {
             Glide
                 .with(view.context)
@@ -169,15 +158,11 @@ fun displayImage2(view: ImageView, frameworkData: PostFirestore, viewModel: Main
 }
 
 
-@BindingAdapter("postToImage3", "viewModel")
-fun displayImage3(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel){
+@BindingAdapter("postToImage3", "displayImage")
+fun displayImage3(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
     if(frameworkData.media != null && frameworkData.media!!.url.size >=4){
-        var mediaReference: Image? = null
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
-            mediaReference = viewModel.getImage(imageName = frameworkData.media!!.url.get(3))
-        }
         mediaReference?.let {
             Glide
                 .with(view.context)
@@ -191,15 +176,11 @@ fun displayImage3(view: ImageView, frameworkData: PostFirestore, viewModel: Main
 }
 
 
-@BindingAdapter("postToImage4", "viewModel")
-fun displayImage4(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel){
+@BindingAdapter("postToImage4", "displayImage")
+fun displayImage4(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
     if(frameworkData.media != null && frameworkData.media!!.url.size >= 5){
-        var mediaReference: Image? = null
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
-        if (frameworkData.media!!.media_type == IMAGE_NAME){
-            mediaReference = viewModel.getImage(imageName = frameworkData.media!!.url.get(4))
-        }
         mediaReference?.let {
             Glide
                 .with(view.context)
