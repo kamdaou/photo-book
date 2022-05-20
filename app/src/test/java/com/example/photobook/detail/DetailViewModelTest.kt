@@ -20,6 +20,9 @@ import org.robolectric.annotation.Config
 @Config(sdk = [29])
 class DetailViewModelTest
 {
+    /**
+     * init - stops koin before starting test
+     */
     @Before
     fun init()
     {
@@ -40,7 +43,6 @@ class DetailViewModelTest
         detailViewModel.onSnackBarShowed()
 
         /* THEN - snackBarContains value is null */
-        /* TODO find a way to assert null value */
         assertThat(detailViewModel.snackBarContain.getOrAwaitValue(), `is`(nullValue()))
     }
 }
