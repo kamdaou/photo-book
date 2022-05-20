@@ -150,11 +150,12 @@ class MainActivityTest
          * has been successfully saved and we can
          * find the post in detailed fragment
          */
-        onView(withText(("Test title"))).check(matches(isDisplayed()))
-        onView(withText(("Test body"))).check(matches(isDisplayed()))
 
         onView(withText(R.string.post_saving_success))
             .check(matches(isDisplayed()))
+        onView(withText(("Test title"))).check(matches(isDisplayed()))
+        onView(withText(("Test body"))).check(matches(isDisplayed()))
+
 
         onView(withText(("Test title"))).perform(click())
         onView(withText("Test title")).check(matches(isDisplayed()))
