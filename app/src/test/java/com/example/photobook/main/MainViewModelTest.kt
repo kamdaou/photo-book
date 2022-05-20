@@ -18,6 +18,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
 import org.robolectric.annotation.Config
 
 /**
@@ -40,6 +41,7 @@ class MainViewModelTest
     @Before
     fun init()
     {
+        stopKoin()
         val application = ApplicationProvider.getApplicationContext<Application>()
         val fakeRemoteRepository = FakeRemoteRepository()
 

@@ -16,6 +16,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
 import org.robolectric.annotation.Config
 
 /**
@@ -41,6 +42,7 @@ class AddPostViewModelTest
     @Before
     fun init()
     {
+        stopKoin()
         justBookService = FakeRemoteRepository()
         viewModel = AddPostViewModel(justBookService)
         post = Post("id1", title = "title", body = "body", submitter_id = "userId")
