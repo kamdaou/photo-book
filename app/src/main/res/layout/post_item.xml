@@ -12,6 +12,21 @@
         <variable
             name="viewModel"
             type="com.example.photobook.main.MainViewModel" />
+        <variable
+            name="imageVal0"
+            type="com.example.photobook.data.Image" />
+        <variable
+            name="imageVal1"
+            type="com.example.photobook.data.Image" />
+        <variable
+            name="imageVal2"
+            type="com.example.photobook.data.Image" />
+        <variable
+            name="imageVal3"
+            type="com.example.photobook.data.Image" /><variable
+            name="imageVal4"
+            type="com.example.photobook.data.Image" />
+
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/post_item"
@@ -82,7 +97,7 @@
         <ImageView
             android:id="@+id/image_1"
             android:layout_width="0dp"
-            app:viewModel="@{viewModel}"
+            app:displayImage="@{imageVal0}"
             app:postToImage0="@{post}"
             android:layout_height="wrap_content"
             tools:visibility="visible"
@@ -102,7 +117,7 @@
             android:id="@+id/image_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:viewModel="@{viewModel}"
+            app:displayImage="@{imageVal1}"
             app:postToImage1="@{post}"
             android:visibility="gone"
             android:layout_marginStart="@dimen/small_dimension"
@@ -119,7 +134,7 @@
         <ImageView
             android:id="@+id/image_3"
             android:layout_width="0dp"
-            app:viewModel="@{viewModel}"
+            app:displayImage="@{imageVal2}"
             app:postToImage2="@{post}"
             tools:visibility="visible"
             tools:src="@drawable/common_google_signin_btn_icon_light"
@@ -135,7 +150,7 @@
         <ImageView
             android:id="@+id/image_4"
             android:layout_width="0dp"
-            app:viewModel="@{viewModel}"
+            app:displayImage="@{imageVal3}"
             app:postToImage3="@{post}"
             android:visibility="gone"
             android:layout_height="wrap_content"
@@ -152,7 +167,7 @@
             android:id="@+id/image_5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:viewModel="@{viewModel}"
+            app:displayImage="@{imageVal4}"
             app:postToImage4="@{post}"
             tools:visibility="visible"
             tools:src="@drawable/common_google_signin_btn_icon_light"

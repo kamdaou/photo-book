@@ -58,7 +58,7 @@ class MainFragment : Fragment()
         /* _viewModel = ViewModelProvider(this, viewModelProvider)[MainViewModel::class.java] */
         recyclerViewAdapter = PostRecyclerViewAdapter(PostListener { id ->
         _viewModel.onPostSelected(id)
-        }, _viewModel)
+        }, _viewModel, viewLifecycleOwner)
         binding.postList.adapter = recyclerViewAdapter
 
         binding.retryImage.setOnClickListener {
