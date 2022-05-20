@@ -15,7 +15,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import com.example.photobook.AndroidMainCoroutineRule
 import com.example.photobook.FakeAndroidTestRemoteRepository
 import com.example.photobook.R
 import com.example.photobook.data.Post
@@ -28,7 +27,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.startKoin
@@ -47,8 +45,6 @@ class MainFragmentTest {
     private lateinit var application: Application
     private lateinit var database: PhotoBookDatabase
 
-    @get:Rule
-    val mainCoroutineRule = AndroidMainCoroutineRule()
 
     /**
      * init - initializes view model and all dependencies
@@ -93,8 +89,8 @@ class MainFragmentTest {
             id = "postId",
             submitter_id = "userId",
             inserted_at = Timestamp(600000, 344000),
-            title = "title",
-            body = "body",
+            title = "title1",
+            body = "body1",
         )
         user = User(username = "username", id = "userId")
     }
@@ -103,9 +99,9 @@ class MainFragmentTest {
      * closeDb - Closes the database
      */
     @After
-    fun closeBb()
-    {
+    fun closeBb() = runBlocking {
         database.close()
+        remoteRepository.deleteAllPosts()
     }
 
     /**
@@ -115,6 +111,7 @@ class MainFragmentTest {
     fun postDisplayedInUI()
     {
         runBlocking {
+            remoteRepository.deleteAllPosts()
             savePost(user)
             val navController = launchFragment()
             val posts = remoteRepository.getPosts(1)
@@ -176,7 +173,8 @@ class MainFragmentTest {
      * to add post causes a navigation to addPostFragment
      */
     @Test
-    fun clickOnAddPostButton_navigateToAddPostFragment(){
+    fun clickOnAddPostButton_navigateToAddPostFragment()
+    {
         val navController = launchFragment()
 
         Espresso.onView(withId(R.id.add_post_button)).perform(ViewActions.click())

@@ -1,5 +1,7 @@
 package com.example.photobook.addPost
 
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.photobook.FakeRemoteRepository
 import com.example.photobook.MainCoroutineRule
@@ -8,6 +10,7 @@ import com.example.photobook.data.Media
 import com.example.photobook.data.Post
 import com.example.photobook.data.User
 import com.example.photobook.getOrAwaitValue
+import com.example.photobook.repository.database.PhotoBookDatabase
 import com.example.photobook.utils.Constants.Status
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.MatcherAssert
@@ -32,6 +35,7 @@ class AddPostViewModelTest
     private lateinit var post: Post
     private lateinit var user: User
     private lateinit var media: Media
+    private lateinit var db: PhotoBookDatabase
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
@@ -43,8 +47,17 @@ class AddPostViewModelTest
     fun init()
     {
         stopKoin()
+        db = Room
+            .inMemoryDatabaseBuilder(
+                ApplicationProvider.getApplicationContext(),
+                PhotoBookDatabase::class.java
+            )
+            .allowMainThreadQueries()
+            .build()
+        val dao = db.photoBookDao
+
         justBookService = FakeRemoteRepository()
-        viewModel = AddPostViewModel(justBookService)
+        viewModel = AddPostViewModel(justBookService, dao)
         post = Post("id1", title = "title", body = "body", submitter_id = "userId")
         user = User("username", "userId")
         media = Media("mediaId")

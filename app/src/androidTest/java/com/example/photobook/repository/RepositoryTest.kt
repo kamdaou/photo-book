@@ -243,6 +243,7 @@ class RepositoryTest
 
         /* THEN - Images are being gotten in database */
         val allImages = repository.getImagesFromLocal()
-        assertThat(allImages, `is`(listOf(Image(imageName1, data1), Image(imageName2, data2))))
+        assertThat(allImages.contains(Image(imageName1, data1)), `is`(true))
+        assertThat(allImages.contains(Image(imageName2, data2)), `is`(true))
     }
 }
