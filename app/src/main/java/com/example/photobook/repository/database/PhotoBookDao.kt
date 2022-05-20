@@ -99,11 +99,26 @@ interface PhotoBookDao {
     suspend fun updateLastSeen(lastSeen: LastSeen)
 
     @Query("SELECT * FROM image WHERE name = :imageName")
+    /**
+     * getImage - gets an instance of image class in db
+     *
+     * @imageName: name (and PK) of the image to be gotten
+     */
     suspend fun getImage(imageName: String): Image
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    /**
+     * saveImage - saves image into database
+     *
+     * @image: The image to save
+     */
     suspend fun saveImage(image: Image)
 
     @Query("SELECT * FROM image")
+    /**
+     * getImages - gets all images in database
+     *
+     * Return: List of images
+     */
     suspend fun getImages(): List<Image>
 }
