@@ -7,8 +7,10 @@ import com.example.photobook.getOrAwaitValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.nullValue
 import org.hamcrest.core.Is.`is`
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
 import org.robolectric.annotation.Config
 
 /**
@@ -18,6 +20,11 @@ import org.robolectric.annotation.Config
 @Config(sdk = [29])
 class DetailViewModelTest
 {
+    @Before
+    fun init()
+    {
+        stopKoin()
+    }
     /**
      * onSnackBarShowed_snackBarValueIsNull - Checks if after
      * onSnackBarShowed is called, value of snackBBarContain is null
