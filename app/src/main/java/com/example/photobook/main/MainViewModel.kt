@@ -3,10 +3,13 @@ package com.example.photobook.main
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.photobook.R
+import com.example.photobook.data.Image
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.PostResponse
+import com.example.photobook.repository.database.PhotoBookDao
 import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.utils.Constants
+import kotlinx.coroutines.launch
 
 private const val TAG = "MainviewModel"
 /**
@@ -18,7 +21,8 @@ private const val TAG = "MainviewModel"
  */
 class MainViewModel(
     application: Application,
-    val remoteRepository: IRemoteRepository
+    val remoteRepository: IRemoteRepository,
+    val dao: PhotoBookDao
     ):AndroidViewModel(application)
 {
     var shouldRefresh = MutableLiveData(false)
@@ -152,5 +156,13 @@ class MainViewModel(
     fun onAddPostFragmentNavigated()
     {
         _navigateToAddPostFragment.value = false
+    }
+
+    fun getImage(imageName: String): Image? {
+        var image: Image? = null
+        viewModelScope.launch {
+            image = dao.getImage(imageName)
+        }
+        return image
     }
 }

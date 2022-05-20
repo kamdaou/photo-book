@@ -1,5 +1,7 @@
 package com.example.photobook.repository
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.example.photobook.data.*
 import com.example.photobook.repository.database.PhotoBookDao
@@ -7,6 +9,7 @@ import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.utils.Converter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 
 const val TAG = "Repository"
 class Repository(
@@ -59,6 +62,54 @@ class Repository(
         {
             Log.e(TAG, "error refreshing post: ${e.message}")
         }
+    }
+
+    /**
+     * refreshImages - read images and save them in local db
+     */
+    suspend fun refreshImages()
+    {
+        val posts = remoteRepository.getPosts().post
+
+        if (posts != null)
+        {
+            for (element in posts)
+            {
+                val listOfImageName = element.media?.url
+                if (listOfImageName != null) {
+                    for (imageName in listOfImageName)
+                    {
+                        val bitArray = Converter().bitmapToBitArray(getImage(imageName))
+                        database.saveImage(Image(name = imageName, image = bitArray))
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * getImage - loads image from firebase storage
+     *
+     * @imageName: Name of the image in firebase
+     */
+    fun getImage(imageName: String): Bitmap?
+    {
+        var myImage: Bitmap? = null
+        val ref = remoteRepository.storage.getReference().child("images/$imageName")
+        try
+        {
+            val file: File = File.createTempFile("Images", "bmp")
+            ref.getFile(file).addOnSuccessListener {
+                myImage = BitmapFactory.decodeFile(file.absolutePath)
+            }.addOnFailureListener {
+                Log.e(TAG, "Error while retrieving image: ${it.message}")
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.e(TAG, "Error while retrieving image: ${e.message}")
+        }
+        return myImage
     }
 
     /**

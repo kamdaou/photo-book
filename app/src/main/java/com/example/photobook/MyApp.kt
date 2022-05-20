@@ -4,6 +4,8 @@ import android.app.Application
 import com.example.photobook.addPost.AddPostViewModel
 import com.example.photobook.detail.DetailViewModel
 import com.example.photobook.main.MainViewModel
+import com.example.photobook.repository.database.PhotoBookDao
+import com.example.photobook.repository.database.PhotoBookDatabase
 import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.repository.network.RemoteRepository
 import org.koin.android.ext.koin.androidContext
@@ -20,12 +22,17 @@ class MyApp: Application()
             viewModel {
                 MainViewModel(
                     get(),
-                    get() as IRemoteRepository
+                    get() as IRemoteRepository,
+                    get()
                 )
+            }
+            single<PhotoBookDao> {
+                PhotoBookDatabase.getInstance(get()).photoBookDao
             }
             single {
                 AddPostViewModel(
-                    get() as IRemoteRepository
+                    get() as IRemoteRepository,
+                    get()
                 )
             }
             single {

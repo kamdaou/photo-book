@@ -23,7 +23,7 @@ class RemoteRepository
     : IRemoteRepository
 {
     val db = FirebaseFirestore.getInstance()
-    val storage = FirebaseStorage.getInstance()
+    override val storage = FirebaseStorage.getInstance()
 
     init
     {
