@@ -9,6 +9,9 @@
         <variable
             name="clickListener"
             type="com.example.photobook.adapters.PostListener" />
+        <variable
+            name="viewModel"
+            type="com.example.photobook.main.MainViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/post_item"
@@ -79,6 +82,7 @@
         <ImageView
             android:id="@+id/image_1"
             android:layout_width="0dp"
+            app:viewModel="@{viewModel}"
             app:postToImage0="@{post}"
             android:layout_height="wrap_content"
             tools:visibility="visible"
@@ -98,6 +102,7 @@
             android:id="@+id/image_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:viewModel="@{viewModel}"
             app:postToImage1="@{post}"
             android:visibility="gone"
             android:layout_marginStart="@dimen/small_dimension"
@@ -114,6 +119,7 @@
         <ImageView
             android:id="@+id/image_3"
             android:layout_width="0dp"
+            app:viewModel="@{viewModel}"
             app:postToImage2="@{post}"
             tools:visibility="visible"
             tools:src="@drawable/common_google_signin_btn_icon_light"
@@ -129,6 +135,7 @@
         <ImageView
             android:id="@+id/image_4"
             android:layout_width="0dp"
+            app:viewModel="@{viewModel}"
             app:postToImage3="@{post}"
             android:visibility="gone"
             android:layout_height="wrap_content"
@@ -145,6 +152,7 @@
             android:id="@+id/image_5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:viewModel="@{viewModel}"
             app:postToImage4="@{post}"
             tools:visibility="visible"
             tools:src="@drawable/common_google_signin_btn_icon_light"

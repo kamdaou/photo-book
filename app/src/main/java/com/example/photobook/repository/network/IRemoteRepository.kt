@@ -5,6 +5,7 @@ import com.example.photobook.data.*
 import com.example.photobook.utils.Constants.VoteType
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 
 interface IRemoteRepository {
@@ -151,4 +152,5 @@ interface IRemoteRepository {
      * Return: An uploadTask.
      */
     suspend fun saveVideo(videoUri: Uri, videoName: String): UploadTask
+    val storage: FirebaseStorage
 }

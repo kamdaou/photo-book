@@ -1,10 +1,7 @@
 package com.example.photobook.repository.database
 
 import androidx.room.*
-import com.example.photobook.data.LastSeen
-import com.example.photobook.data.Media
-import com.example.photobook.data.Post
-import com.example.photobook.data.User
+import com.example.photobook.data.*
 
 @Dao
 interface PhotoBookDao {
@@ -100,4 +97,10 @@ interface PhotoBookDao {
      * @lastSeen - New value of the last seen document
      */
     suspend fun updateLastSeen(lastSeen: LastSeen)
+
+    @Query("SELECT * FROM image WHERE name = :imageName")
+    suspend fun getImage(imageName: String): Image
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveImage(image: Image)
 }

@@ -22,7 +22,7 @@ class RefreshDataWork(
         val repository = Repository(db.photoBookDao, RemoteRepository())
         return try
         {
-            repository.refreshPosts()
+            repository.refreshImages()
             Result.success()
         }
         catch (e:Exception)

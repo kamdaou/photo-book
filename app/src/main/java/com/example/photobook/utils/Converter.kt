@@ -1,5 +1,6 @@
 package com.example.photobook.utils
 
+import android.graphics.Bitmap
 import androidx.room.TypeConverter
 import com.example.photobook.data.Media
 import com.example.photobook.data.Post
@@ -8,6 +9,7 @@ import com.example.photobook.data.User
 import com.google.firebase.Timestamp
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.io.ByteArrayOutputStream
 import java.lang.reflect.Type
 import java.util.*
 
@@ -136,5 +138,21 @@ class Converter
             media = media,
             post_vote = mutableListOf()
         )
+    }
+
+    /**
+     * bitmapToBitArray - converts a bitMap into bitArray
+     *
+     * @bitmap: the bitmap that should be converted
+     *
+     * Return: a bitArray
+     */
+    fun bitmapToBitArray(bitmap: Bitmap?): ByteArray {
+        if (bitmap == null) {
+            return ByteArray(10)
+        }
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        return outputStream.toByteArray()
     }
 }

@@ -10,12 +10,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.photobook.R
-import com.example.photobook.data.Media
-import com.example.photobook.data.Post
-import com.example.photobook.data.Result
-import com.example.photobook.data.User
+import com.example.photobook.data.*
+import com.example.photobook.repository.database.PhotoBookDao
 import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.utils.Constants
+import com.example.photobook.utils.Converter
 import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -28,7 +27,8 @@ import java.io.ByteArrayOutputStream
  * @remoteRepository - the remoteRepository
  */
 class AddPostViewModel(
-    private val remoteRepository : IRemoteRepository
+    private val remoteRepository : IRemoteRepository,
+    private val database: PhotoBookDao
 ): ViewModel()
 {
     private val _savingStatus = MutableLiveData<Constants.Status?>()
@@ -109,6 +109,9 @@ class AddPostViewModel(
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
         viewModelScope.launch {
+            val bitArray = Converter().bitmapToBitArray(imageBitmap)
+            val image = Image(name = imageName, image = bitArray)
+            database.saveImage(image)
             val uploadTask = remoteRepository.saveImage(imageName, data)
             uploadTask
                 .addOnSuccessListener {
