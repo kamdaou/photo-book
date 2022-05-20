@@ -79,7 +79,7 @@ class Repository(
                 if (listOfImageName != null) {
                     for (imageName in listOfImageName)
                     {
-                        val bitArray = Converter().bitmapToBitArray(getImage(imageName))
+                        val bitArray = Converter().bitmapToBitArray(getImageFromRemote(imageName))
                         database.saveImage(Image(name = imageName, image = bitArray))
                     }
                 }
@@ -88,11 +88,11 @@ class Repository(
     }
 
     /**
-     * getImage - loads image from firebase storage
+     * getImageFromRemote - loads image from firebase storage
      *
      * @imageName: Name of the image in firebase
      */
-    fun getImage(imageName: String): Bitmap?
+    fun getImageFromRemote(imageName: String): Bitmap?
     {
         var myImage: Bitmap? = null
         val ref = remoteRepository.storage.getReference().child("images/$imageName")
@@ -110,6 +110,14 @@ class Repository(
             Log.e(TAG, "Error while retrieving image: ${e.message}")
         }
         return myImage
+    }
+
+    /**
+     * getImagesFromLocal - gets all image from room database
+     */
+    suspend fun getImagesFromLocal(): List<Image>
+    {
+        return database.getImages()
     }
 
     /**

@@ -6,6 +6,7 @@ import android.app.Application
 import android.app.Instrumentation
 import android.content.Intent
 import android.graphics.BitmapFactory
+import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -22,6 +23,7 @@ import androidx.test.rule.GrantPermissionRule
 import com.example.photobook.addPost.AddPostViewModel
 import com.example.photobook.detail.DetailViewModel
 import com.example.photobook.main.MainViewModel
+import com.example.photobook.repository.database.PhotoBookDatabase
 import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.repository.network.RemoteRepository
 import com.example.photobook.utils.EspressoIdlingResource
@@ -39,6 +41,7 @@ import org.koin.dsl.module
 class MainActivityTest
 {
     private lateinit var remoteRepository: RemoteRepository
+    private lateinit var database: PhotoBookDatabase
     private val dataBindingIdlingResource = DataBindingIdlingResource()
 
     @get:Rule
@@ -54,6 +57,15 @@ class MainActivityTest
     @Before
     fun init()
     {
+        database = Room
+            .inMemoryDatabaseBuilder(
+                ApplicationProvider.getApplicationContext(),
+                PhotoBookDatabase::class.java
+            )
+            .allowMainThreadQueries()
+            .build()
+        val dao = database.photoBookDao
+
         remoteRepository = RemoteRepository()
         runBlocking {
             remoteRepository.deleteAllPosts()
@@ -66,12 +78,14 @@ class MainActivityTest
             viewModel {
                 MainViewModel(
                     app,
-                    remoteRepository as IRemoteRepository
+                    remoteRepository as IRemoteRepository,
+                    dao
                 )
             }
             single {
                 AddPostViewModel(
-                    remoteRepository as IRemoteRepository
+                    remoteRepository as IRemoteRepository,
+                    dao
                 )
             }
             single {

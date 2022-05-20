@@ -103,4 +103,7 @@ interface PhotoBookDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveImage(image: Image)
+
+    @Query("SELECT * FROM image")
+    suspend fun getImages(): List<Image>
 }

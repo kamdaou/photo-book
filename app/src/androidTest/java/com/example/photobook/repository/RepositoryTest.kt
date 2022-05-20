@@ -15,6 +15,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @LargeTest
@@ -181,5 +182,67 @@ class RepositoryTest
         assertThat(loaded?.contains(postFirestores[0]), `is`(true))
         assertThat(loaded?.contains(postFirestores[1]), `is`(true))
         assertThat(loaded?.contains(postFirestores[2]), `is`(true))
+    }
+
+    /**
+     * refreshImage_imageSavedInDb - Tests that images are saved
+     * in database after they have been refreshed
+     */
+    @Test
+    fun refreshImage_imageSavedInDb() = runBlocking {
+        /* GIVEN - A remote repository with a list of images */
+        val imageName1: String = UUID.randomUUID().toString()
+        val data1 = ByteArray(10)
+        val imageName2: String = UUID.randomUUID().toString()
+        val data2 = ByteArray(10)
+
+        val post = Post(
+            id = "id",
+            submitter_id = "userId",
+            title = "title",
+            body = "body",
+            inserted_at = Timestamp.now(),
+            media_id = "mediaId"
+        )
+        val post1 = Post(
+            id = "id1",
+            submitter_id = "userId",
+            title = "title",
+            body = "body",
+            inserted_at = Timestamp.now(),
+            media_id = "mediaId"
+        )
+        val post2 = Post(
+            id = "id2",
+            submitter_id = "userId",
+            title = "title",
+            body = "body",
+            inserted_at = Timestamp.now(),
+            media_id = "mediaId"
+        )
+        val user = User(
+            username = "username",
+            id = "userId"
+        )
+        val media = Media(
+            id = "mediaId",
+            url = listOf(imageName1, imageName2),
+            media_type = "IMAGE",
+            title = "title"
+        )
+
+        post.id = fakeAndroidTestRemoteRepository.savePostMedia(post, media,  user).id
+        post1.id = fakeAndroidTestRemoteRepository.savePostMedia(post1, media,  user).id
+        post2.id = fakeAndroidTestRemoteRepository.savePostMedia(post2, media,  user).id
+
+        fakeAndroidTestRemoteRepository.saveImage(imageName1, data1)
+        fakeAndroidTestRemoteRepository.saveImage(imageName2, data2)
+
+        /* WHEN - Refreshing images */
+        repository.refreshImages()
+
+        /* THEN - Images are being gotten in database */
+        val allImages = repository.getImagesFromLocal()
+        assertThat(allImages, `is`(listOf(Image(imageName1, data1), Image(imageName2, data2))))
     }
 }

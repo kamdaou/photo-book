@@ -2,6 +2,7 @@ package com.example.photobook
 
 import android.app.Activity
 import android.net.Uri
+import android.util.Log
 import com.example.photobook.data.*
 import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.utils.Constants
@@ -10,6 +11,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import org.mockito.Mock
 import java.util.concurrent.Executor
@@ -212,8 +214,23 @@ class FakeRemoteRepository: IRemoteRepository
         }
     }
 
-    init {
+    private fun useEmulator()
+    {
+        if (!storageUsingEmulator)
+        {
+            try {
+                storage.useEmulator("10.0.2.2", 9199)
+                storageUsingEmulator = true
+            }
+            catch (e: Exception) {
+                Log.e(TAG, "unable to use emulator for storage: ${e.message}")
+            }
+        }
+    }
 
+    init
+    {
+        useEmulator()
     }
 
     override suspend fun saveMedia(media: Media): Result {
@@ -283,4 +300,13 @@ class FakeRemoteRepository: IRemoteRepository
     override suspend fun saveVideo(videoUri: Uri, videoName: String): UploadTask {
         TODO("Not yet implemented")
     }
+
+    override val storage: FirebaseStorage
+        get() = FirebaseStorage.getInstance()
+
+    companion object
+    {
+        private var storageUsingEmulator = false
+    }
 }
+const val TAG = "FakeRemoteRepo"

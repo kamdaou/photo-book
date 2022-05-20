@@ -2,6 +2,7 @@ package com.example.photobook.main
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.photobook.FakeRemoteRepository
@@ -9,11 +10,13 @@ import com.example.photobook.MainCoroutineRule
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.PostResponse
 import com.example.photobook.getOrAwaitValue
+import com.example.photobook.repository.database.PhotoBookDatabase
 import com.example.photobook.utils.Constants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.MatcherAssert
 import org.hamcrest.core.Is
 import org.hamcrest.core.Is.`is`
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,6 +34,7 @@ class MainViewModelTest
 {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var postFirestore: PostFirestore
+    private lateinit var database: PhotoBookDatabase
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
@@ -45,8 +49,26 @@ class MainViewModelTest
         val application = ApplicationProvider.getApplicationContext<Application>()
         val fakeRemoteRepository = FakeRemoteRepository()
 
-        mainViewModel = MainViewModel(application, fakeRemoteRepository)
+        database = Room
+            .inMemoryDatabaseBuilder(
+                ApplicationProvider.getApplicationContext(),
+                PhotoBookDatabase::class.java
+            )
+            .allowMainThreadQueries()
+            .build()
+        val dao = database.photoBookDao
+
+        mainViewModel = MainViewModel(application, fakeRemoteRepository, dao)
         postFirestore = PostFirestore("title", "body", id = "id1")
+    }
+
+    /**
+     * closeDb - Closes the database
+     */
+    @After
+    fun closeBb()
+    {
+        database.close()
     }
 
     /**

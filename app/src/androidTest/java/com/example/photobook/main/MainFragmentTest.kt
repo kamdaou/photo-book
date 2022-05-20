@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
@@ -20,10 +21,12 @@ import com.example.photobook.R
 import com.example.photobook.data.Post
 import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.User
+import com.example.photobook.repository.database.PhotoBookDatabase
 import com.example.photobook.repository.network.IRemoteRepository
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -42,6 +45,7 @@ class MainFragmentTest {
     private lateinit var remoteRepository: IRemoteRepository
     private lateinit var user: User
     private lateinit var application: Application
+    private lateinit var database: PhotoBookDatabase
 
     @get:Rule
     val mainCoroutineRule = AndroidMainCoroutineRule()
@@ -55,8 +59,16 @@ class MainFragmentTest {
         application = ApplicationProvider.getApplicationContext()
 
         remoteRepository = FakeAndroidTestRemoteRepository()
+        database = Room
+            .inMemoryDatabaseBuilder(
+                ApplicationProvider.getApplicationContext(),
+                PhotoBookDatabase::class.java
+            )
+            .allowMainThreadQueries()
+            .build()
+        val dao = database.photoBookDao
+        val mainViewModel = MainViewModel(application, remoteRepository, dao)
 
-        val mainViewModel = MainViewModel(application, remoteRepository)
         stopKoin()
 
         val myModule = module {
@@ -85,6 +97,15 @@ class MainFragmentTest {
             body = "body",
         )
         user = User(username = "username", id = "userId")
+    }
+
+    /**
+     * closeDb - Closes the database
+     */
+    @After
+    fun closeBb()
+    {
+        database.close()
     }
 
     /**
