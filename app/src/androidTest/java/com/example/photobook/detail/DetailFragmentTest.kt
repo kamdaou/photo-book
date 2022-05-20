@@ -5,6 +5,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.liveData
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
@@ -20,8 +21,10 @@ import com.example.photobook.data.PostFirestore
 import com.example.photobook.data.PostResponse
 import com.example.photobook.data.User
 import com.example.photobook.main.MainViewModel
+import com.example.photobook.repository.database.PhotoBookDatabase
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,6 +40,7 @@ class DetailFragmentTest
     private lateinit var remoteRepository: FakeAndroidTestRemoteRepository
     private lateinit var mainViewModel: MainViewModel
     private lateinit var detailViewModel: DetailViewModel
+    private lateinit var database: PhotoBookDatabase
 
     @get:Rule
     val mainCoroutineRule = AndroidMainCoroutineRule()
@@ -49,9 +53,27 @@ class DetailFragmentTest
     {
         val application = ApplicationProvider.getApplicationContext<Application>()
 
+        database = Room
+            .inMemoryDatabaseBuilder(
+                ApplicationProvider.getApplicationContext(),
+                PhotoBookDatabase::class.java
+            )
+            .allowMainThreadQueries()
+            .build()
+        val dao = database.photoBookDao
+
         remoteRepository = FakeAndroidTestRemoteRepository()
-        mainViewModel = MainViewModel(application, remoteRepository)
+        mainViewModel = MainViewModel(application, remoteRepository, dao)
         detailViewModel = DetailViewModel(application)
+    }
+
+    /**
+     * closeDb - Closes the database
+     */
+    @After
+    fun closeBb()
+    {
+        database.close()
     }
 
     /**

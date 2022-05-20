@@ -6,10 +6,12 @@ import com.example.photobook.data.*
 import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.utils.Constants.VoteType
 import com.example.photobook.utils.Login
+import com.example.photobook.utils.wrapEspressoIdlingResource
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.tasks.await
 
@@ -17,6 +19,8 @@ const val TAG = "FakeAndroidTest"
 class FakeAndroidTestRemoteRepository: IRemoteRepository
 {
     val db = FirebaseFirestore.getInstance()
+    override val storage: FirebaseStorage
+        get() = FirebaseStorage.getInstance()
 
     init
     {
@@ -30,14 +34,24 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      */
     private fun useEmulator()
     {
-        if (!usingEmulator)
+        if (!firestoreUsingEmulator)
         {
             try {
                 db.useEmulator("10.0.2.2", 8080)
-                usingEmulator = true
+                firestoreUsingEmulator = true
             }
-            catch(e:Exception){
-                Log.e(TAG, "Exception while attempting to use emulator: ${e.message}")
+            catch (e: Exception) {
+                Log.e(TAG, "unable to use emulator for firestore: ${e.message}")
+            }
+        }
+        if (!storageUsingEmulator)
+        {
+            try {
+                storage.useEmulator("10.0.2.2", 9199)
+                storageUsingEmulator = true
+            }
+            catch (e: Exception) {
+                Log.e(TAG, "unable to use emulator for storage: ${e.message}")
             }
         }
     }
@@ -389,7 +403,10 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
     }
 
     override suspend fun saveImage(imageName: String, data: ByteArray): UploadTask {
-        TODO("Not yet implemented")
+        wrapEspressoIdlingResource {
+            val imageRef = storage.getReference("images/").child(imageName)
+            return imageRef.putBytes(data)
+        }
     }
 
     /**
@@ -406,6 +423,7 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
 
     companion object
     {
-        private var usingEmulator = false
+        private var storageUsingEmulator = false
+        private var firestoreUsingEmulator = false
     }
 }
