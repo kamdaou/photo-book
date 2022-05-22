@@ -39,6 +39,10 @@ class AddPostViewModel(
     val snackBarContain: MutableLiveData<Int?>
         get() = _snackBarContain
 
+    private val _takePicture = MutableLiveData<Boolean>()
+    val takePicture: MutableLiveData<Boolean>
+        get() = _takePicture
+
     /**
      * savePost - Saves a post
      *
@@ -156,6 +160,19 @@ class AddPostViewModel(
     fun onSaved()
     {
         _savingStatus.value = null
+    }
+
+    fun onTakePictureHit(size: Int)
+    {
+        if (size < 5)
+            _takePicture.value = true
+        else
+            _snackBarContain.value = R.string.no_more_than_five_images
+    }
+
+    fun onPictureTaken()
+    {
+        _takePicture.value = false
     }
 
     val observable = Observer()

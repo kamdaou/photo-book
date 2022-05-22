@@ -9,6 +9,8 @@ import com.bumptech.glide.Glide
 import com.example.photobook.R
 import com.example.photobook.data.Image
 import com.example.photobook.data.PostFirestore
+import com.example.photobook.main.MainViewModel
+import kotlinx.coroutines.launch
 
 /**
  * postToSubmitter - Takes a post and change
@@ -100,7 +102,7 @@ fun postToDate(
 }
 
 @BindingAdapter("postToImage0", "displayImage")
-fun displayImage0(
+fun detailDisplayImage0(
     view: ImageView,
     frameworkData: PostFirestore,
     mediaReference: Image?
@@ -122,7 +124,7 @@ fun displayImage0(
 
 
 @BindingAdapter("postToImage1", "displayImage")
-fun displayImage1(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
+fun detailDisplayImage1(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
     if(frameworkData.media != null && frameworkData.media!!.url.size >= 2){
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
@@ -141,7 +143,7 @@ fun displayImage1(view: ImageView, frameworkData: PostFirestore, mediaReference:
 
 
 @BindingAdapter("postToImage2", "displayImage")
-fun displayImage2(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
+fun detailDisplayImage2(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
     if(frameworkData.media != null && frameworkData.media!!.url.size >= 3){
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
@@ -159,7 +161,7 @@ fun displayImage2(view: ImageView, frameworkData: PostFirestore, mediaReference:
 
 
 @BindingAdapter("postToImage3", "displayImage")
-fun displayImage3(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
+fun detailDisplayImage3(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
     if(frameworkData.media != null && frameworkData.media!!.url.size >=4){
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
@@ -177,7 +179,7 @@ fun displayImage3(view: ImageView, frameworkData: PostFirestore, mediaReference:
 
 
 @BindingAdapter("postToImage4", "displayImage")
-fun displayImage4(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
+fun detailDisplayImage4(view: ImageView, frameworkData: PostFirestore, mediaReference: Image?){
     if(frameworkData.media != null && frameworkData.media!!.url.size >= 5){
         Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
         view.visibility = View.VISIBLE
@@ -190,7 +192,133 @@ fun displayImage4(view: ImageView, frameworkData: PostFirestore, mediaReference:
                 .into(view)
         }
     }
+}
 
+
+
+@BindingAdapter("postToImage0", "viewModel")
+fun displayImage0(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel) {
+    if (frameworkData.media != null && frameworkData.media!!.url.isNotEmpty()) {
+        Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
+        view.visibility = View.VISIBLE
+        viewModel.scope.launch {
+            val image = viewModel.dao.getImage(frameworkData.media!!.url[0])
+            Glide
+                .with(view.context)
+                .load(image.image)
+                .placeholder(R.drawable.ic_broken_image)
+                .centerInside()
+                .into(view)
+        }
+
+    }
+    else
+    {
+        view.visibility = View.GONE
+        Glide
+            .with(view.context)
+            .clear(view)
+    }
+}
+
+@BindingAdapter("postToImage1", "viewModel")
+fun displayImage1(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel){
+    if(frameworkData.media != null && frameworkData.media!!.url.size >= 2){
+        Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
+        view.visibility = View.VISIBLE
+        viewModel.scope.launch {
+            val image = viewModel.dao.getImage(frameworkData.media!!.url[1])
+            Glide
+                .with(view.context)
+                .load(image.image)
+                .placeholder(R.drawable.ic_broken_image)
+                .centerInside()
+                .into(view)
+        }
+
+    }
+    else
+    {
+        view.visibility = View.GONE
+        Glide
+            .with(view.context)
+            .clear(view)
+    }
+}
+
+@BindingAdapter("postToImage2", "viewModel")
+fun displayImage2(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel){
+    if(frameworkData.media != null && frameworkData.media!!.url.size >= 3){
+        Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
+        view.visibility = View.VISIBLE
+        viewModel.scope.launch {
+            val image = viewModel.dao.getImage(frameworkData.media!!.url[2])
+            Glide
+                .with(view.context)
+                .load(image.image)
+                .placeholder(R.drawable.ic_broken_image)
+                .centerInside()
+                .into(view)
+        }
+
+    }
+    else
+    {
+        view.visibility = View.GONE
+        Glide
+            .with(view.context)
+            .clear(view)
+    }
+}
+
+
+@BindingAdapter("postToImage3", "viewModel")
+fun displayImage3(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel){
+    if(frameworkData.media != null && frameworkData.media!!.url.size >= 4){
+        Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
+        view.visibility = View.VISIBLE
+        viewModel.scope.launch {
+            val image = viewModel.dao.getImage(frameworkData.media!!.url[3])
+            Glide
+                .with(view.context)
+                .load(image.image)
+                .placeholder(R.drawable.ic_broken_image)
+                .centerInside()
+                .into(view)
+        }
+    }
+    else
+    {
+        view.visibility = View.GONE
+        Glide
+            .with(view.context)
+            .clear(view)
+    }
+}
+
+
+@BindingAdapter("postToImage4", "viewModel")
+fun displayImage4(view: ImageView, frameworkData: PostFirestore, viewModel: MainViewModel){
+    if(frameworkData.media != null && frameworkData.media!!.url.size >= 5){
+        Log.i("BindingAdapter", "media is not empty: ${frameworkData.media!!.url.size}")
+        view.visibility = View.VISIBLE
+        viewModel.scope.launch {
+            val image = viewModel.dao.getImage(frameworkData.media!!.url[4])
+            Glide
+                .with(view.context)
+                .load(image.image)
+                .placeholder(R.drawable.ic_broken_image)
+                .centerInside()
+                .into(view)
+        }
+    }
+    else
+    {
+        view.visibility = View.GONE
+        Glide
+            .with(view.context)
+            .clear(view)
+    }
 }
 
 
