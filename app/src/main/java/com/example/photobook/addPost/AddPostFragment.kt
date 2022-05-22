@@ -129,7 +129,15 @@ class AddPostFragment : Fragment()
         }
 
         binding.takePicture.setOnClickListener {
-            onTakePictureHit()
+            _viewModel.onTakePictureHit(imageViews.size)
+        }
+
+        _viewModel.takePicture.observe(viewLifecycleOwner) {
+            if (it)
+            {
+                onTakePictureHit()
+                _viewModel.onPictureTaken()
+            }
         }
 
         handleSavedInstanceBundle(savedInstanceState)

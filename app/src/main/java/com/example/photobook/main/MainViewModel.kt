@@ -27,6 +27,7 @@ class MainViewModel(
 {
     var shouldRefresh = MutableLiveData(false)
     var posts: LiveData<PostResponse>? = null
+    val scope = viewModelScope
 
     companion object
     {
@@ -158,13 +159,32 @@ class MainViewModel(
         _navigateToAddPostFragment.value = false
     }
 
-    val image = MutableLiveData<Image>()
-    private val _image: LiveData<Image>
-        get() = image
+    private var _image0 = MutableLiveData<Image>()
+    val image0: LiveData<Image>
+        get() = _image0
+    private var _image1 = MutableLiveData<Image>()
+    val image1: LiveData<Image>
+        get() = _image1
+    private var _image2 = MutableLiveData<Image>()
+    val image2: LiveData<Image>
+        get() = _image2
+    private var _image3 = MutableLiveData<Image>()
+    val image3: LiveData<Image>
+        get() = _image3
+    private var _image4 = MutableLiveData<Image>()
+    val image4: LiveData<Image>
+        get() = _image4
 
-    fun getImage(imageName: String) {
+    fun getImage(imageName: String, i: Int) {
         viewModelScope.launch {
-            image.value = dao.getImage(imageName)
+            when (i)
+            {
+                0 -> _image0.value = dao.getImage(imageName)
+                1 -> _image1.value = dao.getImage(imageName)
+                2 -> _image2.value = dao.getImage(imageName)
+                3 -> _image3.value = dao.getImage(imageName)
+                4 -> _image4.value = dao.getImage(imageName)
+            }
         }
     }
 }

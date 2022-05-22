@@ -47,4 +47,5 @@
     <string name="discard">Discard</string>
     <string name="cancel">Cancel</string>
     <string name="unable_to_get_your_camera">\"Unable to get your camera: \"</string>
+    <string name="no_more_than_five_images">You\'re allowed to take only 5 images per post. Please feel free to create another post if you wish</string>
 </resources>
