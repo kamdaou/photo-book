@@ -3,6 +3,7 @@ package com.example.photobook
 import android.app.Application
 import com.example.photobook.addPost.AddPostViewModel
 import com.example.photobook.detail.DetailViewModel
+import com.example.photobook.detail.media.MediaViewModel
 import com.example.photobook.main.MainViewModel
 import com.example.photobook.repository.database.PhotoBookDao
 import com.example.photobook.repository.database.PhotoBookDatabase
@@ -40,6 +41,11 @@ class MyApp: Application()
             }
             single <IRemoteRepository> {
                 RemoteRepository()
+            }
+            single {
+                MediaViewModel(
+                    get()
+                )
             }
         }
 
