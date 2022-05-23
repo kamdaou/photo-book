@@ -9,6 +9,8 @@ My application is a simple app that allows users to take picture and post some c
 The application has two activity, authentication activity and MainActivity.
 * The authentication activity allows users to authenticate before they can use the app.
 * The main activity includes 4 fragments that displays some contents.
+
+
 About the fragments:
   * The main fragment, displays posts from firestore. It uses recycler view and if the post contains a pictures, Glide is used to display these pictures (For a personal reason, a post cannot contain more than five pictures).
   * The add post fragment allows user to create and post their post. To open it, there is a button in main fragment. Users can just choose to write some thing or they can take picture also. And if they are taking picture, permission is asked first. Also, we use bundle in that fragment to make sure users’ posts are not losted.
