@@ -1,9 +1,6 @@
 package com.example.photobook.detail.media
 
 import android.app.Application
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -37,35 +34,5 @@ class MediaViewModel(
         if (i in 0..4)
             _selectedIndex.value = i
     }
-    val observable = Observer()
 
-    /**
-     * Observer - Observable class for some data binding
-     */
-    class Observer: BaseObservable()
-    {
-        var index: Int = 0
-
-        /**
-         * getIndex - gets the index of the post
-         */
-        @JvmName("getIndex1")
-        @Bindable
-        fun getIndex(): Int {
-            return index
-        }
-
-        /**
-         * setIndex - sets index of the post
-         */
-        @JvmName("setIndex1")
-        fun setIndex(index: Int) {
-            if (this.index != index)
-            {
-                this.index = index
-                notifyPropertyChanged(BR.index1)
-            }
-        }
-
-    }
 }
