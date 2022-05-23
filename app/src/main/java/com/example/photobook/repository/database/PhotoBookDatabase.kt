@@ -5,7 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.photobook.data.*
+import com.example.photobook.data.Image
+import com.example.photobook.data.Media
+import com.example.photobook.data.Post
+import com.example.photobook.data.User
 import com.example.photobook.utils.Converter
 
 @Database(
@@ -13,10 +16,9 @@ import com.example.photobook.utils.Converter
         User::class,
         Post::class,
         Media::class,
-        LastSeen::class,
         Image::class
     ],
-    version=1,
+    version = 2,
     exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class PhotoBookDatabase: RoomDatabase()

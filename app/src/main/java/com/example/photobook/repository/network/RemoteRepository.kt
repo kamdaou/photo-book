@@ -186,15 +186,13 @@ class RemoteRepository
      *
      * Return: a PostResponse
      */
-    override suspend fun getPosts(limit: Long, lastSeen: List<LastSeen>?): PostResponse
+    override suspend fun getPosts(): PostResponse
     {
         wrapEspressoIdlingResource {
             val postResponse = PostResponse()
             val doc = db.collection("post")
                 .orderBy("inserted_at", Query.Direction.ASCENDING)
-                .limit(limit)
-            if (lastSeen != null)
-                doc.startAfter(lastSeen.last().id)
+
             val loaded = doc.get()
 
             try
@@ -412,7 +410,7 @@ class RemoteRepository
     override suspend fun deleteAllPosts()
     {
         wrapEspressoIdlingResource {
-            val post = getPosts(1000000)
+            val post = getPosts()
             for (element in post.post!!) {
                 db.collection("post").document(element.id).delete()
             }

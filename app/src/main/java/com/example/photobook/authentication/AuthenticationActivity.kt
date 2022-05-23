@@ -29,10 +29,10 @@ class AuthenticationActivity : AppCompatActivity() {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        //if (currentUser != null)
-        //{
+        if (currentUser != null)
+        {
             navigateToMainActivity()
-        //}
+        }
         binding.loginButton.setOnClickListener{
             launchSignInFlow()
         }

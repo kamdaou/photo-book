@@ -24,6 +24,7 @@ import com.example.photobook.main.MainViewModel
 import com.example.photobook.repository.database.PhotoBookDatabase
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -71,9 +72,9 @@ class DetailFragmentTest
      * closeDb - Closes the database
      */
     @After
-    fun closeBb()
-    {
+    fun closeBb() = runBlocking {
         database.close()
+        remoteRepository.deleteAllPosts()
     }
 
     /**

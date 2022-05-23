@@ -25,16 +25,8 @@ class Repository(
     {
         try {
             withContext(Dispatchers.IO){
-                val lastPost = database.getLastSeen()
-                val postResponse = remoteRepository.getPosts(lastSeen = lastPost)
+                val postResponse = remoteRepository.getPosts()
 
-                if (postResponse.post != null)
-                {
-                    val lastSeen = LastSeen(
-                        element_id = postResponse.post!!.last().id
-                    )
-                    saveLastSeen(lastSeen)
-                }
                 if (postResponse.post != null)
                 {
                     for (element in postResponse.post!!)
@@ -162,20 +154,6 @@ class Repository(
     {
         withContext(Dispatchers.IO) {
             database.insertMedia(media)
-        }
-    }
-
-    /**
-     * savesLastSeen - Saves the last post retrieved from
-     * firestore
-     *
-     * @lastSeen: A lastSeen instance with element_id
-     * equals to id of the last element retrieved
-     */
-    suspend fun saveLastSeen(lastSeen: LastSeen)
-    {
-        withContext(Dispatchers.IO) {
-            database.insertLastSeen(lastSeen)
         }
     }
 

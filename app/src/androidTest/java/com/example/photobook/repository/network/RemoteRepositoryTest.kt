@@ -79,7 +79,7 @@ class RemoteRepositoryTest
 
 
 
-        val allPosts = remoteRepository.getPosts(limit = 2000).post
+        val allPosts = remoteRepository.getPosts().post
 
         MatcherAssert.assertThat(allPosts?.contains(postFirestore), Is.`is`(true))
         MatcherAssert.assertThat(allPosts?.contains(postFirestore1), Is.`is`(true))
