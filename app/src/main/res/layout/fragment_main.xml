@@ -37,7 +37,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_post_button"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
             android:contentDescription="@string/add_post_description"
             android:src="@android:drawable/ic_input_add"
