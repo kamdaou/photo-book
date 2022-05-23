@@ -114,7 +114,7 @@ class MainFragmentTest {
             remoteRepository.deleteAllPosts()
             savePost(user)
             val navController = launchFragment()
-            val posts = remoteRepository.getPosts(1)
+            val posts = remoteRepository.getPosts()
 
             Espresso.onView(withId(R.id.post_list))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

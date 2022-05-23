@@ -43,6 +43,8 @@ private const val IMAGE_VIEW = "imageView"
 private const val TAKEN_IMAGES = "takenImage"
 private const val IMAGE_MEDIA_URL = "imageMediaUrl"
 private const val IMAGE_MEDIA_TITLE = "imageMediaTitle"
+private const val POST_BODY = "postBody"
+private const val POST_TITLE = "postTitle"
 private const val REQUEST_CAMERA_CODE = 2
 private const val REQUEST_IMAGE_CAPTURE = 12
 
@@ -87,17 +89,19 @@ class AddPostFragment : Fragment()
             _viewModel.observable.setBody(post.body)
             _viewModel.observable.setTitle(post.title)
             /**
-             * TODO replace the following line by post.submitter_id = currentUser.uid!!
+             * TODO replace the following line by post.submitter_id = currentUser.uid!! Done
              * after implementing login
              */
-            post.submitter_id = "userId"
-            // TODO add cty using location functions
+            /* post.submitter_id = "userId" */
+            post.submitter_id = currentUser?.uid ?: "AnonymeUserId"
+            /* TODO add cty using location functions */
             post.city = ""
             /**
-             * TODO replace the following line by val user = createUserFromCurrentUser(currentUser)
+             * TODO replace the following line by val user = createUserFromCurrentUser(currentUser) Done
              * after implementing login
              */
-            val user = User("username", "userid")
+            /* val user = User("username", "userid") */
+            val user = createUserFromCurrentUser(currentUser)
 
             if (imageNames.isNotEmpty())
             {
@@ -215,6 +219,8 @@ class AddPostFragment : Fragment()
                     addImageUI(imageViews[i])
                 }
             }
+            post.title = savedInstanceState.get(POST_TITLE) as String
+            post.body = savedInstanceState.get(POST_BODY) as String
         }
             Log.d(TAG, "saved instance value: $imageNames")
     }
@@ -310,6 +316,10 @@ class AddPostFragment : Fragment()
         outState.putStringArrayList(IMAGE_MEDIA_URL, ArrayList(imageMedia.url))
         outState.putStringArrayList(IMAGE_NAME, ArrayList(imageNames))
         outState.putInt(TAKEN_IMAGES, takenImages)
+        _viewModel.observable.setBody(post.body)
+        _viewModel.observable.setTitle(post.title)
+        outState.putString(POST_TITLE, post.title)
+        outState.putString(POST_BODY, post.body)
 
         super.onSaveInstanceState(outState)
     }
@@ -321,9 +331,12 @@ class AddPostFragment : Fragment()
      *
      * Return: User
      */
-    private fun createUserFromCurrentUser(currentUser: FirebaseUser): User
+    private fun createUserFromCurrentUser(currentUser: FirebaseUser?): User
     {
-        return User(username = currentUser.displayName!!, id = currentUser.uid)
+        return if (currentUser != null)
+            User(username = currentUser.displayName!!, id = currentUser.uid)
+        else
+            User("anonymeUser", "AnonymeUserId")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)

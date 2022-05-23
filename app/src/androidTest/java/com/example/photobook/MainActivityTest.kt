@@ -27,6 +27,7 @@ import com.example.photobook.repository.database.PhotoBookDatabase
 import com.example.photobook.repository.network.IRemoteRepository
 import com.example.photobook.repository.network.RemoteRepository
 import com.example.photobook.utils.EspressoIdlingResource
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.core.IsNot.not
 import org.junit.After
@@ -113,6 +114,9 @@ class MainActivityTest
     {
         /* GIVEN - MainActivity with a fresh repository */
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth.useEmulator("10.0.2.2", 9099)
+        firebaseAuth.signInAnonymously()
         dataBindingIdlingResource.monitorActivity(activityScenario)
         val icon = BitmapFactory.decodeResource(
             InstrumentationRegistry.getTargetContext().getResources(),
@@ -189,4 +193,9 @@ class MainActivityTest
         IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
     }
 
+    @After
+    fun deletePosts() = runBlocking {
+        remoteRepository.deleteAllPosts()
+        database.close()
+    }
 }
