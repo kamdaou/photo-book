@@ -30,19 +30,19 @@ class MyApp: Application()
             single<PhotoBookDao> {
                 PhotoBookDatabase.getInstance(get()).photoBookDao
             }
-            single {
+            viewModel {
                 AddPostViewModel(
                     get() as IRemoteRepository,
                     get()
                 )
             }
-            single {
+            viewModel {
                 DetailViewModel(get())
             }
             single <IRemoteRepository> {
                 RemoteRepository()
             }
-            single {
+            viewModel {
                 MediaViewModel(
                     get()
                 )
