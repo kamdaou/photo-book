@@ -255,50 +255,47 @@ class AddPostFragment : Fragment()
     @SuppressLint("SetTextI18n")
     private fun addImageUI(imageBitmap: Bitmap)
     {
-        when (takenImages)
-        {
-            0 ->
-            {
-                binding.takenImage.visibility = View.GONE
-                binding.takenImage1.visibility = View.GONE
-                binding.takenImage2Text.visibility = View.GONE
-                binding.takenImage2.visibility = View.GONE
-                binding.deleteTakenImage.visibility = View.GONE
-                binding.deleteTakenImage2.visibility = View.GONE
-                binding.deleteTakenImage3.visibility = View.GONE
-            }
-            1 ->
-            {
-                binding.takenImage.setImageBitmap(imageBitmap)
-                binding.takenImage.visibility = View.VISIBLE
-                binding.deleteTakenImage.visibility = View.VISIBLE
-                binding.takenImage1.visibility = View.GONE
-                binding.takenImage2.visibility = View.GONE
-                binding.takenImage2Text.visibility = View.GONE
-                binding.deleteTakenImage2.visibility = View.GONE
-                binding.deleteTakenImage3.visibility = View.GONE
-            }
-            2 ->
-            {
-                binding.takenImage1.setImageBitmap(imageBitmap)
-                binding.takenImage1.visibility = View.VISIBLE
-                binding.deleteTakenImage2.visibility = View.VISIBLE
-                binding.takenImage2.visibility = View.GONE
-                binding.takenImage2Text.visibility = View.GONE
-                binding.deleteTakenImage3.visibility = View.GONE
-            }
-            3 ->
-            {
-                binding.takenImage2.setImageBitmap(imageBitmap)
-                binding.takenImage2.visibility = View.VISIBLE
-                binding.takenImage2Text.visibility = View.GONE
-                binding.deleteTakenImage3.visibility = View.VISIBLE
-            }
-            else ->
-            {
-                binding.takenImage2Text.text = (takenImages-3).toString() + "+"
-                binding.takenImage2Text.visibility = View.VISIBLE
-                binding.deleteTakenImage3.visibility = View.GONE
+
+        binding.let {
+            when (takenImages) {
+                0 -> {
+                    it.takenImage.visibility = View.GONE
+                    it.takenImage1.visibility = View.GONE
+                    it.takenImage2Text.visibility = View.GONE
+                    it.takenImage2.visibility = View.GONE
+                    it.deleteTakenImage.visibility = View.GONE
+                    it.deleteTakenImage2.visibility = View.GONE
+                    it.deleteTakenImage3.visibility = View.GONE
+                }
+                1 -> {
+                    it.takenImage.setImageBitmap(imageBitmap)
+                    it.takenImage.visibility = View.VISIBLE
+                    it.deleteTakenImage.visibility = View.VISIBLE
+                    it.takenImage1.visibility = View.GONE
+                    it.takenImage2.visibility = View.GONE
+                    it.takenImage2Text.visibility = View.GONE
+                    it.deleteTakenImage2.visibility = View.GONE
+                    it.deleteTakenImage3.visibility = View.GONE
+                }
+                2 -> {
+                    it.takenImage1.setImageBitmap(imageBitmap)
+                    it.takenImage1.visibility = View.VISIBLE
+                    it.deleteTakenImage2.visibility = View.VISIBLE
+                    it.takenImage2.visibility = View.GONE
+                    it.takenImage2Text.visibility = View.GONE
+                    it.deleteTakenImage3.visibility = View.GONE
+                }
+                3 -> {
+                    it.takenImage2.setImageBitmap(imageBitmap)
+                    it.takenImage2.visibility = View.VISIBLE
+                    it.takenImage2Text.visibility = View.GONE
+                    it.deleteTakenImage3.visibility = View.VISIBLE
+                }
+                else -> {
+                    it.takenImage2Text.text = (takenImages - 3).toString() + "+"
+                    it.takenImage2Text.visibility = View.VISIBLE
+                    it.deleteTakenImage3.visibility = View.GONE
+                }
             }
         }
     }

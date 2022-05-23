@@ -3,4 +3,8 @@
     <dimen name="small_dimension">8dp</dimen>
     <dimen name="medium_dimension">16dp</dimen>
     <dimen name="text_size_large">20sp</dimen>
+    <dimen name="img_dim">100dp</dimen>
+    <dimen name="large_dimension">48dp</dimen>
+    <dimen name="zero">0dp</dimen>
+    <dimen name="img_large_dim">150dp</dimen>
 </resources>
