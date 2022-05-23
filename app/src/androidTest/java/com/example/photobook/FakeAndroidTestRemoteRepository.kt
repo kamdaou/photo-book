@@ -173,12 +173,11 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      *
      * Return: a PostResponse
      */
-    override suspend fun getPosts(limit: Long, lastSeen: List<LastSeen>?): PostResponse
+    override suspend fun getPosts(): PostResponse
     {
         val postResponse = PostResponse()
         val loaded = db.collection("post")
             .orderBy("inserted_at", Query.Direction.ASCENDING)
-            .limit(limit)
             //.whereNotEqualTo("user.id", FirebaseAuth.getInstance().currentUser.uid)
             .get()
         try
@@ -396,7 +395,7 @@ class FakeAndroidTestRemoteRepository: IRemoteRepository
      * deleteAllPosts - Deletes 1000000 from data source
      */
     override suspend fun deleteAllPosts(){
-        val post = getPosts(1000000)
+        val post = getPosts()
         for (element in post.post!!) {
             db.collection("post").document(element.id).delete()
         }

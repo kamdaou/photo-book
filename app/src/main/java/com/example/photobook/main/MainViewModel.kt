@@ -106,7 +106,7 @@ class MainViewModel(
 
         posts = Transformations.switchMap(shouldRefresh) {
             liveData {
-                emit(remoteRepository.getPosts(limit = 20))
+                emit(remoteRepository.getPosts())
             }
         }
     }

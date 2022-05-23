@@ -58,7 +58,7 @@ interface IRemoteRepository {
      *
      * Return: a PostResponse
      */
-    suspend fun getPosts(limit: Long = 1000L, lastSeen: List<LastSeen>? = null): PostResponse
+    suspend fun getPosts(): PostResponse
 
     /**
      * updatePost - update value of a post.

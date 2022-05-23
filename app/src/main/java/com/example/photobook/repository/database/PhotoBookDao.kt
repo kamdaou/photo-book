@@ -1,7 +1,10 @@
 package com.example.photobook.repository.database
 
 import androidx.room.*
-import com.example.photobook.data.*
+import com.example.photobook.data.Image
+import com.example.photobook.data.Media
+import com.example.photobook.data.Post
+import com.example.photobook.data.User
 
 @Dao
 interface PhotoBookDao {
@@ -70,33 +73,6 @@ interface PhotoBookDao {
      * Return: The media or null
      */
     suspend fun getMedias(id: String): Media?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    /**
-     * insertLastSeen - Saves the last post retrieved from
-     * firestore
-     *
-     * @lastSeen: A lastSeen instance with element_id
-     * equals to id of the last element retrieved
-     */
-    suspend fun insertLastSeen(lastSeen: LastSeen)
-
-    @Query("SELECT * FROM last_seen ORDER BY id LIMIT(1)")
-    /**
-     * getLastSeen - Retrieves the last document showed in UI,
-     * and the last gotten from firestore
-     *
-     * Return: List (1 element) of last seen document
-     */
-    suspend fun getLastSeen(): List<LastSeen>?
-
-    @Update
-    /**
-     * updateLastSeen - updates the last seen document
-     *
-     * @lastSeen - New value of the last seen document
-     */
-    suspend fun updateLastSeen(lastSeen: LastSeen)
 
     @Query("SELECT * FROM image WHERE name = :imageName")
     /**

@@ -15,6 +15,7 @@ import com.example.photobook.utils.Constants.Status
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.MatcherAssert
 import org.hamcrest.core.Is
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -61,6 +62,12 @@ class AddPostViewModelTest
         post = Post("id1", title = "title", body = "body", submitter_id = "userId")
         user = User("username", "userId")
         media = Media("mediaId")
+    }
+
+    @After
+    fun closeDB()
+    {
+        db.close()
     }
 
     /**
