@@ -1,6 +1,7 @@
 package com.example.photobook.addPost
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
@@ -245,6 +246,7 @@ class AddPostFragment : Fragment()
      *
      * @imageBitmap - Bitmap of the image that should be showed
      */
+    @SuppressLint("SetTextI18n")
     private fun addImageUI(imageBitmap: Bitmap)
     {
         when (takenImages)
