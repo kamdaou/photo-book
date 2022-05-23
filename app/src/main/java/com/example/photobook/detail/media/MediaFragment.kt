@@ -12,7 +12,6 @@ import com.example.photobook.data.PostFirestore
 import com.example.photobook.databinding.FragmentMediaBinding
 import com.example.photobook.main.MainViewModel
 import com.example.photobook.utils.Constants.IMAGE_NAME
-import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.util.Util
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,7 +20,6 @@ class MediaFragment : Fragment()
 {
 
     private lateinit var binding: FragmentMediaBinding
-    private var player: ExoPlayer? = null
     private lateinit var post: PostFirestore
     private var selectedMediaIndex:Int = 0
     private var window: Window? = null
@@ -114,7 +112,7 @@ class MediaFragment : Fragment()
         super.onResume()
         // hideSystemUI()
 
-        if (Util.SDK_INT < 24 || player == null){
+        if (Util.SDK_INT < 24){
 
             binding.buttonNext.setOnClickListener {
                 selectedMediaIndex += 1
@@ -137,5 +135,30 @@ class MediaFragment : Fragment()
         if (Util.SDK_INT >= 24){
             displayMedia(post.media!!, selectedMediaIndex)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (Util.SDK_INT < 24)
+        {
+            clearImage()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (Util.SDK_INT >= 24)
+        {
+            clearImage()
+        }
+    }
+
+    /**
+     * clearImage - clear image
+     */
+    private fun clearImage() {
+        Glide
+            .with(binding.image.context)
+            .clear(binding.image)
     }
 }
