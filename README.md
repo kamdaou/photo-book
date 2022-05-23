@@ -24,8 +24,6 @@ To meet specification and only for that, images are stored in the local database
 
 The architecture is MVVM, logic operations are done in the different view models, data are accessed via local or remote repository and processed by the view models before they are displayed in the UI via fragments.
 
-For the UI, I wanted it to look a bit good but because my subscription is going to finish, I cannot do it better than this one. I hope you can understand me.
-
 Another specification is that the whole code uses firebase emulator, in both test and the main code. The reason is just that I don’t want firebase to charge me since it’s just a simple app:). And because of that, you may see that in some of my tests, I don’t clear the remote repository ; it will be done once the emulator will be closed.
 
 All the code was tested on samsung galaxy s8 and s10 respectively API 27 and API 29.

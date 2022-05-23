@@ -7,35 +7,23 @@
             name="post"
             type="com.example.photobook.data.Post" />
     </data>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/add_post_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/post_text">
             <EditText
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/small_dimension"
+                android:layout_marginTop="@dimen/small_dimension"
+                android:layout_marginEnd="@dimen/small_dimension"
                 android:autofillHints="Title"
                 android:hint="@string/title"
                 android:inputType="text"
                 android:text="@={post.title}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,69 +31,50 @@
                 android:id="@+id/body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/small_dimension"
                 android:layout_marginTop="@dimen/medium_dimension"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="@dimen/small_dimension"
+                android:layout_marginBottom="@dimen/medium_dimension"
                 android:autofillHints="body"
                 android:hint="@string/body_description"
                 android:inputType="textUri|textMultiLine"
-                android:lines="6"
-                android:maxLines="12"
+                android:lines="@integer/min_line"
+                android:maxLines="@integer/max_line"
                 android:scrollbars="vertical"
                 android:text="@={post.body}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/post_text"
-            app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/take_picture">
-            <ImageView
-                android:id="@+id/take_picture_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:src="@android:drawable/ic_menu_camera"
-                android:contentDescription="@string/take_a_picture_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Picture" />
+
             <TextView
-                android:id="@+id/take_picture_text"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="8dp"
+                android:id="@+id/take_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/small_dimension"
                 android:layout_marginStart="@dimen/small_dimension"
                 android:text="@string/take_a_picture"
-                app:layout_constraintBottom_toBottomOf="@id/take_picture_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/take_picture_button"
-                app:layout_constraintTop_toTopOf="@id/take_picture_button"
-                tools:text="take a picture" />
+                app:layout_constraintTop_toBottomOf="@id/body"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="take a picture"
+                app:drawableLeftCompat="@android:drawable/ic_menu_camera" />
             <ImageView
                 android:id="@+id/taken_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="@dimen/img_dim"
+                android:layout_height="@dimen/img_dim"
+                android:layout_marginTop="@dimen/medium_dimension"
+                android:layout_marginEnd="@dimen/small_dimension"
                 android:contentDescription="@string/newly_added_image_description"
                 android:visibility="gone"
                 tools:visibility="visible"
                 app:layout_constraintEnd_toStartOf="@+id/taken_image1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/take_picture_button" />
+                app:layout_constraintTop_toBottomOf="@id/take_picture" />
 
             <Button
                 android:id="@+id/delete_taken_image"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/large_dimension"
+                android:layout_height="@dimen/large_dimension"
                 android:hint="@string/delete_image_button_description"
                 app:icon="@android:drawable/ic_delete"
                 android:visibility="gone"
@@ -114,9 +83,9 @@
                 app:layout_constraintTop_toTopOf="@id/taken_image" />
             <ImageView
                 android:id="@+id/taken_image1"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="@dimen/img_dim"
+                android:layout_height="@dimen/img_dim"
+                android:layout_marginEnd="@dimen/small_dimension"
                 android:contentDescription="@string/newly_added_image_description"
                 android:visibility="gone"
                 tools:visibility="visible"
@@ -127,8 +96,8 @@
 
             <Button
                 android:id="@+id/delete_taken_image2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/large_dimension"
+                android:layout_height="@dimen/large_dimension"
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:hint="@string/delete_image_button_description"
@@ -138,8 +107,8 @@
 
             <ImageView
                 android:id="@+id/taken_image2"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/img_dim"
+                android:layout_height="@dimen/img_dim"
                 android:contentDescription="@string/newly_added_image_description"
                 android:visibility="gone"
                 tools:visibility="visible"
@@ -148,8 +117,8 @@
                 app:layout_constraintTop_toTopOf="@+id/taken_image1" />
             <Button
                 android:id="@+id/delete_taken_image3"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/large_dimension"
+                android:layout_height="@dimen/large_dimension"
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:hint="@string/delete_image_button_description"
@@ -158,8 +127,8 @@
                 app:layout_constraintTop_toTopOf="@id/taken_image2" />
             <TextView
                 android:id="@+id/taken_image2_text"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/img_dim"
+                android:layout_height="@dimen/img_dim"
                 android:textAlignment="center"
                 android:gravity="center"
                 android:visibility="gone"
@@ -174,14 +143,12 @@
                 android:id="@+id/save_post_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/medium_dimension"
                 android:contentDescription="@string/save_post_button_description"
                 android:text="@string/save_post"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/taken_image" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 </layout>
