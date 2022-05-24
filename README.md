@@ -30,7 +30,12 @@ All the code was tested on samsung galaxy s8 and s10 respectively API 27 and API
 
 # How to install the app
 
-Because it's just a sample and it's not stored on playStore, you must have android studio so that you can compile the application and install it.
+Because it's just a sample and it's not stored on playStore, you must have android studio so that you can compile the application and install it. And you have to create a project in your firebase console and add the google-services.json file in the project. You can learn more about this [here](https://firebase.google.com/docs/android/setup). For additional informations, the firebase project should have a firebase firestore, firebase authentication and firebase database. Also, because I am using firebase emulator, you have to remove or comment that code if you want to see it in your firebase console. Go [in repository file](app/src/main/java/com/example/photobook/repository/network/RemoteRepository.kt) and remove the 
+```
+useEmulator()
+```
+line.
+
 For more information about how to run an app from android studio, please refers to [android blog](https://developer.android.com/training/basics/firstapp/running-app)
 
 # License
